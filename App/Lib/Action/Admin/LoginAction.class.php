@@ -52,4 +52,12 @@ class LoginAction  extends Action
         cookie('adminInfo',null);
         redirect(U('/Admin/Login'));
     }
+    /**
+     * 生成验证码
+     */
+    function getVerify()
+    {
+        import('@.Extend.Image');
+        Image::buildImageVerify(4,1,'png',114,46);
+    }
 }

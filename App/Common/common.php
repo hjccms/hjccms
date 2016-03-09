@@ -40,6 +40,7 @@ function encrypt($string, $operation, $key = '')
     } else {
         return str_replace('=', '', base64_encode($result));
     }
+    
 }
 
 ?>
