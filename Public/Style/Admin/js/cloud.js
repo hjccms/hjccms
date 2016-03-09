@@ -49,17 +49,23 @@ setInterval(function bg() {
 
 function login()
 {
-    var username = $('.loginuser').val();
-    var password = $('.loginpwd').val();
+    var username = $.trim($('.loginuser').val());
+    var password = $.trim($('.loginpwd').val());
+    var verify = $.trim($('.verify').val());
     if(username==''||password=='')
     {
         alert('请输入账号和密码！');
         return false;
     }
+    if(verify==''||verify=='验证码')
+    {
+        alert('请输入验证码！');
+        return false;
+    }
     $.ajax({
         type: "POST",
         url: "/Admin/Login/ajaxLogin",
-        data: "username="+username+"&password="+password,
+        data: "username="+username+"&password="+password+"&verify="+verify,
         dataType: "json",
         beforeSend:function(msg){
             $(".loginerror").html('正在登陆...');

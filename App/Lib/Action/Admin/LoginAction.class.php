@@ -29,7 +29,10 @@ class LoginAction  extends Action
         if(!IS_AJAX) die('非法请求！');
         $username = $this->_post('username');
         $password = $this->_post('password');
+        $verify = $this->_post('verify');
         if($username==''||$password=='') $this->ajaxReturn('','请输入账号和密码！',0);
+        if($verify=='') $this->ajaxReturn('','请输入验证码！',0);
+        if(md5($verify)!=session("verify")) $this->ajaxReturn('','验证码错误！',0);
         $password = md5(encrypt($password, 'E'));
         $condition =  array('username'=>$username,'password'=>$password);
         $adminInfo = D('Admin')->getAdminInfo($condition);
