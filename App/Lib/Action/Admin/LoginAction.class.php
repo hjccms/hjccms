@@ -58,6 +58,6 @@ class LoginAction  extends Action
     function getVerify()
     {
         import('@.Extend.Image');
-        Image::buildImageVerify(4,1,'png',114,46);
+        Image::buildImageVerify(4,1,'gif',114,46);
     }
 }

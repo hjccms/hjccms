@@ -431,7 +431,7 @@ class Image {
             imagesetpixel($im, mt_rand(0, $width), mt_rand(0, $height), $stringColor);
         }
         for ($i = 0; $i < $length; $i++) {
-            imagestring($im, 5, $i * 10 + 5, mt_rand(1, 8), $randval{$i}, $stringColor);
+            imagestring($im, 5, $i * floor($width/$length) + 10, mt_rand(1, $height-15), $randval{$i}, $stringColor);
         }
         Image::output($im, $type);
     }
