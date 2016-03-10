@@ -35,7 +35,7 @@
             <div class="formtitle"><span>添加菜单</span></div>
             <form class="registerform" action="{:U('/Admin/AdminMenu/ajaxPost')}">
             <ul class="forminfo">
-                <li><label>所属栏目<b>*</b></label>
+<!--                <li><label>所属栏目<b>*</b></label>
 
                     <div class="vocation">
                         <select class="select1" name="parentId">
@@ -49,18 +49,18 @@
                             </volist>
                         </select>
                     </div>
-                </li>
+                </li>-->
+                {:select(array('title'=>'所属栏目','inputName'=>'parentId','value'=>'','paramSelArr'=>$menus))}
                 {:input(array('title'=>'菜单名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符"','value'=>$info['name']))}
                 {:input(array('title'=>'模块','inputName'=>'module','tipMsg'=>'英文字符串','value'=>$info['module']))}
                 {:input(array('title'=>'控制器','inputName'=>'action','tipMsg'=>'英文字符串','value'=>$info['action']))}
                 {:input(array('title'=>'其它参数','inputName'=>'parameter','value'=>$info['parameter']))}
                 {:radio(array('title'=>'是否启用','inputName'=>'status','value'=>$info['status']))}
                 {:radio(array('title'=>'权限验证','inputName'=>'role','value'=>$info['role']))}
-                <li><label>icon图标</label><input name="icon" type="text" class="dfinput" value="{$info.value}" /></li>
                 {:input(array('title'=>'排序','inputName'=>'sort','value'=>'1'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
-                <li><label>icon图标</label><input name="image" type="text" id="url1" class="dfinput"  value="" /> <input name="" type="button" id="image1" class="btn" value="上传图片"/></li>
-                <li><label>编辑器</label><textarea name="content" style="width:800px;height:400px;visibility:hidden;">这里是初始化内容</textarea></li>
+                {:upload(array('title'=>'icon图标','inputName'=>'image','addId'=>'url1','value'=>'','uploadId'=>'image1'))}
+                {:editor(array('title'=>'内容编辑器','inputName'=>'content','value'=>'这里是初始化内容'))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
 
