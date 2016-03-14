@@ -13,8 +13,15 @@ class MenuAction extends BaseAction
     function menuAdd()
     {
         $id = $this->_get('id');
-        if(!$id) $id=0;
-        $menus = D('Menu')->getMenu();
+        if(!$id)
+        {
+            $id=0;
+            $menus = array(array('id'=>'0','name'=>'顶级菜单'));
+        }
+        else
+        {
+            $menus = D('Menu')->getMenu();
+        }
         //info信息
         if($id>0) $info = D('Menu')->getInfo($id);
         else $info = array();

@@ -61,10 +61,10 @@ function select($data)
     }
     $startOption = empty($data['value'])?'<option value="" selected >请选择</option>':'';
     $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
-                <div class="vocation">
-                    <select class="select1 '.$data['addClass'].'" name="'.$data['inputName'].'">
+                <div class="vocation Validform_error">
+                    <select class="select1 '.$data['addClass'].'" name="'.$data['inputName'].'"   '.$data['addHtml'].' >
                         '.$startOption.$optionStr.'
-                    </select>
+                    </select><i class="Validform_checktip">'.$data['tipMsg'].'</i>
                 </div>
             </li>';
     return $str;
