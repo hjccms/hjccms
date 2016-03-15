@@ -6,6 +6,7 @@ class MenuAction extends BaseAction
     function index()
     {
         $result = D('Menu')->getMenu();
+        
         $this->assign('result',$result);
         $this->display();
     }
@@ -13,18 +14,17 @@ class MenuAction extends BaseAction
     function menuAdd()
     {
         $id = $this->_get('id');
-        if(!$id)
-        {
-            $id=0;
-            $menus = array(array('id'=>'0','name'=>'顶级菜单'));
-        }
-        else
-        {
-            $menus = D('Menu')->getMenu();
-        }
+        $menus = D('Menu')->getMenu();
         //info信息
         if($id>0) $info = D('Menu')->getInfo($id);
         else $info = array();
+        
+        if(!$menus||$info['parent_id']==0)
+        {
+            $menus[count($menus)+1] = array('id'=>0,'name'=>'顶级菜单');
+        };
+        
+        
         $this->assign('info',$info);
         $this->assign('id', $id);
         $this->assign('parentId', $info['parentId']);
@@ -41,8 +41,8 @@ class MenuAction extends BaseAction
         {
             if($v=='NULL') $post[$k] = '';
         }
-        $post['site'] = $this->adminInfo['site'];
-        $post['adminId'] = $this->adminInfo['id'];
+        $post['admin_id'] = $this->adminInfo->id;
+       
         //去模型处理其它参数
         $id = D('Menu')->addMenu($post);
         if($id) $this->ajaxReturn ('','Success！',1);

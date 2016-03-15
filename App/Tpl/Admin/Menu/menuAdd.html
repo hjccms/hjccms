@@ -25,10 +25,10 @@
         <div class="formbody">
 
             <div class="formtitle"><span>添加菜单</span></div>
-            <form class="registerform" action="{:U('/Admin/AdminMenu/ajaxPost')}">
+            <form class="registerform" action="{:U('/Admin/Menu/ajaxPost')}">
             <ul class="forminfo">
 
-                {:select(array('title'=>'所属栏目','inputName'=>'parent_id','value'=>'','tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择2"','paramSelArr'=>$menus))}
+                {:select(array('title'=>'所属栏目','inputName'=>'parent_id','value'=>$info['parent_id'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramSelArr'=>$menus))}
                 {:input(array('title'=>'菜单名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符"','value'=>$info['name']))}
                 {:input(array('title'=>'模块','inputName'=>'module','tipMsg'=>'英文字符串','addHtml'=>'datatype="y3-10" ignore="ignore" errormsg="只能输入英文"','value'=>$info['module']))}
                 {:input(array('title'=>'控制器','inputName'=>'action','tipMsg'=>'英文字符串','addHtml'=>'datatype="y3-10" ignore="ignore" errormsg="只能输入英文"','value'=>$info['action']))}
@@ -50,13 +50,13 @@
 KindEditor.ready(function(K) {
     editor = K.create('textarea[name="content"]', {
             allowFileManager : true,
-            uploadJson : 'index.php?g=Admin&m=Upload&a=uploadFile',
-            fileManagerJson : 'index.php?g=Admin&m=Upload&a=fileManager'
+            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager'
     });
     var editor = K.editor({
             allowFileManager : true,
-            uploadJson : 'index.php?g=Admin&m=Upload&a=uploadFile',
-            fileManagerJson : 'index.php?g=Admin&m=Upload&a=fileManager&type=Sysicon'
+            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager&dirname=Sysicon'
     });
     
     K('#image1').click(function() {
@@ -92,7 +92,7 @@ $(function(){
                         if(data.status==1)
                         {
                             alert(data.info);
-                            location.href="{:U('Admin/AdminMenu/index')}";
+                            location.href="{:U('Admin/Menu/index')}";
                         }
                         else
                         {
