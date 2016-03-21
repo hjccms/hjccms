@@ -48,9 +48,10 @@
 <script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
 <script type="text/javascript">
 KindEditor.ready(function(K) {
+    var validhash = $('input[name="__hash__"]').val();
     editor = K.create('textarea[name="content"]', {
             allowFileManager : true,
-            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile&validhash='+validhash,
             fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager'
     });
     var editor = K.editor({
@@ -67,7 +68,7 @@ KindEditor.ready(function(K) {
                             clickFn : function(url) {
                                     K('#url1').val(url);
                                     editor.hideDialog();
-                            }
+                            } 
                     });
             });
     });
