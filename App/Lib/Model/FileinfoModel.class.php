@@ -10,5 +10,10 @@ class FileinfoModel extends Model
     protected $_map = array(
         'type'    => 'mime',
     );
-    
+    function changeFile($hash,$id,$table)
+    {
+        if(!$hash) return false;
+        $this->where(array('valid_md5'=>$hash))->save(array('model_name'=>$table,'model_id'=>$id));
+        return;
+    }
 }

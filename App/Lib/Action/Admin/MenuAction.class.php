@@ -23,8 +23,6 @@ class MenuAction extends BaseAction
         {
             $menus[count($menus)+1] = array('id'=>0,'name'=>'顶级菜单');
         };
-        
-        
         $this->assign('info',$info);
         $this->assign('id', $id);
         $this->assign('parentId', $info['parentId']);
@@ -44,9 +42,9 @@ class MenuAction extends BaseAction
         $post['admin_id'] = $this->adminInfo->id;
        
         //去模型处理其它参数
-        $id = D('Menu')->addMenu($post);
-        if($id) $this->ajaxReturn ('','Success！',1);
-        else $this->ajaxReturn ('','error！',0);
+        $ret = D('Menu')->addMenu($post);
+        if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
+        else $this->ajaxReturn ('',$ret,0);
     }
     //删除菜单
     function delMenu()

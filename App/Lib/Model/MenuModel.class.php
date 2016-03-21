@@ -50,16 +50,23 @@ class MenuModel extends Model
     //添加和更新菜单
     function addMenu($data)
     {
+        $hash = $data['__hash__'];
+        if(!$this->create($data))
+        {
+            $msg = $this->getError();
+            return $msg;
+        }
         if($data['id']>0)
         {
-            $this->data($data)->save();
-            $id = $data['id'];
+            
+            $id = $this->save();
         }
         else
         {
-            $this->create($data);
             $id = $this->add();
         }
-        return $id;
+        D('Fileinfo')->changeFile($hash,$id,'menu');
+        return $id; 
+       
     }
 }
