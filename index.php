@@ -5,7 +5,7 @@ define('APP_NAME', 'App');
 define('APP_PATH', './App/');
 define('ROOT_PATH', dirname(__FILE__));
 //开启调试模式
-define('APP_DEBUG', true);
+define('APP_DEBUG', false);
 
 require( "../ThinkPHP/ThinkPHP.php");
 ?>

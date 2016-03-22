@@ -3,7 +3,7 @@
 return array(
     'APP_KEY' => 'dj_wia$84k&lp',  //项目加密key值
     
-    'SITEURL' => 'http://hjc.an.haowj.com',
+    'SITEURL' => 'http://an.haowj.com',
     //表单hash验证开启
     'TOKEN_ON'=>true,  // 是否开启令牌验证
     'TOKEN_NAME'=>'__hash__',    // 令牌验证的表单隐藏字段名称
@@ -16,7 +16,7 @@ return array(
     'APPVALIDFALSE'=> '0',
     
     //附件设置
-    'PUBLICURL' => 'http://hjc.an.haowj.com',  //项目静态文件地址配置
+    'PUBLICURL' => 'http://an.haowj.com',  //项目静态文件地址配置
     'UPLOADFILEDIR' => '/Public/Upload/',//上传文件保存地址
     'FILEMAXSIZE' => 3145728 ,//最大允许附件上传大小
     'IMAGETHUMB' => false,//是否开启缩略图   上传url参数imagethumb控制作为最高优先级
