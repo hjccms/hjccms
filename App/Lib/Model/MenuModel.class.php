@@ -59,7 +59,8 @@ class MenuModel extends Model
         if($data['id']>0)
         {
             
-            $id = $this->save();
+            $this->save();
+            $id = $data['id'];
         }
         else
         {

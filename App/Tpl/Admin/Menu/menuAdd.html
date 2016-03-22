@@ -37,8 +37,8 @@
         
                 {:input(array('title'=>'排序','inputName'=>'sort','value'=>$info['sort'],'addHtml'=>'datatype="n" ignore="ignore" errormsg="只能输入整数"'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
-                {:upload(array('title'=>'icon图标','inputName'=>'image','addId'=>'url1','value'=>'','uploadId'=>'image1'))}
-                {:editor(array('title'=>'描述','inputName'=>'content','value'=>''))}
+                {:upload(array('title'=>'icon图标','inputName'=>'icon','addId'=>'url1','value'=>$info['icon'],'uploadId'=>'image1'))}
+                {:editor(array('title'=>'描述','inputName'=>'description','value'=>$info['description']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
 
@@ -49,10 +49,11 @@
 <script type="text/javascript">
 KindEditor.ready(function(K) {
     var validhash = $('input[name="__hash__"]').val();
-    editor = K.create('textarea[name="content"]', {
+    editor = K.create('textarea[name="description"]', {
             allowFileManager : true,
             uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile&validhash='+validhash,
-            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager'
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager',
+            afterBlur: function(){this.sync();}
     });
     var editor = K.editor({
             allowFileManager : true,

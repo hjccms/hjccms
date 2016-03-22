@@ -13,7 +13,8 @@ class FileinfoModel extends Model
     function changeFile($hash,$id,$table)
     {
         if(!$hash) return false;
-        $this->where(array('valid_md5'=>$hash))->save(array('model_name'=>$table,'model_id'=>$id));
+        //先把以前的旧图片设为无效
+        $this->where(array('valid_md5'=>$hash))->save(array('model_name'=>$table,'model_id'=>$id,'valid'=>1));
         return;
     }
 }

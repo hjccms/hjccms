@@ -63,7 +63,6 @@
             <table class="tablelist">
                 <thead>
                     <tr>
-                        <th><input name="" type="checkbox" value="" checked="checked"/></th>
                         <th>排序<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
                         <th>名称</th>
                         <th>URL</th>
@@ -76,7 +75,6 @@
                 <tbody>
                     <volist name='result' id='val' >
                     <tr>
-                        <td><input name="" type="checkbox" value="" /></td>
                         <td>{$val.sort}</td>
                         <td>{$val.name}</td>
                         <td>{:U('Admin/'.$val['module'].'/'.$val['action'],$val['parameter'])}</td>
@@ -86,7 +84,6 @@
                         <!--二级菜单开始-->
                             <volist name="val['childs']" id='child' >
                             <tr>
-                                <td><input name="" type="checkbox" value="" /></td>
                                 <td>{$child.sort}</td>
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;├─ {$child.name}</td>
                                 <td>{:U('Admin/'.$child['module'].'/'.$child['action'],$child['parameter'])}</td>
@@ -96,7 +93,6 @@
                                 <!--三级菜单开始-->
                                     <volist name="child['childs']" id='value' >
                                     <tr>
-                                        <td><input name="" type="checkbox" value="" /></td>
                                         <td>{$value.sort}</td>
                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ {$value.name}</td>
                                         <td>{:U('Admin/'.$value['module'].'/'.$value['action'],$value['parameter'])}</td>

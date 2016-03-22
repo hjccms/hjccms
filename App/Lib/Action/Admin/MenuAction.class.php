@@ -34,13 +34,8 @@ class MenuAction extends BaseAction
     {
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
-        //把值为NULL的改为空
-        foreach($post as $k=>$v)
-        {
-            if($v=='NULL') $post[$k] = '';
-        }
+        
         $post['admin_id'] = $this->adminInfo->id;
-       
         //去模型处理其它参数
         $ret = D('Menu')->addMenu($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
