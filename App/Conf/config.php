@@ -10,7 +10,7 @@ return array(
     'DEFAULT_ACTION'     => 'index', //默认分组
     'SESSION_AUTO_START' => true, //是否开启session
     'URL_MODEL' => '2',
-    'LOAD_EXT_CONFIG' => 'app,db',  //加载其他配置
+    'LOAD_EXT_CONFIG' => 'app,db,debug',  //加载其他配置
     //其他配置
     
 );
