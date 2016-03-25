@@ -29,7 +29,7 @@ function hideInput($data)
     return $str;
 }
 
-//radio单选框 是和否
+//radio单选框
 function radio($data)
 {
     if($data['value']=='1') $yesStr = 'checked="checked"';
