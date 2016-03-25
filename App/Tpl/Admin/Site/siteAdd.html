@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+     
+        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
+        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
+        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+    </head>
+
+    <body>
+
+        <div class="place">
+            <span>位置：</span>
+            <ul class="placeul">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">表单</a></li>
+            </ul>
+        </div>
+
+        <div class="formbody">
+
+            <div class="formtitle"><span>添加站点</span></div>
+            <form class="registerform" action="{:U('/Admin/Site/ajaxPost')}">
+            <ul class="forminfo">
+
+                {:input(array('title'=>'站点名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符"','value'=>$info['name']))}
+                {:input(array('title'=>'站点域名','inputName'=>'domain','tipMsg'=>'英文域名格式','addHtml'=>'datatype="url,y1-30" ignore="ignore" errormsg="格式为纯英文网址"','value'=>$info['domain']))}
+                {:input(array('title'=>'站点标题','inputName'=>'site_title','tipMsg'=>'网站title','value'=>$info['site_title']))}
+                {:input(array('title'=>'关键字设置','inputName'=>'site_keywords','tipMsg'=>'网站关键字用,分割','value'=>$info['site_keywords']))}
+                {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>$info['valid']))}
+        
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                {:editor(array('title'=>'网站描述','inputName'=>'site_description','value'=>$info['site_description']))}
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+            </ul>
+
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+                datatype:{
+                        "*6-20": /^[^\s]{6,20}$/,
+                        "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
+                        "y3-10": /\w{3,10}/i,
+                },
+                ajaxPost:true,
+                callback:function(data){
+                        if(data.status==1)
+                        {
+                            alert(data.info);
+                            location.href="{:U('Admin/Site/index')}";
+                        }
+                        else
+                        {
+                            alert(data.info);
+                        }
+		}
+	});
+})
+</script>
+</html>
+

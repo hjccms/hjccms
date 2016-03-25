@@ -104,3 +104,10 @@ function selectChild($childs,$value='',$i='1')
     }
     return $optionStr;
 }
+
+//textare  多行文本框
+function textare($data)
+{
+    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"   >'.$data['value'].'</textarea></li>';
+    return $str;
+}
