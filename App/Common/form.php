@@ -35,7 +35,7 @@ function radio($data)
     $str = '<li><label>'.$data['title'].'</label><cite>';
     foreach($data['paramArr'] as $k=>$v){
         $yesStr = null;
-        if($data['value']==$v['id']){
+        if($data['value']==$k){
             $yesStr = 'checked="checked"';
         }
         $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$k.'" '.$yesStr.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -47,7 +47,7 @@ function radio($data)
 //textarea
 function textarea($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'" style="width:'.$data['width'].'px;height:'.$data['height'].'px;" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea></li>';
+    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea></li>';
     return $str;
 }
 
@@ -107,9 +107,3 @@ function selectChild($childs,$value='',$i='1')
     return $optionStr;
 }
 
-//textare  多行文本框
-function textare($data)
-{
-    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"   >'.$data['value'].'</textarea></li>';
-    return $str;
-}
