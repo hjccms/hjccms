@@ -21,20 +21,35 @@ function input($data)
     $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
+
 //隐藏表单框
 function hideInput($data)
 {
     $str = '<input name="'.$data['inputName'].'" value="'.$data['value'].'" type="hidden" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' />';
     return $str;
 }
+
 //radio单选框 是和否
 function radio($data)
 {
     if($data['value']=='1') $yesStr = 'checked="checked"';
     else $noStr = 'checked="checked"';
-    $str = '<li><label>'.$data['title'].'</label><cite><input name="'.$data['inputName'].'" type="radio" value="1" '.$yesStr.'  />是&nbsp;&nbsp;&nbsp;&nbsp;<input name="'.$data['inputName'].'" type="radio" value="0" '.$noStr.' />否</cite></li>';
+    $str = '<li><label>'.$data['title'].'</label><cite>';
+    foreach($data['paramArr'] as $k=>$v){
+        $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$v['id'].'" '.$yesStr.'  />&nbsp;&nbsp;'.$v['name'].'&nbsp;&nbsp;&nbsp;&nbsp;';
+    }
+    $str .= '</cite></li>';
     return $str;
 }
+
+//textarea
+function textarea($data)
+{
+    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'" style="width:'.$data['width'].'px;height:'.$data['height'].'px;" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea></li>';
+    return $str;
+}
+
+
 //编辑器
 function editor($data)
 {
@@ -52,7 +67,7 @@ function select($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
     
-    foreach($data['paramSelArr'] as $k=>$v)
+    foreach($data['paramArr'] as $k=>$v)
     {
         $selected = ($v['id']==$value)?"selected":"";
         $optionStr .= '<option value="'.$v['id'].'" '.$selected.' >'.$v['name'].'</option>';
