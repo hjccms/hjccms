@@ -10,14 +10,12 @@ class MenuModel extends Model
     function getMenu($parentId='',$valid='',$child=true)
     {
         $condition = array();
-        
-        if($parentId!='') $condition['parent_id'] = $parentId;
+        $parentId = $parentId?$parentId:0;
         if($valid!='') $condition['valid'] = $valid;
         $result = $this->where($condition)->order('sort asc,id asc')->select();
         //处理子集数据
-        
-        $ret = $this->sortChilds($result,0);
-        
+        $ret = $this->sortChilds($result,$parentId);
+        sort($ret);
         return $ret;
     }
     //排列子集
@@ -69,5 +67,44 @@ class MenuModel extends Model
         D('Fileinfo')->changeFile($hash,$id,'menu');
         return $id; 
        
+    }
+
+    //获取功能列表
+    function getList($menu,$flag=''){
+        if(!$menu) return false;
+        if(!$flag){
+            $str .= '';
+        }else{
+            $str .= $flag.'├─ ';
+        }
+        $flag .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+        $tree =  null;
+        foreach($menu as $v){
+            if($v['valid'] == 0){
+                $style = 'style="color:#ADADAD"';
+            }
+            $tree .= '<tr '.$style.'>';
+            $tree .= '<td>'.$v['sort'].'</td>';
+            $tree .= '<td>'.$str.$v['name'].'</td>';
+            $tree .= '<td>'.U('Admin/'.$v['module'].'/'.$v['action'],$v['parameter']).'</td>';
+            $tree .= '<td>'.get_valid($v['valid']).'</td>';
+            $tree .= '<td><a href="'.U('Admin/Menu/menuAdd','id='.$v['id']).'" class="tablelink">修改</a>';
+            $tree .= ' | <a href="#" class="tablelink  delLink" delid="'.$v['id'].'"> 删除</a></td>';
+            $tree .= '</tr>';
+            if(isset($v['childs'])){
+                $tree .= $this->getList($v['childs'],$flag);
+            }
+        }
+        return $tree;
+    }
+    
+    
+    function getLevel($parent_id){
+        if(!isset($parent_id)) return false;
+        $data['parent_id'] = $parent_id;
+        $parentLevel = $this->where($data)->getField("level");
+        if(!isset($parentLevel)) return false;
+        $level = $parentLevel+1;
+        return $level;
     }
 }

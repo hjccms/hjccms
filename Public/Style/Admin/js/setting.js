@@ -12,7 +12,7 @@ $(function() {
         layer.confirm('您确定要删除么？',function(index){
             $.ajax({
                 type: "POST",
-                url: "/index.php?g=Admin&m=AdminMenu&a=delMenu",
+                url: "/Admin/Menu/delMenu",
                 data: "id="+id,
                 dataType: "json",
                 beforeSend:function()
