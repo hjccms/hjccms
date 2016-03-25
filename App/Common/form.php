@@ -38,7 +38,7 @@ function radio($data)
         if($data['value']==$v['id']){
             $yesStr = 'checked="checked"';
         }
-        $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$v['id'].'" '.$yesStr.'  />&nbsp;&nbsp;'.$v['name'].'&nbsp;&nbsp;&nbsp;&nbsp;';
+        $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$k.'" '.$yesStr.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;';
     }
     $str .= '</cite></li>';
     return $str;
