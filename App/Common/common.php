@@ -43,4 +43,28 @@ function encrypt($string, $operation, $key = '')
     
 }
 
+function get_valid($flag = null) {
+	$arr = array(
+		'0' => '否',
+		'1' => '是',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
+function get_menu_type($flag = null) {
+	$arr = array(
+		'1' => '链接',
+		'2' => '按钮',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
 ?>
