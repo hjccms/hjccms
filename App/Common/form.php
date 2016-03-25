@@ -32,10 +32,12 @@ function hideInput($data)
 //radio单选框
 function radio($data)
 {
-    if($data['value']=='1') $yesStr = 'checked="checked"';
-    else $noStr = 'checked="checked"';
     $str = '<li><label>'.$data['title'].'</label><cite>';
     foreach($data['paramArr'] as $k=>$v){
+        $yesStr = null;
+        if($data['value']==$v['id']){
+            $yesStr = 'checked="checked"';
+        }
         $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$v['id'].'" '.$yesStr.'  />&nbsp;&nbsp;'.$v['name'].'&nbsp;&nbsp;&nbsp;&nbsp;';
     }
     $str .= '</cite></li>';
