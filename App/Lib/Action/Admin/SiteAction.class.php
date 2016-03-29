@@ -6,6 +6,8 @@ class SiteAction  extends BaseAction
 {
     function index()
     {
+        $sites = D('Site')->getSite();
+        $this->assign('sites',$sites);
         $this->display();
     }
     
@@ -36,7 +38,7 @@ class SiteAction  extends BaseAction
         
         $post['admin_id'] = $this->adminInfo->id;
         //去模型处理其它参数
-        $ret = D('Menu')->addSite($post);
+        $ret = D('Site')->addSite($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
         else $this->ajaxReturn ('',$ret,0);
     }

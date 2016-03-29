@@ -6,19 +6,13 @@ class SiteModel extends Model
 {
     //自动完成
     protected $_auto = array( array('create_time','time',1,'function') );
-    //获取自级菜单 $status 为真 只查询 正常的菜单  否则全部查询  $child 为真 查询子菜单 否则不查询
-    function getMenu($parentId='',$valid='',$child=true)
+    //站点信息  支持全部和单个
+    function getSite($siteId='')
     {
-        $condition = array();
-        
-        if($parentId!='') $condition['parent_id'] = $parentId;
-        if($valid!='') $condition['valid'] = $valid;
-        $result = $this->where($condition)->order('sort asc,id asc')->select();
-        //处理子集数据
-        
-        $ret = $this->sortChilds($result,0);
-        
-        return $ret;
+        if($siteId&&  intval($siteId)>0) $condition = array('id'=>$siteId);
+        $ret = $this->where($condition)->order("id asc")->select();
+        if(!empty($siteId))            return $ret['0'];  //如果查询单个信息直接返回 数组
+        else return $ret;
     }
     //排列子集
     function sortChilds($dataArr,$parentId)

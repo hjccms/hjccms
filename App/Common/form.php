@@ -71,7 +71,7 @@ function select($data)
     
     foreach($data['paramArr'] as $k=>$v)
     {
-        $selected = ($v['id']==$value)?"selected":"";
+        $selected = ($v['id']==$data['value'])?"selected":"";
         $optionStr .= '<option value="'.$v['id'].'" '.$selected.' >'.$v['name'].'</option>';
         if(is_array($v['childs'])||!empty($v['childs'])) $optionStr .=   selectChild($v['childs'],$data['value']);
         unset($selected);
