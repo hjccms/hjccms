@@ -58,7 +58,8 @@ function get_valid($flag = null) {
 function get_menu_type($flag = null) {
 	$arr = array(
 		'1' => '链接',
-		'2' => '按钮',
+		'2' => '内容按钮',
+                '3' => '列表按钮',
 	);
 	if (isset($flag)) {
 		return $arr[$flag];
