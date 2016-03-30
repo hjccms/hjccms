@@ -84,9 +84,11 @@ class MenuModel extends Model
                 $style = 'style="color:#ADADAD"';
             }
             $tree .= '<tr '.$style.'>';
-            $tree .= '<td>'.$v['sort'].'</td>';
+            $tree .= '<td>'.$v['id'].'</td>';
             $tree .= '<td>'.$str.$v['name'].'</td>';
-            $tree .= '<td>'.U('Admin/'.$v['module'].'/'.$v['action'],$v['parameter']).'</td>';
+            $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$v['parameter']):'';
+            $tree .= '<td>'.$url.'</td>';
+            $tree .= '<td>'.$v['func'].'</td>';
             $tree .= '<td>'.get_valid($v['valid']).'</td>';
             $tree .= '<td><a href="'.U('Admin/Menu/menuAdd','id='.$v['id']).'" class="tablelink">修改</a>';
             $tree .= ' | <a href="#" class="tablelink  delLink" delid="'.$v['id'].'"> 删除</a></td>';

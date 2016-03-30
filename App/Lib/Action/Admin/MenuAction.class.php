@@ -55,7 +55,7 @@ class MenuAction extends BaseAction
         $result = D('Menu')->getMenu($id,true);
         if($result)  $this->ajaxReturn ('','请先删除子菜单！',0);
         //如果不存在 删除本菜单
-        D('Menu')->where("id=".$id)->save(array("valid"=>0));
+        D('Menu')->where("id=".$id)->delete();
         $this->ajaxReturn ('','删除成功！',1);
     }
 }
