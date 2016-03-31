@@ -30,8 +30,15 @@ class Field_infoModel extends Model
         if($data['id']>0)
         {
             
-            $this->save();
-            $id = $data['id'];
+            if($this->changeField($data))
+            {
+                if($this->save($data)) $id = $data['id'];
+                else return false;
+            }
+            else
+            {
+                return false; 
+            }
         }
         else
         {
@@ -51,7 +58,25 @@ class Field_infoModel extends Model
         $type = $fieldType[$data['type']]['fieldType'];
       
         $type .= ($fieldType[$data['type']]['longth']&&intval($data['field_longth'])>0)?'('.$data['field_longth'].')':'';
-        $sql = 'ALTER TABLE `'.C('DB_PREFIX').$modelName.'` ADD COLUMN `'.$data['field'].'`  '.$type.' NOT NULL ';
+        $sql = 'ALTER TABLE `'.C('DB_PREFIX').$modelName.'` ADD COLUMN `'.$data['field_name'].'`  '.$type.' NOT NULL ';
+       
+        if(mysql_query($sql)) return true;
+        else return false;
+        
+    }
+    //创建数据库
+    function changeField($data)
+    {
+        $modelName = D('Model')->where("id=".$data['model_id'])->getField('table_name');
+        $oldField = $this->where("id=".$data['id'])->field('field_name')->find();
+        
+        if($data['field_name']==$oldField) return true;
+        $fieldType = C('FIELDTYPE');
+       
+        $type = $fieldType[$data['type']]['fieldType'];
+      
+        $type .= ($fieldType[$data['type']]['longth']&&intval($data['field_longth'])>0)?'('.$data['field_longth'].')':'';
+        $sql = 'ALTER TABLE `'.C('DB_PREFIX').$modelName.'` CHANGE COLUMN `'.$oldField['field_name'].'` `'.$data['field_name'].'`  '.$type.' NOT NULL ';
        
         if(mysql_query($sql)) return true;
         else die(mysql_error());
@@ -61,7 +86,7 @@ class Field_infoModel extends Model
     {
         $condition = array($filed=>$param);
         $condition = array_merge($condition,$con);
-        $ret = $this->where($condition)->getField('id');
+        $ret = $this->where($condition)->field('name')->find();
         if($ret) return true; else return false;
     }
 }

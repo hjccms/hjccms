@@ -44,7 +44,7 @@ class Field_infoAction  extends BaseAction
         $this->assign('validformType',$validformType);
         $this->assign('modelId',$modelId);
         //info信息
-        if($id>0) $info = D('Field_info')->getInfo($modelId);
+        if($id>0) $info = D('Field_info')->getInfo($id);
         else $info = array();
         $validform_type = explode('|', $info['validform_type']);
         
@@ -72,7 +72,9 @@ class Field_infoAction  extends BaseAction
     {
         $post = $this->_post();
         $modelId = $this->modelId;
+        $id = $this->_get('id');
         $condition = array('model_id'=>$modelId);
+        if(intval($id)>0) $condition['_string'] = " id != ".$id;
         $ret = D('Field_info')->checkField($post['name'],$post['param'],$condition);
         
         if($ret) $ret = array('info'=>'数据重复！','status'=>'n');

@@ -45,7 +45,9 @@ class ModelAction  extends BaseAction
     function checkName()
     {
         $post = $this->_post();
-        $ret = D('Model')->checkField($post['name'],$post['param']);
+        $id = $this->_get('id');
+        if(intval($id)>0) $condition['_string'] = "id!='$id'";
+        $ret = D('Model')->checkField($post['name'],$post['param'],$condition);
         
         if($ret) $ret = array('info'=>'数据重复！','status'=>'n');
         else  $ret = array('info'=>'验证成功！','status'=>'y');

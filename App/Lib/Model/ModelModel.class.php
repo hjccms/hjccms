@@ -47,9 +47,10 @@ class ModelModel extends Model
         else return false;
         
     }
-    function checkField($filed,$param)
+    function checkField($filed,$param,$con=array())
     {
         $condition = array($filed=>$param);
+        $condition = array_merge($condition,$con);
         $ret = $this->where($condition)->getField('id');
         if($ret) return true; else return false;
     }
