@@ -6,6 +6,8 @@ class ModelAction  extends BaseAction
 {
     function index()
     {
+        $this->getContentButton();
+        $this->getListButton();
         $models = D('Model')->getModel();
         $this->assign('models',$models);
         $this->display();
