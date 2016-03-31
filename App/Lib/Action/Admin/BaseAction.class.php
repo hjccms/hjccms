@@ -38,22 +38,34 @@ class BaseAction  extends Action
     
     //获取位置
     function getPosition(){
-        $position = D("Menu")->getPositionByUrl(str_replace("Action", "", MODULE_NAME),ACTION_NAME);
+        $id = $this->getMenuId();
+        if(!$id) return false;
+        $position = D("Menu")->getPositionById($id);
         $this->assign('position',$position);
     }
     
     //获取内容按钮
-    function getContentButton($id){
+    function getContentButton(){
+        $id = $this->getMenuId();
+        if(!$id) return false;
         $menu = D('Menu')->getMenu($id,true,false,2);
         $contentButton = D('Menu')->getContentButton($menu);
         $this->assign('contentButton',$contentButton);
     }
     
     //获取列表按钮
-    function getListButton($id){
+    function getListButton(){
+        $id = $this->getMenuId();
+        if(!$id) return false;
         $menu = D('Menu')->getMenu($id,true,false,3);
         $listButton = D('Menu')->getListButton($menu);
         $this->assign('listButton',$listButton);
+    }
+    
+    //获取菜单id
+    function getMenuId(){
+        $id = D('Menu')->getIdByUrl(str_replace("Action", "", MODULE_NAME),ACTION_NAME,get_param());
+        return $id;
     }
 }
 
