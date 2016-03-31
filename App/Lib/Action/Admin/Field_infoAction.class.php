@@ -4,17 +4,25 @@
  */
 class Field_infoAction  extends BaseAction 
 {
+    var $modelId;
+    function __construct() {
+        parent::__construct();
+        $this->modelId = $this->_get('modelId');
+        if(!$this->modelId) $this->modelId = $this->_post('model_id');
+        if(!$this->modelId) die('数据不完整！');
+    }
     function index()
     {
-        $models = D('Model')->getModel();
-        $this->assign('models',$models);
+        $fields = D('Field_info')->getField($this->modelId);
+        $this->assign('modelId',$this->modelId);
+        $this->assign('fields',$fields);
         $this->display();
     }
     
     //添加菜单
     function fieldAdd()
     {
-        $modelId = $this->_get('modelId');
+        $modelId = $this->modelId;
         //fieldtype
         $fieldType = C('FIELDTYPE');
         $this->assign('fieldType',$fieldType);
@@ -25,13 +33,23 @@ class Field_infoAction  extends BaseAction
         $this->display();
     }
     //修改功能
-    function modelEdit()
+    function fieldEdit()
     {
+        $modelId = $this->modelId;
         $id = $this->_get('id');
-      
+        //fieldtype
+        $fieldType = C('FIELDTYPE');
+        $this->assign('fieldType',$fieldType);
+        $validformType = C('VALIDFORMTYPE');
+        $this->assign('validformType',$validformType);
+        $this->assign('modelId',$modelId);
         //info信息
-        if($id>0) $info = D('Model')->getModel($id);
+        if($id>0) $info = D('Field_info')->getInfo($modelId);
         else $info = array();
+        $validform_type = explode('|', $info['validform_type']);
+        
+        $info['validform_type'] = $validform_type[0];
+        $info['validform_type2']= $validform_type[1];
         $this->assign('info',$info);
         $this->assign('id', $id);
         load('@.form');
@@ -53,7 +71,9 @@ class Field_infoAction  extends BaseAction
     function checkName()
     {
         $post = $this->_post();
-        $ret = D('Field_info')->checkField($post['name'],$post['param']);
+        $modelId = $this->modelId;
+        $condition = array('model_id'=>$modelId);
+        $ret = D('Field_info')->checkField($post['name'],$post['param'],$condition);
         
         if($ret) $ret = array('info'=>'数据重复！','status'=>'n');
         else  $ret = array('info'=>'验证成功！','status'=>'y');

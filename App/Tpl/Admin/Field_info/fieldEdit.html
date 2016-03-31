@@ -24,20 +24,20 @@
 
         <div class="formbody">
 
-            <div class="formtitle"><span>添加字段</span></div>
+            <div class="formtitle"><span>修改字段</span></div>
             <form class="registerform" action="{:U('/Admin/Field_info/ajaxPost')}">
             <ul class="forminfo">
 
                 {:input(array('title'=>'字段名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符" ajaxurl="/Admin/Field_info/checkName/modelId/'.$modelId.'" sucmsg="验证通过！"','value'=>$info['name']))}
-                {:input(array('title'=>'字段','inputName'=>'field','isMust'=>'1','tipMsg'=>'数据库字段名，用纯英文小写','addHtml'=>'datatype="y1-20"  ajaxurl="/Admin/Field_info/checkName/modelId/'.$modelId.'"   errormsg="格式为纯英文"','value'=>$info['field']))}
+                {:input(array('title'=>'字段','inputName'=>'field','isMust'=>'1','tipMsg'=>'数据库字段名，用纯英文小写','addHtml'=>'datatype="y1-20" disabled  ajaxurl="/Admin/Field_info/checkName/modelId/'.$modelId.'"   errormsg="格式为纯英文"','value'=>$info['field']))}
                 {:select(array('title'=>'类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>$fieldType))}
-                {:input(array('title'=>'字段长度','inputName'=>'field_longth','isMust'=>'1','tipMsg'=>'数据库字段长度','addHtml'=>'datatype="n"  ajaxurl="/Admin/Field_info/checkLongth/modelId/'.$modelId.'"   errormsg="格式为正整数"','value'=>100))}
-                {:radio(array('title'=>'是否必填','inputName'=>'must','value'=>0,'paramArr'=>get_valid()))}
-                {:radio(array('title'=>'验证唯一性','inputName'=>'ajax_url','value'=>0,'paramArr'=>get_valid()))}
-                {:select(array('title'=>'验证规则','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
-                {:input(array('title'=>'自定义规则','inputName'=>'validform_type2','tipMsg'=>'自定义验证规则'))}
+                {:input(array('title'=>'字段长度','inputName'=>'field_longth','isMust'=>'1','tipMsg'=>'数据库字段长度','addHtml'=>'datatype="n"  ajaxurl="/Admin/Field_info/checkLongth/modelId/'.$modelId.'"   errormsg="格式为正整数"','value'=>$info['field_longth']))}
+                {:radio(array('title'=>'是否必填','inputName'=>'must','value'=>$info['must'],'paramArr'=>get_valid()))}
+                {:radio(array('title'=>'验证唯一性','inputName'=>'ajax_url','value'=>$info['ajax_url'],'paramArr'=>get_valid()))}
+                {:select(array('title'=>'验证规则','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['validform_type'],'paramArr'=>$validformType))}
+                {:input(array('title'=>'自定义规则','inputName'=>'validform_type2','tipMsg'=>'自定义验证规则','value'=>$info['validform_type2']))}
                 {:hideInput(array('inputName'=>'model_id','value'=>$modelId))}
-               
+                {:hideInput(array('inputName'=>'id','value'=>$id))}
                 {:input(array('title'=>'增加class','inputName'=>'form_class','tipMsg'=>'class名','addHtml'=>'datatype="y1-20" ignore="ignore"  errormsg="格式为纯英文"','value'=>$info['form_class']))}
                 {:input(array('title'=>'增加id','inputName'=>'form_id','tipMsg'=>'id名','addHtml'=>'datatype="y1-20" ignore="ignore"  errormsg="格式为纯英文"','value'=>$info['form_id']))}
                 {:input(array('title'=>'增加html','inputName'=>'form_html','tipMsg'=>'其它html代码','value'=>$info['form_id']))}

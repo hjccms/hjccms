@@ -77,7 +77,7 @@
                         <td>{$val.name}</td>
                         <td>{$val.table_name}</td>
                         <td><if condition="$val['type'] eq 'fun'">功能模型<else/><font color="red">内容模型</font></if></td>
-                        <td><a href="{:U('Admin/Model/ModelEdit','id='.$val['id'])}" class="tablelink">修改</a> | <a href="#" class="tablelink  " >字段管理</a> | <a href="{:U('/Admin/Field_info/fieldAdd/modelId/'.$val['id'])}" class="tablelink  " >字段添加</a></td>
+                        <td><a href="{:U('Admin/Model/ModelEdit','id='.$val['id'])}" class="tablelink">修改</a> | <a href="{:U('/Admin/Field_info/index/modelId/'.$val['id'])}" class="tablelink  " >字段管理</a> | <a href="{:U('/Admin/Field_info/fieldAdd/modelId/'.$val['id'])}" class="tablelink  " >字段添加</a></td>
                     </tr> 
                         
                     </volist>
