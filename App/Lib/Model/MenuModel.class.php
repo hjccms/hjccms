@@ -124,7 +124,7 @@ class MenuModel extends Model
             $tree .= '<td>'.$url.'</td>';
             $tree .= '<td>'.$v['func'].'</td>';
             $tree .= '<td>'.get_valid($v['valid']).'</td>';
-            $tree .= $listButtonTree;
+            $tree .= '<td>'.$listButtonTree.'</td>';
             $tree .= '</tr>';
             if(isset($v['childs'])){
                 $tree .= $this->getListTree($v['childs'],$id,$flag);
@@ -198,7 +198,6 @@ class MenuModel extends Model
     function getListButton($menu,$id){
         if(!$menu) return false;
         $tree =  null;
-        $tree .= '<td>';
         foreach($menu as $k=>$v){
             $str = $k!=0?' | ':'';
             $param = $this->replaceParam(array('id'=>$id,'param'=>$v['param']));
@@ -206,7 +205,6 @@ class MenuModel extends Model
             $func = $this->replaceFuncParam(array('id'=>$id,'func'=>$v['func']));
             $tree .= $str.'<a class="tablelink" href="'.$url.'" onclick="'.$func.'">'.$v['name'].'</a>';
         }
-        $tree .= '</td>';
         return $tree;
     }
     
