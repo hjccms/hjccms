@@ -5,9 +5,8 @@ class MenuAction extends BaseAction
 {
     function index()
     {
-        $menuId = $this->getMenuId();
         $menu = D('Menu')->getMenu();
-        $menuTree = D('Menu')->getListTree($menu,$menuId);
+        $menuTree = D('Menu')->getListTree($menu,$this->menuId);
         $this->getContentButton();
         $this->assign('menuTree',$menuTree);
         $this->display();
