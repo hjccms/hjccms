@@ -139,8 +139,7 @@ class MenuModel extends Model
         if(!$menu) return false;
         $tree =  null;
         foreach($menu as $v){
-            $param = $v['param']?str_replace('{id}', $v['id'], $v['param']):'';
-            $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
+            $url = $v['module']?U('Admin/Index/left','id='.$v['id']):'';
             $tree .= '<li><a href="'.$url.'" target="leftFrame"><img src="'.$v['icon'].'" title="'.$v['name'].'" /><h2>'.$v['name'].'</h2></a></li>';
         }
         return $tree;
@@ -151,7 +150,7 @@ class MenuModel extends Model
         if(!$menu) return false;
         $tree =  null;
         foreach($menu as $v){
-            $param = $v['param']?str_replace('{id}', $v['id'], $v['param']):'';
+            $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
             $tree .= '<dd>';
             $tree .= '<div class="title">';
@@ -160,7 +159,7 @@ class MenuModel extends Model
             if(isset($v['childs'])){
                 $tree .= '<ul class="menuson">';
                 foreach($v['childs'] as $vc){
-                    $childParam = $vc['param']?str_replace('{id}', $vc['id'], $vc['param']):'';
+                    $childParam = $this->replaceParam(array('id'=>$vc['id'],'param'=>$vc['param']));
                     $childUrl = $vc['module']?U('Admin/'.$vc['module'].'/'.$vc['action'],$childParam):'';
                     $tree .= '<li><cite></cite><a href="'.$childUrl.'" target="rightFrame">'.$vc['name'].'</a><i></i></li>';
                 }
@@ -181,7 +180,7 @@ class MenuModel extends Model
         if(!$menu) return false;
         $tree =  null;
         foreach($menu as $v){
-            $param = $v['param']?str_replace('{id}', $v['id'], $v['param']):'';
+            $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
             $tree .= '<li>';
             $tree .= '<a href="'.$url.'"><span><img src="'.$v['icon'].'" /></span>'.$v['name'].'</a>';
@@ -202,9 +201,9 @@ class MenuModel extends Model
         $tree .= '<td>';
         foreach($menu as $k=>$v){
             $str = $k!=0?' | ':'';
-            $param = $v['param']?str_replace('{id}', $id, $v['param']):'';
+            $param = $this->replaceParam(array('id'=>$id,'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
-            $func = $v['func']?str_replace('{id}', $id, $v['func']):'';
+            $func = $this->replaceFuncParam(array('id'=>$id,'func'=>$v['func']));
             $tree .= $str.'<a class="tablelink" href="'.$url.'" onclick="'.$func.'">'.$v['name'].'</a>';
         }
         $tree .= '</td>';
@@ -218,20 +217,14 @@ class MenuModel extends Model
         return $name;
     }
     
-    /**
-     * 获取位置
-     * @param type $module  模块名  可用MODULE_NAME获取
-     * @param type $action  方法名  可用ACTION_NAME获取
-     * @return boolean|string
-     */
-    function getPositionByUrl($module,$action){
-        if(!$module) return false;
-        $action = $action?$action:'index';
+    //获取位置
+    function getPositionById($id){
+        if(!$id) return false;
         $child = null;
         $menu = $this->getAllMenu();
         if(!$menu) return false;
         foreach($menu as $k=>$v){
-            if($v["module"] == $module && $v["action"] == $action){
+            if($v["id"] == $id){
                 $child = $v;
             }
         }
@@ -276,4 +269,36 @@ class MenuModel extends Model
         return $parentArr;
     }
     
+    
+    
+    //获取id根据module和action
+    function getIdByUrl($module,$action,$param=null){
+        if(!$module || !$action) return false;
+        $condition = array();
+        $condition['module'] = $module;
+        $condition['action'] = $action;
+        if($param){
+            $condition['param'] = $param;
+        }
+        $id = $this->where($condition)->getField("id");
+        return $id;
+    }
+    
+    //链接参数替换
+    function replaceParam($arr){
+        $menuParam = C('MENUPARAM');
+        foreach($menuParam as $v){
+            $arr['param']  = $arr['param']?str_replace('{'.$v.'}', $arr[$v], $arr['param']):'';
+        }
+        return $arr['param'];
+    }
+    
+    //函数参数替换
+    function replaceFuncParam($arr){
+        $menuParam = C('MENUFUNCPARAM');
+        foreach($menuParam as $v){
+            $arr['func']  = $arr['func']?str_replace('{'.$v.'}', $arr[$v], $arr['func']):'';
+        }
+        return $arr['func'];
+    }
 }
