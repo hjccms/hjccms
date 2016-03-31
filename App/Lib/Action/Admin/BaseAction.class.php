@@ -5,6 +5,7 @@
 class BaseAction  extends Action 
 {
     var $adminInfo;
+    var $menuId;
     function __construct() 
     {
         parent::__construct();
@@ -24,6 +25,7 @@ class BaseAction  extends Action
             }
             $this->assign('adminInfo',$this->adminInfo);
             $this->getPosition();
+            $this->menuId = $this->getMenuId();
         }
         else
         {
@@ -38,26 +40,23 @@ class BaseAction  extends Action
     
     //获取位置
     function getPosition(){
-        $id = $this->getMenuId();
-        if(!$id) return false;
-        $position = D("Menu")->getPositionById($id);
+        if(!$this->menuId) return false;
+        $position = D("Menu")->getPositionById($this->menuId);
         $this->assign('position',$position);
     }
     
     //获取内容按钮
     function getContentButton(){
-        $id = $this->getMenuId();
-        if(!$id) return false;
-        $menu = D('Menu')->getMenu($id,true,false,2);
+        if(!$this->menuId) return false;
+        $menu = D('Menu')->getMenu($this->menuId,true,false,2);
         $contentButton = D('Menu')->getContentButton($menu);
         $this->assign('contentButton',$contentButton);
     }
     
     //获取列表按钮
     function getListButton(){
-        $id = $this->getMenuId();
-        if(!$id) return false;
-        $menu = D('Menu')->getMenu($id,true,false,3);
+        if(!$this->menuId) return false;
+        $menu = D('Menu')->getMenu($this->menuId,true,false,3);
         $listButton = D('Menu')->getListButton($menu);
         $this->assign('listButton',$listButton);
     }
