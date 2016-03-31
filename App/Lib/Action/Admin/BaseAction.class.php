@@ -23,6 +23,7 @@ class BaseAction  extends Action
                 $this->adminInfo = cookie('adminInfo');
             }
             $this->assign('adminInfo',$this->adminInfo);
+            $this->getPosition();
         }
         else
         {
@@ -33,6 +34,26 @@ class BaseAction  extends Action
     function hashUser()
     {
         return md5(encrypt(session('username').cookie('PHPSESSID'),'E',C('APP_KEY').session('adminId')));
+    }
+    
+    //获取位置
+    function getPosition(){
+        $position = D("Menu")->getPositionByUrl(str_replace("Action", "", MODULE_NAME),ACTION_NAME);
+        $this->assign('position',$position);
+    }
+    
+    //获取内容按钮
+    function getContentButton($id){
+        $menu = D('Menu')->getMenu($id,true,false,2);
+        $contentButton = D('Menu')->getContentButton($menu);
+        $this->assign('contentButton',$contentButton);
+    }
+    
+    //获取列表按钮
+    function getListButton($id){
+        $menu = D('Menu')->getMenu($id,true,false,3);
+        $listButton = D('Menu')->getListButton($menu);
+        $this->assign('listButton',$listButton);
     }
 }
 

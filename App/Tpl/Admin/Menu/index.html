@@ -31,6 +31,32 @@
                
                 
             });
+            
+            function menuDel(id){
+                layer.confirm('您确定要删除么？',function(index){
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Menu/delMenu",
+                        data: "id="+id,
+                        dataType: "json",
+                        beforeSend:function()
+                        {
+                            layer.load('正在请求...', 3);
+                        },
+                        success: function(msg)
+                        {
+                            if(msg.status==1)
+                            {
+                                location.reload() ;
+                            }
+                            else
+                            {
+                                layer.alert(msg.info, 8);
+                            }
+                        }
+                     });
+                });
+            }
         </script>
 
 
@@ -39,32 +65,19 @@
 
     <body>
 
-        <div class="place">
-            <span>位置：</span>
-            <ul class="placeul">
-                <li><a href="#">首页</a></li>
-                <li><a href="#">数据表</a></li>
-                <li><a href="#">基本内容</a></li>
-            </ul>
-        </div>
-
+        <include file="Index:position"/>
         <div class="rightinfo">
-
             <div class="tools">
-                
                 <ul class="toolbar">
-                    <li class="click_add"><a href="{:U('Admin/Menu/menuAdd')}"><span><img src="__PUBLIC__/Style/Admin/images/t01.png" /></span>添加</a></li>
-                    <li class="click"><span><img src="__PUBLIC__/Style/Admin/images/t02.png" /></span>批量修改</li>
-                    <li><span><img src="__PUBLIC__/Style/Admin/images/t03.png" /></span>批量删除</li>
+                    {$contentButton}
                 </ul>
             </div>
-
-
             <table class="tablelist">
                 <thead>
                     <tr>
                         <th>编号<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
                         <th>名称</th>
+                        <th>类型</th>
                         <th>URL</th>
                         <th>FUNC</th>
                         <th>是否有效</th>
