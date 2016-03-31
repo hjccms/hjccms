@@ -112,7 +112,7 @@ class MenuModel extends Model
         $tree =  null;
         $listButton = D('Menu')->getMenu($id,true,false,3);
         foreach($menu as $v){
-            $listButtonTree = D('Menu')->getListButton($listButton,$v['id']);
+            $listButtonTree = D('Menu')->getListButton($listButton,array('id'=>$v['id']));
             if($v['valid'] == 0){
                 $style = 'style="color:#ADADAD"';
             }
@@ -195,12 +195,14 @@ class MenuModel extends Model
      * @param type $id    id 要替换的id值
      * @return boolean|string
      */
-    function getListButton($menu,$id){
+    function getListButton($menu,$arr){
         if(!$menu) return false;
         $tree =  null;
         foreach($menu as $k=>$v){
             $str = $k!=0?' | ':'';
-            $param = $this->replaceParam(array('id'=>$id,'param'=>$v['param']));
+            $paramArr = $arr;
+            $paramArr['param'] = $v['param'];
+            $param = $this->replaceParam($paramArr);
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
             $func = $this->replaceFuncParam(array('id'=>$id,'func'=>$v['func']));
             $tree .= $str.'<a class="tablelink" href="'.$url.'" onclick="'.$func.'">'.$v['name'].'</a>';
