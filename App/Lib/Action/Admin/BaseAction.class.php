@@ -56,8 +56,7 @@ class BaseAction  extends Action
     //获取列表按钮
     function getListButton(){
         if(!$this->menuId) return false;
-        $menu = D('Menu')->getMenu($this->menuId,true,false,3);
-        $listButton = D('Menu')->getListButton($menu);
+        $listButton = D('Menu')->getMenu($this->menuId,true,false,3);
         $this->assign('listButton',$listButton);
     }
     
