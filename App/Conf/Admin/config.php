@@ -25,5 +25,11 @@ return array(
         array('id'=>'e','name'=>'EMAIL格式'),
         array('id'=>'url','name'=>'网址格式'),
     ),
+    
+    //链接参数
+    'MENUPARAM' =>array('id','pid','module'),
+    
+    //函数参数
+    'MENUFUNCPARAM' =>array('id','pid','module'),
 );
 ?>
