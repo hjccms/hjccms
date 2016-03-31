@@ -68,4 +68,19 @@ function get_menu_type($flag = null) {
 	}
 }
 
+//菜单参数拼接
+function get_param(){
+    $param = null;
+    $menuParam = C('MENUPARAM');
+    foreach($menuParam as $v){
+        $val = null;
+        $val = $_GET[$v];
+        if($val){
+            $param .= $v."=".$val."&";
+        }
+    }
+    $param = trim($param,"&");
+    return $param;
+}
+
 ?>
