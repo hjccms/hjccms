@@ -5,12 +5,10 @@ class MenuAction extends BaseAction
 {
     function index()
     {
-        $id = $this->_get('id');
+        $menuId = $this->getMenuId();
         $menu = D('Menu')->getMenu();
-        $menuTree = D('Menu')->getListTree($menu,$id);
-        if($id){
-            $this->getContentButton($id);
-        }
+        $menuTree = D('Menu')->getListTree($menu,$menuId);
+        $this->getContentButton();
         $this->assign('menuTree',$menuTree);
         $this->display();
     }
