@@ -83,4 +83,8 @@ function get_param(){
     return $param;
 }
 
+function get_list_button($listButton,$id){
+    echo D('Menu')->getListButton($listButton,$id);
+}
+
 ?>
