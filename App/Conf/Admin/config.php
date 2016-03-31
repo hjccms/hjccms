@@ -27,9 +27,9 @@ return array(
     ),
     
     //链接参数
-    'MENUPARAM' =>array('id','pid','module'),
+    'MENUPARAM' =>array('id','pid','modelId'),
     
     //函数参数
-    'MENUFUNCPARAM' =>array('id','pid','module'),
+    'MENUFUNCPARAM' =>array('id','pid','modelId'),
 );
 ?>
