@@ -6,9 +6,10 @@ class Field_infoModel extends Model
 {
     
     //站点信息  支持全部和单个
-    function getField($modelId='')
+    function getField($modelId='',$con=array())
     {
         if($modelId&&  intval($modelId)>0) $condition = array('model_id'=>$modelId);
+        if(!empty($con)&&  is_array($con)) $condition = array_merge ($condition,$con);
         $ret = $this->where($condition)->order("sort asc")->select();
         return $ret;
     }
@@ -89,4 +90,6 @@ class Field_infoModel extends Model
         $ret = $this->where($condition)->field('name')->find();
         if($ret) return true; else return false;
     }
+    
+    
 }

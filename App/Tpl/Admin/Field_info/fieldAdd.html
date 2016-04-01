@@ -34,6 +34,7 @@
                 {:input(array('title'=>'字段长度','inputName'=>'field_longth','isMust'=>'1','tipMsg'=>'数据库字段长度','addHtml'=>'datatype="n"  ajaxurl="/Admin/Field_info/checkLongth/modelId/'.$modelId.'"   errormsg="格式为正整数"','value'=>100))}
                 {:radio(array('title'=>'是否必填','inputName'=>'must','value'=>0,'paramArr'=>get_valid()))}
                 {:radio(array('title'=>'验证唯一性','inputName'=>'ajax_url','value'=>0,'paramArr'=>get_valid()))}
+                {:radio(array('title'=>'列表显示','inputName'=>'list_show','value'=>0,'paramArr'=>get_valid()))}
                 {:select(array('title'=>'验证规则','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
                 {:input(array('title'=>'自定义规则','inputName'=>'validform_type2','tipMsg'=>'自定义验证规则'))}
                 {:hideInput(array('inputName'=>'model_id','value'=>$modelId))}
@@ -43,7 +44,7 @@
                 {:input(array('title'=>'增加html','inputName'=>'form_html','tipMsg'=>'其它html代码','value'=>$info['form_id']))}
                 {:input(array('title'=>'提示信息','inputName'=>'tip_msg','tipMsg'=>'不能超过30个字符','addHtml'=>'datatype="s1-30" ignore="ignore" errormsg="不能超过30个字符"  ','value'=>$info['tip_msg']))}
                 {:input(array('title'=>'显示排序','inputName'=>'sort','tipMsg'=>'字段显示排序','addHtml'=>'datatype="n" ignore="ignore" errormsg="请填写整数"  ','value'=>0))}
-                 {:textarea(array('title'=>'表单初始值','inputName'=>'form_value','value'=>$info['description'],'addHtml'=>'tip="如果是下拉框，单选，多选，文本框的初始值，请用A|B,C|D格式或者直接写获取初始值的方法"'))}
+                 {:textarea(array('title'=>'表单初始值','inputName'=>'form_value','value'=>$info['description'],'tipMsg'=>"如果是下拉框，单选，多选，文本框的初始值，请用A|B,C|D格式或者直接写获取初始值的方法",'addHtml'=>''))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
 

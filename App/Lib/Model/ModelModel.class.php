@@ -26,7 +26,6 @@ class ModelModel extends Model
         }
         if($data['id']>0)
         {
-            
             $this->save();
             $id = $data['id'];
         }
@@ -42,7 +41,7 @@ class ModelModel extends Model
     //创建数据库
     function createTable($tableName)
     {
-        $sql = 'CREATE TABLE `sys_'.$tableName.'` ( `id`  int(11) NOT NULL AUTO_INCREMENT ,`create_time`  int(11) NOT NULL ,`valid`  tinyint(2) NOT NULL DEFAULT 1 ,`del`  tinyint(2) NULL DEFAULT NULL ,PRIMARY KEY (`id`),INDEX `id` (`id`) ) ENGINE=MyISAM DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci CHECKSUM=0 DELAY_KEY_WRITE=0 ';
+        $sql = 'CREATE TABLE `'.C('DB_PREFIX').$tableName.'` ( `id`  int(11) NOT NULL AUTO_INCREMENT ,`create_time`  int(11) NOT NULL ,`valid`  tinyint(2) NOT NULL DEFAULT 1 ,`del`  tinyint(2) NULL DEFAULT NULL ,PRIMARY KEY (`id`),INDEX `id` (`id`) ) ENGINE=MyISAM DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci CHECKSUM=0 DELAY_KEY_WRITE=0 ';
         if(mysql_query($sql)) return true;
         else return false;
         
@@ -54,4 +53,6 @@ class ModelModel extends Model
         $ret = $this->where($condition)->getField('id');
         if($ret) return true; else return false;
     }
+    
+    
 }

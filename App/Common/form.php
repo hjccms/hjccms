@@ -32,22 +32,26 @@ function hideInput($data)
 //radio单选框
 function radio($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><cite>';
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><cite>';
+    $i = 0;
     foreach($data['paramArr'] as $k=>$v){
+        $i ++ ;
+        if($i==1) $addHTml = $data['addHtml'];
         $yesStr = null;
         if($data['value']==$k){
-            $yesStr = 'checked="checked"';
+            $yesStr = 'checked="checked" ';
         }
-        $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$k.'" '.$yesStr.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;';
+        $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$k.'" '.$yesStr.$addHTml.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;';
     }
-    $str .= '</cite></li>';
+    $str .= '<i class="Validform_checktip">'.$data['tipMsg'].'</i></cite></li>';
     return $str;
 }
 
 //textarea
 function textarea($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea></li>';
+    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 
@@ -61,7 +65,7 @@ function editor($data)
 //上传
 function upload($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['uploadId'].'" class="btn" value="上传图片"/></li>';
+    $str = '<li><label>'.$data['title'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['uploadId'].'" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 //下啦菜单
@@ -107,3 +111,95 @@ function selectChild($childs,$value='',$i='1')
     return $optionStr;
 }
 
+//处理表单为可生成form元素数据的参数
+function formField($fieldInfo,$value=array())
+{
+    if(empty($fieldInfo)) return false;
+    $fieldType = C('FIELDTYPE');
+    foreach ($fieldInfo as $k=>$v)
+    {
+        $formInput[$k]['inputType'] = $fieldType[$v['type']]['inputType'];
+        $formInput[$k]['inputName'] = $v['field_name'];
+        $formInput[$k]['title'] = $v['name'];
+        $formInput[$k]['isMust'] = $v['must'];
+        if($formInput[$k]['isMust']==1)
+        {
+            $validStr = $v['validform_type']?$v['validform_type'].',':'';
+            $formInput[$k]['addHtml'] .= ' dataType="'.$validStr.'*" ';
+        }
+        else
+        {
+            $formInput[$k]['addHtml'] .= ' dataType='.$v['validform_type'].' ignore="ignore" ' ;
+        }
+        //处理ajaxurl验证唯一性  如果要想进行特殊的验证  请选择 否 然后在html里面对应增加方法
+        if($v['ajax_url']==1)
+        {
+            $formInput[$k]['addHtml'] .= ' ajaxurl="'.U('/Admin/Model/checkFieldOnly/modelId/'.$v['model_id'].'/id/'.$value['id']).'" ';
+        }
+        $formInput[$k]['tipMsg'] = $v['tip_msg'];
+        $formInput[$k]['addHtml'] .= $v['form_html'];
+        $formInput[$k]['addClass'] = $v['form_class'];
+        $formInput[$k]['addId'] = $v['form_id'];
+        if(empty($value)) $formInput[$k]['value'] = $v['form_value'];
+           else  $formInput[$k]['value'] = $value[$v['field_name']];
+        if($v['type']=='radio'||$v['type']=='select')
+        {
+
+            if(!empty($v['form_value']))
+            {
+                $formInput[$k]['paramArr'] = getRadioValue($v['form_value']);
+            }
+            if(empty($value)) $formInput[$k]['value'] = '';
+            else  $formInput[$k]['value'] = $value[$v['field_name']];
+            if($v['type']=='radio')
+            {
+                foreach($formInput[$k]['paramArr'] as $ke=>$va)
+                {
+                    $ret[$va['id']] = $va['name'];
+                }
+                unset($formInput[$k]['paramArr']);
+                $formInput[$k]['paramArr'] = $ret;
+            }
+        }
+    }
+    return $formInput;
+}
+
+
+//解析radio select等字段的值
+function getRadioValue($fieldValue,$value='')
+{
+    
+    if(empty($fieldValue)) return '';
+    //首先解析是方法的参数
+    if(strpos($fieldValue,'fun__')===0)
+    {
+        $fun = substr($fieldValue,4);
+        $result = $fun;
+        return $result;
+    }
+    $i = 0;
+    
+    $arr = explode(',', $fieldValue);
+    if(is_array($arr)&&!empty($arr))
+    {
+        foreach($arr as $key=>$val)
+        {
+            $i++;
+            $arr2 = explode('|',$val);
+            $result[$i] = array('id'=>$arr2['0'],'name'=>$arr2['1']);
+            if(!empty($value)&&$arr2['0']==$value)
+            {
+                return $arr2['1'];
+                break;
+            }
+        }
+    }
+    else
+    {
+        return '';
+    }
+    
+    return $result;
+    
+}
