@@ -36,5 +36,11 @@ $(function() {
           
         });
     });
+    
 });
+//通用删除方法
+function dataDel(id)
+{
+    
+}
 

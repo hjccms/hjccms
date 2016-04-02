@@ -155,6 +155,37 @@ class ModelAction  extends BaseAction
             }
         }
     }
+    //删除数据方法
+    /*
+     * 支持真删除和修改del参数
+     */
+    function dataDel()
+    {
+        if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
+        $id = $this->_get('id');
+        $modelId = $this->_get('modelId');
+        if(intval($modelId)>0)
+        {
+            $modelInfo = D('Model')->getModel($modelId);
+            $tableModel = M(ucfirst($modelInfo['table_name']));
+        }
+        else
+        {
+            $tableModel = M(ucfirst($this->_get('table_name')));
+        }
+        $del = $this->_param('del');
+        $condition = array('id'=>$id);
+        if($del)  //真删除
+        {
+            $tableModel->where($condition)->delete();
+        }
+        else
+        {
+            $data['del'] = 1;
+            $tableModel->where($condition)->save($data);
+        }
+        $this->ajaxReturn('','删除成功！',1);
+    }
     //验证数据唯一性 通用方法
     function checkFieldOnly()
     {
