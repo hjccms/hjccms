@@ -40,12 +40,12 @@ $(function() {
     
 });
 
-function dataDel(modelId,id)
+function dataDel(modelId,id,del,table_name)
 {
     layer.confirm('您确定要删除这条数据吗？',function(index){
             $.ajax({
                 type: "POST",
-                url: "/Admin/Model/dataDel/modelId/"+modelId,
+                url: "/Admin/Model/dataDel/modelId/"+modelId+"/del/"+del+"/table_name/"+table_name,
                 data: "id="+id,
                 dataType: "json",
                 beforeSend:function()
@@ -69,4 +69,3 @@ function dataDel(modelId,id)
           
         });
 }
-

@@ -200,9 +200,9 @@ class ModelAction  extends BaseAction
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
       
-        $del = $this->_param('del');
+        $del = $this->_get('del');
         $condition = array('id'=>$id);
-        if($del)  //真删除
+        if($del==1)  //真删除
         {
             $tableModel->where($condition)->delete();
         }

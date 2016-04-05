@@ -25,11 +25,11 @@
         <div class="formbody">
 
             <div class="formtitle"><span>添加站点</span></div>
-            <form class="registerform" action="{:U('/Admin/Site/ajaxPost')}">
+            <form class="registerform" action="{:U('/Admin/Model/dataAjaxPost/table_name/site')}">
             <ul class="forminfo">
 
-                {:input(array('title'=>'站点名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30"   ajaxurl="/Admin/Model/checkFieldOnly/table_name/site"   errormsg="标题不能超过30个字符"','value'=>$info['name']))}
-                {:input(array('title'=>'站点域名','inputName'=>'domain','tipMsg'=>'英文域名格式','addHtml'=>'datatype="url,y1-30"  ajaxurl="/Admin/Model/checkFieldOnly/table_name/site"  ignore="ignore" errormsg="格式为纯英文网址"','value'=>$info['domain']))}
+                {:input(array('title'=>'站点名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符"','value'=>$info['name']))}
+                {:input(array('title'=>'站点域名','inputName'=>'domain','tipMsg'=>'英文域名格式','addHtml'=>'datatype="url,y1-30" ajaxurl="/Admin/Model/checkFieldOnly/table_name/site/id/'.$info['id'].'" ignore="ignore" errormsg="格式为纯英文网址"','value'=>$info['domain']))}
                 {:input(array('title'=>'站点标题','inputName'=>'site_title','tipMsg'=>'网站title','value'=>$info['site_title']))}
                 {:input(array('title'=>'关键字设置','inputName'=>'site_keywords','tipMsg'=>'网站关键字用,分割','value'=>$info['site_keywords']))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>$info['valid'],'paramArr'=>get_valid()))}
