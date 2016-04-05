@@ -34,8 +34,6 @@ class MenuAction extends BaseAction
         sort($menuArr);
         
         $this->assign('info',$info);
-        $this->assign('id', $id);
-        $this->assign('parentId', $info['parentId']);
         $this->assign('menus',$menuArr);
         load('@.form');
         $this->display();
