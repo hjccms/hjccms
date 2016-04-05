@@ -60,7 +60,6 @@ class SiteModel extends Model
         {
             $id = $this->add();
         }
-        D('Fileinfo')->changeFile($hash,$id,'menu');
         return $id; 
        
     }

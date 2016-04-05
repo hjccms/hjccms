@@ -94,9 +94,9 @@ class FieldinfoModel extends Model
     function delField($modelId,$id)
     {
         $modelName = D('Model')->where("id=".$modelId)->getField('table_name');
-        $aa = $this->where("id=2")->getField("name");
-        echo D("Fieldinfo")->getlastsql();
-        die();
+        $arr = $this->where("id='$id'")->field("field_name")->find();
+        $field = $arr['field_name'];
+        
         if(!$modelName||!$field) return false;
         $sql = 'alter table `'.C('DB_PREFIX').$modelName.'` drop column   '.$field;
         if(mysql_query($sql))
