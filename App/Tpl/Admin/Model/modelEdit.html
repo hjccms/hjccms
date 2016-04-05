@@ -32,6 +32,8 @@
                 {:input(array('title'=>'模型表名','inputName'=>'table_name','isMust'=>'1','tipMsg'=>'数据库表名称，用纯英文小写','addHtml'=>'datatype="y1-20"  errormsg="格式为纯英文"  disabled="disabled" ','value'=>$info['table_name']))}
                 {:select(array('title'=>'类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>array(array('id'=>'fun','name'=>'功能模型'),array('id'=>'con','name'=>'内容模型'))))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                 {:radio(array('title'=>'开启分页','inputName'=>'page_open','value'=>$info['page_open'],'paramArr'=>get_valid()))}
+                {:input(array('title'=>'每页数量','inputName'=>'page_num','tipMsg'=>'每页分页数量','value'=>$info['page_num'],'addHtml'=>' datatype="n"  ignore="ignore" '))}
                 {:textarea(array('title'=>'模型描述','inputName'=>'description','value'=>$info['description']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>

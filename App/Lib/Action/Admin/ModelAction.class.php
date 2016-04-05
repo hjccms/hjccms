@@ -74,8 +74,24 @@ class ModelAction  extends BaseAction
         $fields = substr ($fields, 0,strlen($fields)-1);
         $tableModel = M(ucfirst($modelInfo['table_name']));
         $condition = array('_string'=>"del is null");
-        $dataList = $tableModel->where($condition)->field($fields)->order("id asc")->select();
-     
+        //是否开启分页
+        if($modelInfo['page_open']==1)
+        {
+            $page = $this->_get('page');
+            $page = $page?intval($page):1; //当前页
+            $this->assign('page',$page);
+            $listCount =  $tableModel->where($condition)->count();
+            $startNum = $modelInfo['page_num']*($page-1);
+            $pageNum = ($listCount%$modelInfo['page_num']==0)?($listCount/$modelInfo['page_num']):($listCount/$modelInfo['page_num']+1);
+            
+            $dataList = $tableModel->where($condition)->field($fields)->order("id asc")->limit($startNum,$modelInfo['page_num'])->select();
+        }
+        else
+        {
+            $dataList = $tableModel->where($condition)->field($fields)->order("id asc")->select();
+        }
+        $this->assign('page',$page?$page:'');
+        $this->assign('pageNum',$pageNum?$pageNum:'');
         //处理一些特殊的字段
         load('@.form');
         foreach($dataList as $k=>$v)
