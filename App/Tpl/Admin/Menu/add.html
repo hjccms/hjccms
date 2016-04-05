@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+     
+        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
+        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
+        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+    </head>
+
+    <body>
+
+        <include file="Index:position"/>
+
+        <div class="formbody">
+
+            <div class="formtitle"><span>添加菜单</span></div>
+            <form class="registerform" action="{:U('/Admin/Menu/ajaxPost')}">
+            <ul class="forminfo">
+
+                {:select(array('title'=>'所属栏目','inputName'=>'parent_id','value'=>$info['parent_id'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>$menus))}
+                {:input(array('title'=>'名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符"','value'=>$info['name']))}
+                {:radio(array('title'=>'类型','inputName'=>'type','value'=>isset($info['type'])?$info['type']:1,'paramArr'=>get_menu_type()))}
+                {:input(array('title'=>'模块','inputName'=>'module','tipMsg'=>'英文字符串','addHtml'=>'datatype="y3-10" ignore="ignore" errormsg="只能输入英文"','value'=>$info['module']))}
+                {:input(array('title'=>'控制器','inputName'=>'action','tipMsg'=>'英文字符串','addHtml'=>'datatype="y3-10" ignore="ignore" errormsg="只能输入英文"','value'=>$info['action']))}
+                {:input(array('title'=>'其它参数','inputName'=>'param','value'=>$info['param']))}
+                {:input(array('title'=>'方法','inputName'=>'func','value'=>$info['func']))}
+                {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
+                {:input(array('title'=>'排序','inputName'=>'sort','value'=>$info['sort'],'addHtml'=>'datatype="n" ignore="ignore" errormsg="只能输入整数"'))}
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                {:upload(array('title'=>'icon图标','inputName'=>'icon','addId'=>'url1','value'=>$info['icon'],'uploadId'=>'image1'))}
+                {:textarea(array('title'=>'描述','inputName'=>'description','value'=>$info['description'],'width'=>345,'height'=>100))}
+                
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+            </ul>
+
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+    var validhash = $('input[name="__hash__"]').val();
+    /*editor = K.create('textarea[name="description"]', {
+            allowFileManager : true,
+            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile&validhash='+validhash,
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager',
+            afterBlur: function(){this.sync();}
+    });*/
+    var editor = K.editor({
+            allowFileManager : true,
+            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager&dirname=Sysicon'
+    });
+    
+    K('#image1').click(function() {
+            editor.loadPlugin('image', function() {
+                    editor.plugin.imageDialog({
+                            showLocal : false,
+                            imageUrl : K('#url1').val(),
+                            clickFn : function(url) {
+                                    K('#url1').val(url);
+                                    editor.hideDialog();
+                            } 
+                    });
+            });
+    });
+
+});
+$(function(){
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+                datatype:{
+                        "*6-20": /^[^\s]{6,20}$/,
+                        "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
+                        "y3-10": /\w{3,10}/i,
+                },
+                ajaxPost:true,
+                callback:function(data){
+                        if(data.status==1)
+                        {
+                            alert(data.info);
+                            location.href="{:U('Admin/Menu/index')}";
+                        }
+                        else
+                        {
+                            alert(data.info);
+                        }
+		}
+	});
+})
+</script>
+</html>
+
