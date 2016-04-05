@@ -25,12 +25,9 @@ class MenuAction extends BaseAction
         else $info = array();
         
         //菜单列表中顶级菜单在最上面
-        if(!$menuArr||$info['parent_id']==0)
-        {
+        if(!$menuArr||$info['parent_id']==0){
             $menuArr[0] = array('id'=>0,'name'=>'顶级菜单');
         }
-        
-        //排序菜单列表
         sort($menuArr);
         
         $this->assign('info',$info);
