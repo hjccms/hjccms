@@ -55,6 +55,7 @@ function get_valid($flag = null) {
 	}
 }
 
+//获取菜单类型
 function get_menu_type($flag = null) {
 	$arr = array(
 		'1' => '链接',
@@ -67,6 +68,7 @@ function get_menu_type($flag = null) {
 		return $arr;
 	}
 }
+
 
 //菜单参数拼接
 function get_param(){
@@ -83,8 +85,23 @@ function get_param(){
     return $param;
 }
 
+//获取列表按钮
 function get_list_button($listButton,$arr){
     echo D('Menu')->getListButton($listButton,$arr);
+}
+
+//获取角色类型
+function get_role_type($flag = null) {
+	$arr = array(
+		'1' => '超级管理员',
+		'2' => '功能管理员',
+                '3' => '权限管理员',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
 }
 
 ?>
