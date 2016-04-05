@@ -24,8 +24,8 @@ class BaseAction  extends Action
                 $this->adminInfo = cookie('adminInfo');
             }
             $this->assign('adminInfo',$this->adminInfo);
-            $this->getPosition();
             $this->menuId = $this->getMenuId();
+            $this->getPosition();
         }
         else
         {
