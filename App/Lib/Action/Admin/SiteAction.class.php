@@ -37,9 +37,23 @@ class SiteAction  extends BaseAction
         $post = $this->_post();
         
         $post['admin_id'] = $this->adminInfo->id;
+        if(strpos($post['domain'],'http://')===0)
+        {
+            $post['domain'] = substr($post['domain'], 7);
+        }
         //去模型处理其它参数
         $ret = D('Site')->addSite($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
         else $this->ajaxReturn ('',$ret,0);
+    }
+    //处理特殊参数
+    function handlePost($post)
+    {
+        $post['admin_id'] = $this->adminInfo->id;
+        if(strpos($post['domain'],'http://')===0)
+        {
+            $post['domain'] = substr($post['domain'], 7);
+        }
+        return $post;
     }
 }

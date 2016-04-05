@@ -25,7 +25,7 @@
         <div class="formbody">
 
             <div class="formtitle"><span>添加站点</span></div>
-            <form class="registerform" action="{:U('/Admin/Site/ajaxPost')}">
+            <form class="registerform" action="{:U('/Admin/Model/dataAjaxPost/table_name/site')}">
             <ul class="forminfo">
 
                 {:input(array('title'=>'站点名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30"   ajaxurl="/Admin/Model/checkFieldOnly/table_name/site"   errormsg="标题不能超过30个字符"','value'=>$info['name']))}
@@ -33,7 +33,8 @@
                 {:input(array('title'=>'站点标题','inputName'=>'site_title','tipMsg'=>'网站title','value'=>$info['site_title']))}
                 {:input(array('title'=>'关键字设置','inputName'=>'site_keywords','tipMsg'=>'网站关键字用,分割','value'=>$info['site_keywords']))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>$info['valid'],'paramArr'=>get_valid()))}
-        
+                {:hideInput(array('inputName'=>'importAction','value'=>'siteAction'))}
+                {:hideInput(array('inputName'=>'importFun','value'=>'handlePost'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 {:textarea(array('title'=>'网站描述','inputName'=>'site_description','value'=>$info['site_description']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>

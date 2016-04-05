@@ -35,6 +35,8 @@
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>$info['valid'],'paramArr'=>get_valid()))}
         
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                {:hideInput(array('inputName'=>'importAction','value'=>'siteAction'))}
+                {:hideInput(array('inputName'=>'importFun','value'=>'handlePost'))}
                 {:textarea(array('title'=>'网站描述','inputName'=>'site_description','value'=>$info['site_description']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>

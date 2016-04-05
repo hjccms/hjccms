@@ -155,7 +155,17 @@ class ModelAction  extends BaseAction
         {
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
-        
+        //导入外部处理机制
+        if($post['importAction']&&$post['importFun'])
+        {
+            $post['importAction'] = ucfirst($post['importAction']);
+            import("@.Action.Admin.".$post['importAction']);
+            $model = new $post['importAction']();
+            $post = $model->$post['importFun']($post);
+            
+        }
+        unset($post['importAction']);
+        unset($post['importFun']);
         $hash = $post['__hash__'];
         $post['create_time'] = time();
         if(!$tableModel->create($post))
