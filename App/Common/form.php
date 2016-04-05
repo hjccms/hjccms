@@ -111,6 +111,45 @@ function selectChild($childs,$value='',$i='1')
     return $optionStr;
 }
 
+//复选框
+function checkbox($data)
+{
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    
+    foreach($data['paramArr'] as $k=>$v)
+    {
+        $checked = ($v['id']==$data['value'])?"checked":"";
+        $checkboxStr .= '<li>&nbsp;<input class="'.$data['addClass'].'" style="width:20px;" value="'.$v['id'].'" name="'.$data['inputName'].'" type="checkbox" '.$checked.'>'.$v['name'];
+        if(is_array($v['childs'])||!empty($v['childs'])) $checkboxStr .=   checkboxChild($v['childs'],$data);
+        unset($checked);
+    }
+    $str =  '<li class="'.$data['addClass_2'].'"><label>'.$data['title'].$data['isMustStr'].'</label>
+                <ul class="checkul" style="height:'.$data['height'].'">'.$checkboxStr.'</ul>
+            </li>';
+    return $str;
+}
+
+//复选框无限循环
+function checkboxChild($childs,$data,$i='1')
+{
+    if(!is_array($childs)||empty($childs)) return '';
+    for($a=0;$a<$i;$a++)
+    {
+        $str .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    }
+    $i++;
+    
+    foreach($childs as $k=>$v)
+    {
+        $checked = ($v['id']==$data['value'])?"checked":"";
+        $checkboxStr .= '<li>'.$str.'<input class="'.$data['addClass'].'" style="width:20px;" value="'.$v['id'].'" name="'.$data['inputName'].'" type="checkbox" '.$checked.'>'.$v["name"];
+        if(is_array($v['childs'])||!empty($v['childs'])) $checkboxStr .=   checkboxChild($v['childs'],$data,$i);
+        unset($checked);
+    }
+    $str =  '<ul>'.$checkboxStr.'</ul>';
+    return $str;
+}
+
 //处理表单为可生成form元素数据的参数
 function formField($fieldInfo,$value=array())
 {
