@@ -36,7 +36,7 @@
                 layer.confirm('您确定要删除么？',function(index){
                     $.ajax({
                         type: "POST",
-                        url: "/Admin/Menu/delMenu",
+                        url: "/Admin/Menu/del",
                         data: "id="+id,
                         dataType: "json",
                         beforeSend:function()
