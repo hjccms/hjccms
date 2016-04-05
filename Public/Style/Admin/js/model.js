@@ -40,4 +40,33 @@ $(function() {
     
 });
 
+function dataDel(modelId,id)
+{
+    layer.confirm('您确定要删除这条数据吗？',function(index){
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Model/dataDel/modelId/"+modelId,
+                data: "id="+id,
+                dataType: "json",
+                beforeSend:function()
+                {
+                    layer.load('正在请求...', 3);
+                },
+                success: function(msg)
+                {
+                    if(msg.status==1)
+                    {
+                        //layer.alert('删除成功！', 1); //风格一
+                        location.reload() ;
+                    }
+                    else
+                    {
+                        layer.alert(msg.info, 8); //风格一
+                    }
+                }
+             });
+            
+          
+        });
+}
 

@@ -113,12 +113,37 @@ class ModelAction  extends BaseAction
         
         $this->display();
     }
+    //修改数据
+    function  dataEdit()
+    {
+        $modelId = $this->_get('modelId'); 
+        $id =  $this->_get('id'); 
+        if(empty($id)||  intval($id)<=0) die('数据错误！');
+        load('@.form');
+        if(intval($modelId)>0)
+        {
+            $modelInfo = D('Model')->getModel($modelId);
+            $tableModel = M(ucfirst($modelInfo['table_name']));
+        }
+        else
+        {
+            $tableModel = M(ucfirst($this->_get('table_name')));
+        }
+        
+        $info = $tableModel->where("id='$id'")->find();
+        //要显示的字段信息
+        $fieldInfo = D('Fieldinfo')->getField($modelId);
+        $formInput = formField($fieldInfo,$info);
+        $this->assign('formInput',$formInput);
+        $this->assign('modelId',$modelId);
+        $this->assign('id',$id);
+        $this->display();
+    }
     //提交数据
     function dataAjaxPost()
     {
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
-        $id = $this->_get('id');
         $modelId = $this->_get('modelId');
         if(intval($modelId)>0)
         {
@@ -138,9 +163,10 @@ class ModelAction  extends BaseAction
             $msg = $tableModel->getError();
             $this->ajaxReturn ('',$msg,0);;
         }
-        if($data['id']>0)
+        if($post['id']>0)
         {
             if(!$tableModel->save()) $this->ajaxReturn ('','您没有修改数据或者发生错误！',0);
+            else $this->ajaxReturn ('','修改成功！',1);
         }
         else
         {
@@ -162,7 +188,7 @@ class ModelAction  extends BaseAction
     function dataDel()
     {
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
-        $id = $this->_get('id');
+        $id = $this->_param('id');
         $modelId = $this->_get('modelId');
         if(intval($modelId)>0)
         {
@@ -173,6 +199,7 @@ class ModelAction  extends BaseAction
         {
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
+      
         $del = $this->_param('del');
         $condition = array('id'=>$id);
         if($del)  //真删除
