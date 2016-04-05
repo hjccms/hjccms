@@ -198,13 +198,15 @@ class MenuModel extends Model
     function getListButton($menu,$arr){
         if(!$menu) return false;
         $tree =  null;
+        $paramArr = $arr;
+        $funcArr = $arr;
         foreach($menu as $k=>$v){
             $str = $k!=0?' | ':'';
-            $paramArr = $arr;
             $paramArr['param'] = $v['param'];
             $param = $this->replaceParam($paramArr);
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
-            $func = $this->replaceFuncParam(array('id'=>$id,'func'=>$v['func']));
+            $funcArr['func'] = $v['func'];
+            $func = $this->replaceFuncParam($funcArr);
             $tree .= $str.'<a class="tablelink" href="'.$url.'" onclick="'.$func.'">'.$v['name'].'</a>';
         }
         return $tree;
