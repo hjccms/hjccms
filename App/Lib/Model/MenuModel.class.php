@@ -277,10 +277,14 @@ class MenuModel extends Model
         $condition = array();
         $condition['module'] = $module;
         $condition['action'] = $action;
+        $condition2 = $condition;
         if($param){
             $condition['param'] = $param;
         }
         $id = $this->where($condition)->getField("id");
+        if(!$id){
+            $id = $this->where($condition2)->getField("id");
+        }
         return $id;
     }
     
