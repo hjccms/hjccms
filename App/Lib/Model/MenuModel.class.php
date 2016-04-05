@@ -192,7 +192,7 @@ class MenuModel extends Model
     /**
      * 获取列表按钮
      * @param type $menu  菜单 $menu = D('Menu')->getMenu($id,true,false,2); 这里的id值得是父id
-     * @param type $id    id 要替换的id值
+     * @param type $arr    
      * @return boolean|string
      */
     function getListButton($menu,$arr){
