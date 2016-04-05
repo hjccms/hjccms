@@ -64,7 +64,7 @@ class ModelAction  extends BaseAction
         
         $modelInfo = D('Model')->getModel($modelId);
         //要显示的字段信息
-        $fieldInfo = D('Field_info')->getField($modelId,array('list_show'=>1));
+        $fieldInfo = D('Fieldinfo')->getField($modelId,array('list_show'=>1));
         $fields = 'id,valid,create_time,';
         foreach($fieldInfo as $k=>$v)
         {
@@ -106,7 +106,7 @@ class ModelAction  extends BaseAction
         load('@.form');
         $modelInfo = D('Model')->getModel($modelId);
         //要显示的字段信息
-        $fieldInfo = D('Field_info')->getField($modelId);
+        $fieldInfo = D('Fieldinfo')->getField($modelId);
         $formInput = formField($fieldInfo);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);

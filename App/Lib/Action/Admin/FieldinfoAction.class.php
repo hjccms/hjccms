@@ -2,7 +2,7 @@
 /*
  * 分站管理控制器
  */
-class Field_infoAction  extends BaseAction 
+class FieldinfoAction  extends BaseAction 
 {
     var $modelId;
     function __construct() {
@@ -13,7 +13,7 @@ class Field_infoAction  extends BaseAction
     }
     function index()
     {
-        $fields = D('Field_info')->getField($this->modelId);
+        $fields = D('Fieldinfo')->getField($this->modelId);
         $this->assign('modelId',$this->modelId);
         $this->assign('fields',$fields);
         $this->display();
@@ -38,13 +38,13 @@ class Field_infoAction  extends BaseAction
         $modelId = $this->modelId;
         $id = $this->_get('id');
         //fieldtype
-        $fieldType = C('FIELDTYPE');
+        $fieldType = C('FIELDTYPE'); 
         $this->assign('fieldType',$fieldType);
         $validformType = C('VALIDFORMTYPE');
         $this->assign('validformType',$validformType);
         $this->assign('modelId',$modelId);
         //info信息
-        if($id>0) $info = D('Field_info')->getInfo($id);
+        if($id>0) $info = D('Fieldinfo')->getInfo($id);
         else $info = array();
         $validform_type = explode('|', $info['validform_type']);
         
@@ -64,7 +64,7 @@ class Field_infoAction  extends BaseAction
         unset($post['validform_type2']);
        
         //去模型处理其它参数
-        $ret = D('Field_info')->addField($post);
+        $ret = D('Fieldinfo')->addField($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
         else $this->ajaxReturn ('',$ret,0);
     }
@@ -75,7 +75,7 @@ class Field_infoAction  extends BaseAction
         $id = $this->_get('id');
         $condition = array('model_id'=>$modelId);
         if(intval($id)>0) $condition['_string'] = " id != ".$id;
-        $ret = D('Field_info')->checkField($post['name'],$post['param'],$condition);
+        $ret = D('Fieldinfo')->checkField($post['name'],$post['param'],$condition);
         
         if($ret) $ret = array('info'=>'数据重复！','status'=>'n');
         else  $ret = array('info'=>'验证成功！','status'=>'y');
@@ -87,5 +87,14 @@ class Field_infoAction  extends BaseAction
         if(intval($post['param'])<1)  $ret = array('info'=>'请填写大于1的整数！','status'=>'n');
         else  $ret = array('info'=>'验证成功！','status'=>'y');
         die(json_encode($ret));
+    }
+    //删除字段
+    function fieldDel()
+    {
+        $modelId = $this->modelId;
+        $id = $this->_post('id');
+        $ret = D('Fieldinfo')->delField($modelId,$id);
+        if($ret) $this->ajaxReturn('','删除成功！',1);
+        else $this->ajaxReturn('','删除失败！',0);
     }
 }

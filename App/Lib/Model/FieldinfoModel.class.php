@@ -2,7 +2,7 @@
 /*
  * 管理菜单模型
  */
-class Field_infoModel extends Model 
+class FieldinfoModel extends Model 
 {
     
     //站点信息  支持全部和单个
@@ -19,7 +19,7 @@ class Field_infoModel extends Model
         $ret = $this->where($condition)->find();
         return $ret;
     }
-    //添加和更新菜单
+    
     function addField($data)
     {
         $hash = $data['__hash__'];
@@ -80,7 +80,7 @@ class Field_infoModel extends Model
         $sql = 'ALTER TABLE `'.C('DB_PREFIX').$modelName.'` CHANGE COLUMN `'.$oldField['field_name'].'` `'.$data['field_name'].'`  '.$type.' NOT NULL ';
        
         if(mysql_query($sql)) return true;
-        else die(mysql_error());
+        else return false;
         
     }
     function checkField($filed,$param,$con=array())
@@ -90,6 +90,26 @@ class Field_infoModel extends Model
         $ret = $this->where($condition)->field('name')->find();
         if($ret) return true; else return false;
     }
-    
+    //删除字段
+    function delField($modelId,$id)
+    {
+        $modelName = D('Model')->where("id=".$modelId)->getField('table_name');
+        $aa = $this->where("id=2")->getField("name");
+        echo D("Fieldinfo")->getlastsql();
+        die();
+        if(!$modelName||!$field) return false;
+        $sql = 'alter table `'.C('DB_PREFIX').$modelName.'` drop column   '.$field;
+        if(mysql_query($sql))
+        {
+            //删除记录
+            $this->where("id=".$id)->delete();
+            return true;
+        }
+        else
+        {
+            die(mysql_error());
+            return false;
+        }
+    }
     
 }
