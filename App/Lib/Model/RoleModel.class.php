@@ -123,4 +123,11 @@ class RoleModel extends Model {
         $arr = D("Site")->where('valid=1')->select();
         return $arr;
     }
+    
+    //获取单个角色详细信息
+    function getRoleInfo($condition)
+    {
+        $result = $this->where($condition)->find();
+        return $result;
+    }
 }
