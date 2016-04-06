@@ -13,13 +13,26 @@ class MenuModel extends Model
      * @param type $valid     是否查看有效菜单 值为空时查询所有菜单  值为true时只查询有效菜单
      * @param type $child     是否查询子菜单 值为ture时查询所有子菜单  值为false时只查询一层子菜单
      * @param type $type      菜单的类型 值为空查询所有类型  1链接  2内容按钮 3列表按钮
+     * @param type $menu_ids  可查看的菜单模块    1,2,3,4,5,10,
      * @return type           菜单数组
      */
-    function getMenu($parentId='',$valid='',$child=true,$type=''){
+    function getMenu($parentId='',$valid='',$child=true,$type='',$menu_ids=null){
         $condition = array();
         $parentId = $parentId?$parentId:0;
         if($valid!='') $condition['valid'] = $valid;
         $result = $this->where($condition)->order('sort asc,id asc')->select();
+        if($menu_ids){
+            $menu_ids = explode(",", $menu_ids);
+            $tmp = null;
+            foreach($result as $k=>$v){
+                if(in_array($v['id'], $menu_ids)){
+                    $tmp[$k] = $v;
+                }
+            }
+            $result = null;
+            $result = $tmp;
+        }
+        
         //处理子集数据
         $ret = $this->sortChilds($result,$parentId,$child,$type);
         sort($ret);
@@ -136,9 +149,17 @@ class MenuModel extends Model
     
     //获取top菜单树
     function getTopTree($menu){
+        $role_id = $this->getRoleId();
+        $menu_ids = $this->getRoleMenu();
         if(!$menu) return false;
         $tree =  null;
         foreach($menu as $v){
+            if($role_id!=1){
+                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
+                if(!$isCheck){
+                    continue;
+                }
+            }
             $url = $v['module']?U('Admin/Index/left','id='.$v['id']):'';
             $tree .= '<li><a href="'.$url.'" target="leftFrame"><img src="'.$v['icon'].'" title="'.$v['name'].'" /><h2>'.$v['name'].'</h2></a></li>';
         }
@@ -149,7 +170,15 @@ class MenuModel extends Model
     function getLeftTree($menu){
         if(!$menu) return false;
         $tree =  null;
+        $role_id = $this->getRoleId();
+        $menu_ids = $this->getRoleMenu();
         foreach($menu as $v){
+            if($role_id!=1){
+                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
+                if(!$isCheck){
+                    continue;
+                }
+            }
             $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
             $tree .= '<dd>';
@@ -159,6 +188,12 @@ class MenuModel extends Model
             if(isset($v['childs'])){
                 $tree .= '<ul class="menuson">';
                 foreach($v['childs'] as $vc){
+                    if($role_id!=1){
+                        $isCheck = ($menu_ids && in_array($vc['id'], $menu_ids) ? true : false);
+                        if(!$isCheck){
+                            continue;
+                        }
+                    }
                     $childParam = $this->replaceParam(array('id'=>$vc['id'],'param'=>$vc['param']));
                     $childUrl = $vc['module']?U('Admin/'.$vc['module'].'/'.$vc['action'],$childParam):'';
                     $tree .= '<li><cite></cite><a href="'.$childUrl.'" target="rightFrame">'.$vc['name'].'</a><i></i></li>';
@@ -179,7 +214,15 @@ class MenuModel extends Model
     function getContentButton($menu){
         if(!$menu) return false;
         $tree =  null;
+        $role_id = $this->getRoleId();
+        $menu_ids = $this->getRoleMenu();
         foreach($menu as $v){
+            if($role_id!=1){
+                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
+                if(!$isCheck){
+                    continue;
+                }
+            }
             $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
             $tree .= '<li>';
@@ -200,7 +243,15 @@ class MenuModel extends Model
         $tree =  null;
         $paramArr = $arr;
         $funcArr = $arr;
+        $role_id = $this->getRoleId();
+        $menu_ids = $this->getRoleMenu();
         foreach($menu as $k=>$v){
+            if($role_id!=1){
+                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
+                if(!$isCheck){
+                    continue;
+                }
+            }
             $str = $k!=0?' | ':'';
             $paramArr['param'] = $v['param'];
             $param = $this->replaceParam($paramArr);
@@ -306,5 +357,17 @@ class MenuModel extends Model
             $arr['func']  = $arr['func']?str_replace('{'.$v.'}', $arr[$v], $arr['func']):'';
         }
         return $arr['func'];
+    }
+    
+    function getRoleMenu(){
+        $adminInfo = cookie('adminInfo');
+        $menu_ids = explode(",", encrypt($adminInfo->menu_ids,'D'));
+        return $menu_ids;
+    }
+    
+    
+    function getRoleId(){
+        $adminInfo = cookie('adminInfo');
+        return $adminInfo->role_id;
     }
 }

@@ -64,5 +64,20 @@ class RoleAction extends BaseAction{
         return $roleArr;
     }
     
+    function ajaxGetInfo(){
+        load('@.form');
+        if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
+        $post = $this->_post();
+        $id = $post['id'];
+        $roleInfo = D("Role")->getRoleInfo("id=".$id);
+        $menus = D('Menu')->getMenu(false,true,true,false,$roleInfo['menu_ids']);
+        $sites = D("Role")->getSites($roleInfo['site_ids']);
+        $siteStr = checkbox(array('title'=>'分校','inputName'=>'site_ids[]','value'=>explode(",", $roleInfo["site_ids"]),'tipMsg'=>'','height'=>'120px','addClass_2'=>'hid','paramArr'=>$sites));
+        $menuStr = checkbox(array('title'=>'权限','inputName'=>'menu_ids[]','value'=>explode(",", $roleInfo["menu_ids"]),'addClass'=>'ckbox','addClass_2'=>'hid','tipMsg'=>'','height'=>'400px','paramArr'=>$menus));
+        $reStr = '<script type="text/javascript" src="/Public/Style/Admin/js/role.js"></script>'.$siteStr.$menuStr;
+        if($reStr) $this->ajaxReturn ($reStr,'Success！',1);
+        else $this->ajaxReturn ('','错误',0);
+    }
+    
     
 }

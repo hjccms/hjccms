@@ -119,14 +119,23 @@ class RoleModel extends Model {
     }
     
     
-    function getSites(){
+    function getSites($site_ids=null){
         $arr = D("Site")->where('valid=1')->select();
-        return $arr;
+        if(!$site_ids){
+            return $arr;
+        }
+        $site_ids = explode(",", $site_ids);
+        $re = null;
+        foreach($arr as $k=>$v){
+            if(in_array($v['id'], $site_ids)){
+                $re[$k] = $v;
+            }
+        }
+        return $re;
     }
     
     //获取单个角色详细信息
-    function getRoleInfo($condition)
-    {
+    function getRoleInfo($condition){
         $result = $this->where($condition)->find();
         return $result;
     }

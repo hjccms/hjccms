@@ -42,7 +42,13 @@ function radio($data)
         if($data['value']==$k){
             $yesStr = 'checked="checked" ';
         }
-        $str .= '<input name="'.$data['inputName'].'" type="radio" value="'.$k.'" '.$yesStr.$addHTml.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;';
+        $tmpStrStart = null;
+        $tmpStrEnd = null;
+        if($k == '1' && $v == '超级管理员'){
+            $tmpStrStart = '<cj id="cj">';
+            $tmpStrEnd = '</cj>';
+        }
+        $str .= $tmpStrStart.'<input name="'.$data['inputName'].'" '.$tmpStr.' type="radio" value="'.$k.'" '.$yesStr.$addHTml.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;'.$tmpStrEnd;
     }
     $str .= '<i class="Validform_checktip">'.$data['tipMsg'].'</i></cite></li>';
     return $str;
