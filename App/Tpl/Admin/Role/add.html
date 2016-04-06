@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>角色管理</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+        </head>
+
+    <body>
+
+        <include file="Index:position"/>
+
+        <div class="formbody">
+
+            <div class="formtitle"><span>添加角色</span></div>
+            <form class="registerform" action="{:U('/Admin/Role/ajaxPost')}">
+            <ul class="forminfo">
+                {:select(array('title'=>'所属角色','inputName'=>'parent_id','value'=>$info['parent_id'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>$roles))}
+                {:input(array('title'=>'名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符"','value'=>$info['name']))}
+                {:radio(array('title'=>'类型','inputName'=>'type','value'=>isset($info['type'])?$info['type']:1,'paramArr'=>get_role_type()))}
+                {:checkbox(array('title'=>'分校','inputName'=>'site_ids[]','value'=>$info['site_ids'],'tipMsg'=>'','height'=>'120px','addClass_2'=>'hid','paramArr'=>$sites))}
+                {:checkbox(array('title'=>'权限','inputName'=>'menu_ids[]','value'=>$info['menu_ids'],'addClass'=>'ckbox','addClass_2'=>'hid','tipMsg'=>'','height'=>'400px','paramArr'=>$menus))}
+                {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+            </ul>
+
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+$(function(){
+    var type = $("input[name=type]:checked").val();
+    if(type == 1){
+        $(".hid").hide();
+    }else{
+        $(".hid").show();
+    }
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+                datatype:{
+                        "*6-20": /^[^\s]{6,20}$/,
+                        "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
+                        "y3-10": /\w{3,10}/i,
+                },
+                ajaxPost:true,
+                callback:function(data){
+                        if(data.status==1)
+                        {
+                            alert(data.info);
+                            location.href="{:U('Admin/Role/index')}";
+                        }
+                        else
+                        {
+                            alert(data.info);
+                        }
+		}
+	});
+    
+    $(".ckbox").click(function(){
+        var li = this.parentElement;
+        var arr = li.getElementsByTagName('input')
+        for(var i=0; i<arr.length; i++){
+            var input = arr[i];
+            if(input.type == 'checkbox'){
+                input.checked = this.checked;
+            }
+        }
+        var li = li.parentElement.parentElement;
+        while(li.tagName.toLowerCase() == 'li'){
+            var input = li.childNodes[1];
+            if(input.tagName.toLowerCase() == 'input'){
+                if(this.checked == true){
+                    input.checked = this.checked;
+                }
+            }
+            li = li.parentElement.parentElement;
+        }
+    })
+    
+     $("input[name=type]").click(function(){
+         var type = $(this).val();
+         if(type == 1){
+             $(".hid").hide();
+         }else{
+             $(".hid").show();
+         }
+     })
+})
+</script>
+</html>
+
