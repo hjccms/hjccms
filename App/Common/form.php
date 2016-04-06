@@ -118,7 +118,7 @@ function checkbox($data)
     
     foreach($data['paramArr'] as $k=>$v)
     {
-        $checked = ($v['id']==$data['value'])?"checked":"";
+        $checked = (in_array($v['id'], $data['value']))?"checked":"";
         $checkboxStr .= '<li>&nbsp;<input class="'.$data['addClass'].'" style="width:20px;" value="'.$v['id'].'" name="'.$data['inputName'].'" type="checkbox" '.$checked.'>'.$v['name'];
         if(is_array($v['childs'])||!empty($v['childs'])) $checkboxStr .=   checkboxChild($v['childs'],$data);
         unset($checked);
@@ -141,7 +141,7 @@ function checkboxChild($childs,$data,$i='1')
     
     foreach($childs as $k=>$v)
     {
-        $checked = ($v['id']==$data['value'])?"checked":"";
+        $checked = (in_array($v['id'], $data['value']))?"checked":"";
         $checkboxStr .= '<li>'.$str.'<input class="'.$data['addClass'].'" style="width:20px;" value="'.$v['id'].'" name="'.$data['inputName'].'" type="checkbox" '.$checked.'>'.$v["name"];
         if(is_array($v['childs'])||!empty($v['childs'])) $checkboxStr .=   checkboxChild($v['childs'],$data,$i);
         unset($checked);
