@@ -13,7 +13,7 @@ class FieldinfoAction  extends BaseAction
     }
     function index()
     {
-        $fields = D('Fieldinfo')->getField($this->modelId);
+        $fields = D('Fieldinfo')->getFields($this->modelId);
         $this->assign('modelId',$this->modelId);
         $this->assign('fields',$fields);
         $this->display();

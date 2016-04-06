@@ -397,3 +397,12 @@ h2{font-weight:normal;}
 
 /*验证错误信息提示*/
 .forminfo li  .Validform_wrong { color: red;}
+
+
+/*****搜索表单框样式******/
+.seachform  li label b { display: none;}
+.seachform .dfinput  { width: 145px;}
+.seachform li i { display: none;}
+.seachform .select1    { width: 145px; float: left; height: 35px;}
+.seachform .vocation   { width: 145px; float: left; height: 35px;}
+.seachform li cite { margin-top: 10px;}

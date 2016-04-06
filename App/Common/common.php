@@ -104,4 +104,20 @@ function get_role_type($flag = null) {
 	}
 }
 
+//浏览文件夹
+function readFiles($dir)
+{
+    $handler = opendir($dir);  
+    while (($filename = readdir($handler)) !== false) 
+    {
+        if ($filename != "." && $filename != "..") 
+        {  
+            $files[] = $filename;
+        }  
+       
+    }  
+    closedir($handler);  
+    return $files;
+}
+
 ?>

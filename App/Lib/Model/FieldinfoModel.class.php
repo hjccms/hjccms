@@ -6,7 +6,7 @@ class FieldinfoModel extends Model
 {
     
     //站点信息  支持全部和单个
-    function getField($modelId='',$con=array())
+    function getFields($modelId='',$con=array())
     {
         if($modelId&&  intval($modelId)>0) $condition = array('model_id'=>$modelId);
         if(!empty($con)&&  is_array($con)) $condition = array_merge ($condition,$con);
