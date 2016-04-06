@@ -20,6 +20,10 @@ class BaseAction  extends Action
             else
             {
                 $adminInfo = D('Admin')->getAdminInfo('id='.session('adminId'));
+                if(isset($adminInfo['role_id'])){
+                    $roleInfo = D("Role")->getRoleInfo("id=".$adminInfo['role_id']);
+                    $adminInfo['menu_ids'] = encrypt($roleInfo['menu_ids'],'E',C('APP_KEY'));
+                }
                 cookie('adminInfo',$adminInfo,3600*7);//保存时间足够一次不间断的操作
                 $this->adminInfo = cookie('adminInfo');
             }
