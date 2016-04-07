@@ -15,4 +15,33 @@ class AdminModel extends Model
     {
         $this->data($data)->save();
     }
+    //获取某一站点所有可用的管理员
+    function getSiteAdmins($site_id='',$valid='')
+    {
+        if($site_id!='') $condition['site_id'] = $site_id;
+        if($valid!='') $condition['valid'] = $valid;
+        $admins = $this->where($condition)->select();
+        return $admins;
+    }
+    
+    function sortChilds($dataArr,$parentId)
+    {
+        if(!is_array($dataArr)||empty($dataArr)) return '';
+        foreach ($dataArr as $k=>$v)
+        {
+            $allParents[$k] = $v['parent_id'];
+        }
+        
+        if(!in_array($parentId,$allParents)) return ''; 
+        foreach ($dataArr as $k=>$v)
+        {
+            if($v['parent_id']==$parentId)
+            {
+                $result[$k] = $v;
+                $result[$k]['name'] = $v['username'];
+                $result[$k]['childs'] = $this->sortChilds($dataArr , $v['id']);
+            }
+        }
+        return $result;
+    }
 }

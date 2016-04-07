@@ -213,6 +213,9 @@ class ModelAction  extends BaseAction
         {
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
+        $post['create_time'] = time();
+        $post['admin_id'] = $this->adminInfo->id;
+        $post['site_id'] = $this->adminInfo->site_id;
         //导入外部处理机制
         if($post['importAction']&&$post['importFun'])
         {
@@ -225,9 +228,7 @@ class ModelAction  extends BaseAction
         unset($post['importAction']);
         unset($post['importFun']);
         $hash = $post['__hash__'];
-        $post['create_time'] = time();
-        $post['admin_id'] = $this->adminInfo->id;
-        $post['site_id'] = $this->adminInfo->site_id;
+        
         if(!$tableModel->create($post))
         {
             $msg = $tableModel->getError();
