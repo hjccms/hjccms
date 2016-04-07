@@ -24,7 +24,7 @@ class SiteAction  extends BaseAction
     function siteEdit()
     {
         $id = $this->_get('id');
-        $info = D('Site')->getSite($id);
+        $info = D('Site')->getInfo($id);
         $this->assign('info',$info);
         $this->assign('id', $id);
       
