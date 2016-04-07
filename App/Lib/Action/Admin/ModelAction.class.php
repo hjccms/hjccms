@@ -19,13 +19,36 @@ class ModelAction  extends BaseAction
         $id = $this->_get('id');
 
         load('@.form');
+        //获取可用的列表模板
+        $dir = './App/Tpl/Admin/Model';
+        $files = readFiles($dir);
+        foreach($files as $k=>$v)
+        {
+            if(strpos($v, 'dataList')===0)
+            {
+                $tem[] = array('id'=>$v,'name'=>$v);
+            }
+        }
+        
+        $this->assign('tem',$tem);
+        
         $this->display();
     }
     //修改功能
     function modelEdit()
     {
         $id = $this->_get('id');
-      
+        //获取可用的列表模板
+        $dir = './App/Tpl/Admin/Model';
+        $files = readFiles($dir);
+        foreach($files as $k=>$v)
+        {
+            if(strpos($v, 'dataList')===0)
+            {
+                $tem[] = array('id'=>$v,'name'=>$v);
+            }
+        }
+        $this->assign('tem',$tem);
         //info信息
         if($id>0) $info = D('Model')->getModel($id);
         else $info = array();
@@ -61,10 +84,25 @@ class ModelAction  extends BaseAction
     {
         $modelId = $this->_get('modelId'); 
         if(empty($modelId)||  intval($modelId)<=0) die('数据错误！');
+        load('@.form');
+        //搜索显示
+        $searchFiled = D('Fieldinfo')->getFields($modelId,array('search_show'=>1));
+      
+        foreach($searchFiled as $k=>$v)
+        {
+            if($this->_get($v['field_name']))
+            {
+                $get = $this->_get($v['field_name']);
+                $searchCon[$v['field_name']] = array('like','%'.$get.'%');
+            }
+        }
+        $formInput = formField($searchFiled);
+        $this->assign('formInput',$formInput);
+        
         
         $modelInfo = D('Model')->getModel($modelId);
         //要显示的字段信息
-        $fieldInfo = D('Fieldinfo')->getField($modelId,array('list_show'=>1));
+        $fieldInfo = D('Fieldinfo')->getFields($modelId,array('list_show'=>1));
         $fields = 'id,valid,create_time,';
         foreach($fieldInfo as $k=>$v)
         {
@@ -74,6 +112,7 @@ class ModelAction  extends BaseAction
         $fields = substr ($fields, 0,strlen($fields)-1);
         $tableModel = M(ucfirst($modelInfo['table_name']));
         $condition = array('_string'=>"del is null");
+        if(!empty($searchCon)) $condition = array_merge ($condition,$searchCon);
         //是否开启分页
         if($modelInfo['page_open']==1)
         {
@@ -93,7 +132,7 @@ class ModelAction  extends BaseAction
         $this->assign('page',$page?$page:'');
         $this->assign('pageNum',$pageNum?$pageNum:'');
         //处理一些特殊的字段
-        load('@.form');
+        
         foreach($dataList as $k=>$v)
         {
             foreach($v as $key=>$val)
@@ -105,13 +144,16 @@ class ModelAction  extends BaseAction
                 }
             }
         }
-      
+        
+        
         $this->getContentButton();
         $this->getListButton();
         $this->assign('modelId',$modelId);
         $this->assign('fieldInfo',$fieldInfo);
         $this->assign('dataList',$dataList);
-        $this->display();
+        if($modelInfo['template']) $template = explode('.',$modelInfo['template']);
+        else $template['0'] = 'dataList';
+        $this->display($template['0']);
     }
     
     //数据添加
@@ -122,7 +164,7 @@ class ModelAction  extends BaseAction
         load('@.form');
         $modelInfo = D('Model')->getModel($modelId);
         //要显示的字段信息
-        $fieldInfo = D('Fieldinfo')->getField($modelId);
+        $fieldInfo = D('Fieldinfo')->getFields($modelId);
         $formInput = formField($fieldInfo);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
@@ -148,7 +190,7 @@ class ModelAction  extends BaseAction
         
         $info = $tableModel->where("id='$id'")->find();
         //要显示的字段信息
-        $fieldInfo = D('Fieldinfo')->getField($modelId);
+        $fieldInfo = D('Fieldinfo')->getFields($modelId);
         $formInput = formField($fieldInfo,$info);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
@@ -184,6 +226,8 @@ class ModelAction  extends BaseAction
         unset($post['importFun']);
         $hash = $post['__hash__'];
         $post['create_time'] = time();
+        $post['admin_id'] = $this->adminInfo->id;
+        $post['site_id'] = $this->adminInfo->site_id;
         if(!$tableModel->create($post))
         {
             $msg = $tableModel->getError();

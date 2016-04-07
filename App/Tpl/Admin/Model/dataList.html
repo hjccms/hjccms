@@ -40,14 +40,7 @@
 
     <body>
 
-        <div class="place">
-            <span>位置：</span>
-            <ul class="placeul">
-                <li><a href="#">首页</a></li>
-                <li><a href="#">数据表</a></li>
-                <li><a href="#">基本内容</a></li>
-            </ul>
-        </div>
+        <include file="Index:position"/>
 
         <div class="rightinfo">
 
@@ -56,13 +49,23 @@
                 <ul class="toolbar">
                     {$contentButton}
                 </ul>
+                <form action="" method="get" name="search" id="search" >
+                <ul class="seachform">
+                    <volist name="formInput" id="val">
+                        {:$val['inputType']($val)}
+                    </volist>
+                   
+                <li><label>&nbsp;</label><input name="" type="submit" class="scbtn" value="查询"/></li>
+
+                </ul>
+                </form>
             </div>
 
 
             <table class="tablelist">
                 <thead>
                     <tr>
-                        <th>排序<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
+                        <th>ID序号<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
                         <volist name="fieldInfo" id="val" >
                         <th>{$val.name}</th>
                         </volist>

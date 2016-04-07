@@ -14,13 +14,7 @@
 
     <body>
 
-        <div class="place">
-            <span>位置：</span>
-            <ul class="placeul">
-                <li><a href="#">首页</a></li>
-                <li><a href="#">表单</a></li>
-            </ul>
-        </div>
+        <include file="Index:position"/>
 
         <div class="formbody">
 
@@ -35,6 +29,7 @@
                 {:radio(array('title'=>'是否必填','inputName'=>'must','value'=>0,'paramArr'=>get_valid()))}
                 {:radio(array('title'=>'验证唯一性','inputName'=>'ajax_url','value'=>0,'paramArr'=>get_valid()))}
                 {:radio(array('title'=>'列表显示','inputName'=>'list_show','value'=>0,'paramArr'=>get_valid()))}
+                {:radio(array('title'=>'搜索显示','inputName'=>'search_show','value'=>0,'paramArr'=>get_valid()))}
                 {:select(array('title'=>'验证规则','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
                 {:input(array('title'=>'自定义规则','inputName'=>'validform_type2','tipMsg'=>'自定义验证规则'))}
                 {:hideInput(array('inputName'=>'model_id','value'=>$modelId))}
