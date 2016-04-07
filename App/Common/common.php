@@ -91,12 +91,12 @@ function get_list_button($listButton,$arr){
 }
 
 //获取角色类型
-function get_role_type($flag = null) {
-	$arr = array(
-		'1' => '超级管理员',
-		'2' => '功能管理员',
-                '3' => '权限管理员',
-	);
+function get_role_type($flag = null,$str=false) {
+    if($str == 1){
+        $arr[1] = "超级管理员";
+    }
+    $arr[2] = "功能管理员";
+    $arr[3] = "权限管理员";
 	if (isset($flag)) {
 		return $arr[$flag];
 	} else {

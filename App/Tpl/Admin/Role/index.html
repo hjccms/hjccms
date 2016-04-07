@@ -83,7 +83,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {$roleTree}
+                    <volist name='roles' id='val' >
+                        <tr <if condition="$val.valid eq 0"> style="color:#ADADAD" </if>>
+                            <td>{$val.id}</td>
+                            <td>{$val.name}</td>
+                            <td>{:get_role_type($val['type'],1)}</td>
+                            <td>{:get_valid($val['valid'])}</td>
+                            <td><if condition="$val.id neq '1'"> {:get_list_button($listButton,array('id'=>$val[id]))} </if></td>
+                        </tr>                       
+                    </volist>
                 </tbody>
             </table>
             <div class="mid" style=" display:none;width:100%;  height:100%;  background:#000;  position:absolute;top:0;  left:0;  z-index:10;  opacity:0.4;  filter:alpha(opacity =40);  "></div>

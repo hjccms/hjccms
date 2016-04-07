@@ -48,13 +48,7 @@ function radio($data)
         if($data['value']==$k){
             $yesStr = 'checked="checked" ';
         }
-        $tmpStrStart = null;
-        $tmpStrEnd = null;
-        if($k == '1' && $v == '超级管理员'){
-            $tmpStrStart = '<cj id="cj">';
-            $tmpStrEnd = '</cj>';
-        }
-        $str .= $tmpStrStart.'<input name="'.$data['inputName'].'" '.$tmpStr.' type="radio" value="'.$k.'" '.$yesStr.$addHTml.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;'.$tmpStrEnd;
+        $str .= '<input name="'.$data['inputName'].'" '.$tmpStr.' type="radio" value="'.$k.'" '.$yesStr.$addHTml.'  />&nbsp;&nbsp;'.$v.'&nbsp;&nbsp;&nbsp;&nbsp;';
     }
     $str .= '<i class="Validform_checktip">'.$data['tipMsg'].'</i></cite></li>';
     return $str;
@@ -135,7 +129,7 @@ function checkbox($data)
         if(is_array($v['childs'])||!empty($v['childs'])) $checkboxStr .=   checkboxChild($v['childs'],$data);
         unset($checked);
     }
-    $str =  '<li class="'.$data['addClass_2'].'"><label>'.$data['title'].$data['isMustStr'].'</label>
+    $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
                 <ul class="checkul" style="height:'.$data['height'].'">'.$checkboxStr.'</ul>
             </li>';
     return $str;
