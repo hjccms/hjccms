@@ -226,6 +226,8 @@ class ModelAction  extends BaseAction
         unset($post['importFun']);
         $hash = $post['__hash__'];
         $post['create_time'] = time();
+        $post['admin_id'] = $this->adminInfo->id;
+        $post['site_id'] = $this->adminInfo->site_id;
         if(!$tableModel->create($post))
         {
             $msg = $tableModel->getError();
