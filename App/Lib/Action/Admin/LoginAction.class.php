@@ -38,6 +38,12 @@ class LoginAction  extends Action
         $adminInfo = D('Admin')->getAdminInfo($condition);
         if(!$adminInfo) $this->ajaxReturn('','账号密码错误！',0);
         if($adminInfo['valid']!=1) $this->ajaxReturn('','管理员已被禁用！',0);
+        if($adminInfo['role_type'] > 2){
+            $isCheck = D("Site")->checkSite($adminInfo["id"]);
+            if(!$isCheck){
+                $this->ajaxReturn('','您没有访问该站点的权限！',0);
+            }
+        }
         session('username',$username);
         session('adminId',$adminInfo['id']);
         session('hashuser',md5(encrypt($username.cookie('PHPSESSID'),'E',C('APP_KEY').$adminInfo['id'])));

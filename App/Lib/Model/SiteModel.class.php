@@ -43,4 +43,16 @@ class SiteModel extends Model
         return $id; 
        
     }
+    
+    function checkSite($id)
+    {
+        if(!$id) return false;
+        $data['id'] = $id;
+        $result = $this->where($data)->find();
+        $host = $_SERVER['HTTP_HOST'] ;
+        if($host != $result['domain']){
+            return false;
+        }
+        return true;
+    }
 }
