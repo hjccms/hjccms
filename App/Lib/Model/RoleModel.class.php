@@ -7,11 +7,7 @@ class RoleModel extends Model {
     //自动完成
     protected $_auto = array( array('create_time','time',1,'function') );
     
-    function getRole($valid='',$site_id='',$_string=''){
-        $condition = null;
-        if($valid!='') $condition['valid'] = $valid;
-        if($site_id!='') $condition['site_id'] = $site_id;
-        if($_string!='') $condition['_string'] = $_string;
+    function getRole($condition){
         $result = $this->where($condition)->order('id asc')->select();
         return $result;
     }
