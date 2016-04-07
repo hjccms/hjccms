@@ -18,7 +18,7 @@ class RoleAction extends BaseAction{
     function edit(){
         load('@.form');
         $id = $this->_get('id');
-        if($id>0){
+        if($id>1){
             $info = D('Role')->getRoleInfo("id=".$id);
             $info["menu_ids"] = explode(",", $info["menu_ids"]);
         }
@@ -30,7 +30,7 @@ class RoleAction extends BaseAction{
     function del(){
         if(!IS_AJAX) $this->ajaxReturn ('','非法请求！',0);
         $id = $this->_post('id');
-        if(!$id) $this->ajaxReturn ('','非法请求！',0);
+        if($id<=1) $this->ajaxReturn ('','非法请求！',0);
         $re = D('Role')->where("id=".$id)->delete();
         if(!$re) $this->ajaxReturn ('','操作失败！',0);
         $this->ajaxReturn ('','删除成功！',1);
