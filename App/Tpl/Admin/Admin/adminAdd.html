@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+     
+        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
+        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
+        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+    </head>
+
+    <body>
+
+        <include file="Index:position"/>
+
+        <div class="formbody">
+
+            <div class="formtitle"><span>添加管理员</span></div>
+            <form class="registerform" action="{:U('/Admin/Fieldinfo/ajaxPost')}">
+            <ul class="forminfo">
+
+                {:input(array('title'=>'姓名','inputName'=>'name','isMust'=>'1','tipMsg'=>'不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符" ajaxurl="/Admin/Model/checkFieldOnly/table_name/admin" sucmsg="验证通过！"','value'=>$info['name']))}
+                {:input(array('title'=>'帐号','inputName'=>'username','isMust'=>'1','tipMsg'=>'帐号请用纯英文填写','addHtml'=>'datatype="y1-20"  ajaxurl="/Admin/Model/checkFieldOnly/table_name/admin"   errormsg="格式为纯英文"','value'=>$info['field_name']))}
+                
+                {:inputPassword(array('title'=>'设置密码','isMust'=>'1','inputName'=>'password','tipMsg'=>'请设置密码','addHtml'=>'datatype="s"   errormsg="格式为纯英文"','value'=>$info['password']))}
+                {:inputPassword(array('title'=>'确认密码','isMust'=>'1','inputName'=>'password2','tipMsg'=>'请确认密码','addHtml'=>'datatype="s" recheck="password"  errormsg="密码不一致"','value'=>$info['password']))}
+               
+                {:select(array('title'=>'角色类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>$fieldType))}
+                
+                {:input(array('title'=>'手机号码','inputName'=>'mobile','isMust'=>'1','tipMsg'=>'管理员手机号码','addHtml'=>'datatype="m"     errormsg="格式错误"','value'=>''))}
+                {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>0,'paramArr'=>get_valid()))}
+                
+               
+                {:select(array('title'=>'验证规则','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
+                {:input(array('title'=>'EMAIL','inputName'=>'validform_type2','tipMsg'=>''))}
+                {:hideInput(array('inputName'=>'model_id','value'=>$modelId))}
+               
+                {:input(array('title'=>'增加class','inputName'=>'form_class','tipMsg'=>'class名','addHtml'=>'datatype="y1-20" ignore="ignore"  errormsg="格式为纯英文"','value'=>$info['form_class']))}
+                {:input(array('title'=>'增加id','inputName'=>'form_id','tipMsg'=>'id名','addHtml'=>'datatype="y1-20" ignore="ignore"  errormsg="格式为纯英文"','value'=>$info['form_id']))}
+                {:input(array('title'=>'增加html','inputName'=>'form_html','tipMsg'=>'其它html代码','value'=>$info['form_id']))}
+                {:input(array('title'=>'提示信息','inputName'=>'tip_msg','tipMsg'=>'不能超过30个字符','addHtml'=>'datatype="s1-30" ignore="ignore" errormsg="不能超过30个字符"  ','value'=>$info['tip_msg']))}
+                {:input(array('title'=>'显示排序','inputName'=>'sort','tipMsg'=>'字段显示排序','addHtml'=>'datatype="n" ignore="ignore" errormsg="请填写整数"  ','value'=>0))}
+                 {:textarea(array('title'=>'表单初始值','inputName'=>'form_value','value'=>$info['description'],'tipMsg'=>"如果是下拉框，单选，多选，文本框的初始值，请用A|B,C|D格式或者直接写获取初始值的方法",'addHtml'=>''))}
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+            </ul>
+
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+                datatype:{
+                        "*6-20": /^[^\s]{6,20}$/,
+                        "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
+                        "y3-10": /\w{3,10}/i,
+                        "y1-20": /^[a-zA-Z\/ ]{1,20}$/,
+                },
+                ajaxPost:true,
+                callback:function(data){
+                        if(data.status==1)
+                        {
+                            alert(data.info);
+                            location.href="{:U('Admin/Model/index')}";
+                        }
+                        else
+                        {
+                            alert(data.info);
+                        }
+		}
+	});
+})
+</script>
+</html>
+
