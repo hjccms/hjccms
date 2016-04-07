@@ -54,22 +54,24 @@
             <table class="tablelist">
                 <thead>
                     <tr>
-                        <th>排序<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
-                        <th>名称</th>
-                        <th>字段</th>
-                     
-                      
-                        <th>类型</th>
+                        <th>ID排序<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
+                        <th>用户名</th>
+                        <th>姓名</th>
+                        <th>电话</th>
+                        <th>站点</th>
+                        <th>状态</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <volist name='fields' id='val' >
+                    <volist name='admins' id='val' >
                     <tr>
-                        <td>{$val.sort}</td>
+                        <td>{$val.id}</td>
+                        <td>{$val.username}</td>
                         <td>{$val.name}</td>
-                        <td>{$val.field_name}</td>
-                        <td>{$val.type}</td>
+                        <td>{$val.mobile}</td>
+                        <td>{$site[$val[site_id]]}</td>
+                        <td><if condition="$val['valid'] eq 0"><font color="red">已禁用</font><else/>正常</if></td>
                         <td><a href="{:U('/Admin/Fieldinfo/fieldEdit/modelId/'.$modelId,'id='.$val['id'])}" class="tablelink">修改</a> | <a href="#" class="tablelink  delField" modelid='{$modelId}' fieldid='{$val.id}' >删除</a></td>
                     </tr> 
                         

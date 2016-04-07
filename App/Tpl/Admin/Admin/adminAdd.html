@@ -35,8 +35,7 @@
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>0,'paramArr'=>get_valid()))}
                 
                
-                {:select(array('title'=>'等级关系','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
-                 {:input(array('title'=>'Email','inputName'=>'email','tipMsg'=>'','addHtml'=>'datatype="e"     errormsg="格式错误"','value'=>''))}
+                 {:input(array('title'=>'Email','inputName'=>'email','tipMsg'=>'','addHtml'=>'datatype="e"   ignore="ignore"   errormsg="格式错误"','value'=>''))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
@@ -67,7 +66,7 @@ $(function(){
                         if(data.status==1)
                         {
                             alert(data.info);
-                            location.href="{:U('Admin/Model/index')}";
+                            location.href="{:U('Admin/Admin/index')}";
                         }
                         else
                         {

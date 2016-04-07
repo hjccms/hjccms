@@ -89,5 +89,24 @@ class BaseAction  extends Action
         $this->assign('info',$info);
         $this->display("Index:error");
     }
+    //判断站点和管理员的条件
+    function getSiteCondition()
+    {
+        $condition = array();
+        $site_id = $this->adminInfo->site_id;
+        $adminId = $this->adminInfo->id;
+        if($site_id>1) $condition['site_id'] = $site_id;
+        if($this->adminInfo->parent_id>0)  //如果不是某站点顶级管理员的话 只能取他自己和自己下级的数据
+        {
+            $admins = D('Admin')->getSiteAdmins($site_id,1,'parent_id='.$adminId);
+            foreach($admins as $k=>$v)
+            {
+                $adminStr .= ','.$v['id'];
+            }
+            $adminStr = $adminId.$adminStr;
+            $condition['admin_id'] = array('in',$adminStr);
+        }
+        return $condition;
+    }
 }
 

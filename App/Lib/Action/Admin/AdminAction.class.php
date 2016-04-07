@@ -8,6 +8,19 @@ class AdminAction  extends BaseAction
     {
         $this->getContentButton();
         $this->getListButton();
+        //获取所有的管理员
+        //获取站点和管理员的权限
+        $condition = $this->getSiteCondition();
+     
+        $admins = D('Admin')->where($condition)->order("id asc")->select();
+        //获取所有站点
+        $sites = D('Site')->getSite();
+        foreach($sites as $k=>$v)
+        {
+            $site[$v['id']] = $v['name'];
+        }
+        $this->assign('site',$site);
+        $this->assign('admins',$admins);
         $this->display();
     }
     
@@ -57,7 +70,13 @@ class AdminAction  extends BaseAction
     }
     function ajaxAdminAdd($post)
     {
-        print_r($post);
-        die();
+        $site_id = $this->_post('site_id');
+        $roleInfo = D('Role')->getRoleInfo(array('id'=>$post['role_id']));
+        $post['role_type'] = $roleInfo['type'];
+        if(intval($site_id)>1&&$this->adminInfo->site_id==1&&$post['role_type']==3) $post['site_id'] = $site_id;
+        else  $post['site_id'] = $this->adminInfo->site_id;
+       
+        $post['password'] = md5(encrypt($post['password'], 'E'));
+        return $post;
     }
 }

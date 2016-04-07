@@ -16,10 +16,11 @@ class AdminModel extends Model
         $this->data($data)->save();
     }
     //获取某一站点所有可用的管理员
-    function getSiteAdmins($site_id='',$valid='')
+    function getSiteAdmins($site_id='',$valid='',$_string='')
     {
         if($site_id!='') $condition['site_id'] = $site_id;
         if($valid!='') $condition['valid'] = $valid;
+        if($_string!='') $condition['_string'] = $_string;
         $admins = $this->where($condition)->select();
         return $admins;
     }
