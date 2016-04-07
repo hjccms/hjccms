@@ -3,9 +3,17 @@
 class RoleAction extends BaseAction{
     
     function index(){
+        load('@.form');
         $this->getListButton();
         $this->getContentButton();
-        $this->assign('roles',D('Role')->getRole("valid=1"));
+        $site_id = ($this->_get('site_id') !== null)?$this->_get('site_id'):$this->adminInfo->site_id;
+        $condition['valid'] = 1;
+        if($site_id>0){ 
+            $condition['site_id'] = $site_id;
+        }
+        $this->assign('sites',$this->getSite());
+        $this->assign('roles',D('Role')->getRole($condition));
+        $this->assign('data',$condition);
         $this->display();
     }
     
@@ -46,20 +54,15 @@ class RoleAction extends BaseAction{
         else $this->ajaxReturn ('',$ret,0);
     }
     
-    function ajaxGetInfo(){
-        load('@.form');
-        if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
-        $post = $this->_post();
-        $id = $post['id'];
-        $roleInfo = D("Role")->getRoleInfo("id=".$id);
-        $menus = D('Menu')->getMenu(false,true,true,false,$roleInfo['menu_ids']);
-        $sites = D("Role")->getSites($roleInfo['site_ids']);
-        $siteStr = checkbox(array('title'=>'分校','inputName'=>'site_ids[]','value'=>explode(",", $roleInfo["site_ids"]),'tipMsg'=>'','height'=>'120px','addClass_2'=>'hid','paramArr'=>$sites));
-        $menuStr = checkbox(array('title'=>'权限','inputName'=>'menu_ids[]','value'=>explode(",", $roleInfo["menu_ids"]),'addClass'=>'ckbox','addClass_2'=>'hid','tipMsg'=>'','height'=>'400px','paramArr'=>$menus));
-        $reStr = '<script type="text/javascript" src="/Public/Style/Admin/js/role.js"></script>'.$siteStr.$menuStr;
-        if($reStr) $this->ajaxReturn ($reStr,'Success！',1);
-        else $this->ajaxReturn ('','错误',0);
+    function getSite(){
+        $siteArr = null;
+        $sites = D("Site")->getSite("valid=1");
+        foreach ($sites as $k=>$v){
+            $siteArr[$k+1] = $v;
+        }
+        $siteArr[0] = array('id'=>0,'name'=>'全部');
+        sort($siteArr);
+        return $siteArr;
     }
-    
-    
+     
 }

@@ -154,11 +154,9 @@ class MenuModel extends Model
         if(!$menu) return false;
         $tree =  null;
         foreach($menu as $v){
-            if($role_id!=1){
-                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
-                if(!$isCheck){
-                    continue;
-                }
+            $isCheck = $this->checkMenu($role_id, $v['id'], $menu_ids);
+            if(!$isCheck){
+                continue;
             }
             $url = $v['module']?U('Admin/Index/left','id='.$v['id']):'';
             $tree .= '<li><a href="'.$url.'" target="leftFrame"><img src="'.$v['icon'].'" title="'.$v['name'].'" /><h2>'.$v['name'].'</h2></a></li>';
@@ -173,11 +171,9 @@ class MenuModel extends Model
         $role_id = $this->getRoleId();
         $menu_ids = $this->getRoleMenu();
         foreach($menu as $v){
-            if($role_id!=1){
-                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
-                if(!$isCheck){
-                    continue;
-                }
+            $isCheck = $this->checkMenu($role_id, $v['id'], $menu_ids);
+            if(!$isCheck){
+                continue;
             }
             $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
@@ -217,11 +213,9 @@ class MenuModel extends Model
         $role_id = $this->getRoleId();
         $menu_ids = $this->getRoleMenu();
         foreach($menu as $v){
-            if($role_id!=1){
-                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
-                if(!$isCheck){
-                    continue;
-                }
+            $isCheck = $this->checkMenu($role_id, $v['id'], $menu_ids);
+            if(!$isCheck){
+                continue;
             }
             $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
@@ -246,11 +240,9 @@ class MenuModel extends Model
         $role_id = $this->getRoleId();
         $menu_ids = $this->getRoleMenu();
         foreach($menu as $k=>$v){
-            if($role_id!=1){
-                $isCheck = ($menu_ids && in_array($v['id'], $menu_ids) ? true : false);
-                if(!$isCheck){
-                    continue;
-                }
+            $isCheck = $this->checkMenu($role_id, $v['id'], $menu_ids);
+            if(!$isCheck){
+                continue;
             }
             $str = $k!=0?' | ':'';
             $paramArr['param'] = $v['param'];
@@ -369,5 +361,15 @@ class MenuModel extends Model
     function getRoleId(){
         $adminInfo = cookie('adminInfo');
         return $adminInfo->role_id;
+    }
+    
+    function checkMenu($role_id,$menu_id,$menu_ids){
+        if($role_id!=1){
+            $isCheck = ($menu_ids && in_array($menu_id, $menu_ids) ? true : false);
+            if(!$isCheck){
+                return false;
+            }
+        }
+        return true;
     }
 }
