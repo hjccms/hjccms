@@ -5,7 +5,7 @@ class RoleAction extends BaseAction{
     function index(){
         $this->getListButton();
         $this->getContentButton();
-        $this->assign('roles',D('Role')->getRole());
+        $this->assign('roles',D('Role')->getRole("valid=1"));
         $this->display();
     }
     
