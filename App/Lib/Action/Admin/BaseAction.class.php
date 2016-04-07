@@ -30,6 +30,21 @@ class BaseAction  extends Action
             $this->assign('adminInfo',$this->adminInfo);
             $this->menuId = $this->getMenuId();
             $this->getPosition();
+            
+            //查看是否有权限访问该站点
+            if($this->adminInfo->role_type > 2){
+                $isCheck = D("Site")->checkSite($this->adminInfo->id);
+                if(!$isCheck){
+                    $this->error("没有权限访问该站点！");die;
+                }
+            }
+            //查看是否有权限访问该模块
+            if($this->adminInfo->role_type != 1 && MODULE_NAME != 'Index'){
+                $isCheck = D("Menu")->checkMenu($this->adminInfo->role_id, $this->menuId, explode(",", encrypt($this->adminInfo->menu_ids,'D')));
+                if(!$isCheck){
+                    $this->error("没有权限访问该模块！");die;
+                }
+            }
         }
         else
         {
@@ -68,6 +83,11 @@ class BaseAction  extends Action
     function getMenuId(){
         $id = D('Menu')->getIdByUrl(str_replace("Action", "", MODULE_NAME),ACTION_NAME,get_param());
         return $id;
+    }
+    
+    function error($info){
+        $this->assign('info',$info);
+        $this->display("Index:error");
     }
 }
 
