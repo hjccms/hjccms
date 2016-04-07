@@ -28,7 +28,8 @@
                 {:inputPassword(array('title'=>'设置密码','isMust'=>'1','inputName'=>'password','tipMsg'=>'请设置密码','addHtml'=>'datatype="s"   errormsg="格式为纯英文"','value'=>$info['password']))}
                 {:inputPassword(array('title'=>'确认密码','isMust'=>'1','inputName'=>'password2','tipMsg'=>'请确认密码','addHtml'=>'datatype="s" recheck="password"  errormsg="密码不一致"','value'=>$info['password']))}
                
-                {:select(array('title'=>'角色类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>$fieldType))}
+                {:select(array('title'=>'角色类型','inputName'=>'role_id','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['role_id'],'paramArr'=>$roles))}
+                {:select(array('title'=>'站点选择','inputName'=>'site_id','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['site_id'],'paramArr'=>$sites))}
                 
                 {:input(array('title'=>'手机号码','inputName'=>'mobile','isMust'=>'1','tipMsg'=>'管理员手机号码','addHtml'=>'datatype="m"     errormsg="格式错误"','value'=>''))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>0,'paramArr'=>get_valid()))}
