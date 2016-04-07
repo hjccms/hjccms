@@ -13,6 +13,8 @@ class AdminAction  extends BaseAction
     
     function adminAdd()
     {
+        //调用角色
+        
         load("@.form");
         $this->display();
     }

@@ -4,6 +4,8 @@
  */
 class RoleModel extends Model {
     
+    //自动完成
+    protected $_auto = array( array('create_time','time',1,'function') );
     /**
      * 获取角色数组
      * @param type $parentId  父id 值为空时查询全部角色，否则查询该父id下子角色

@@ -34,16 +34,9 @@
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>0,'paramArr'=>get_valid()))}
                 
                
-                {:select(array('title'=>'验证规则','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
-                {:input(array('title'=>'EMAIL','inputName'=>'validform_type2','tipMsg'=>''))}
-                {:hideInput(array('inputName'=>'model_id','value'=>$modelId))}
-               
-                {:input(array('title'=>'增加class','inputName'=>'form_class','tipMsg'=>'class名','addHtml'=>'datatype="y1-20" ignore="ignore"  errormsg="格式为纯英文"','value'=>$info['form_class']))}
-                {:input(array('title'=>'增加id','inputName'=>'form_id','tipMsg'=>'id名','addHtml'=>'datatype="y1-20" ignore="ignore"  errormsg="格式为纯英文"','value'=>$info['form_id']))}
-                {:input(array('title'=>'增加html','inputName'=>'form_html','tipMsg'=>'其它html代码','value'=>$info['form_id']))}
-                {:input(array('title'=>'提示信息','inputName'=>'tip_msg','tipMsg'=>'不能超过30个字符','addHtml'=>'datatype="s1-30" ignore="ignore" errormsg="不能超过30个字符"  ','value'=>$info['tip_msg']))}
-                {:input(array('title'=>'显示排序','inputName'=>'sort','tipMsg'=>'字段显示排序','addHtml'=>'datatype="n" ignore="ignore" errormsg="请填写整数"  ','value'=>0))}
-                 {:textarea(array('title'=>'表单初始值','inputName'=>'form_value','value'=>$info['description'],'tipMsg'=>"如果是下拉框，单选，多选，文本框的初始值，请用A|B,C|D格式或者直接写获取初始值的方法",'addHtml'=>''))}
+                {:select(array('title'=>'等级关系','inputName'=>'validform_type','addHtml'=>'datatype="*" ignore="ignore" ','value'=>$info['type'],'paramArr'=>$validformType))}
+                 {:input(array('title'=>'Email','inputName'=>'email','tipMsg'=>'','addHtml'=>'datatype="e"     errormsg="格式错误"','value'=>''))}
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
 
