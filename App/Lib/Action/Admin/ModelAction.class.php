@@ -96,7 +96,7 @@ class ModelAction  extends BaseAction
                 $searchCon[$v['field_name']] = array('like','%'.$get.'%');
             }
         }
-        $formInput = formField($searchFiled);
+        $formInput = formField($searchFiled,$this->_get());
         $this->assign('formInput',$formInput);
         
         
@@ -112,7 +112,10 @@ class ModelAction  extends BaseAction
         $fields = substr ($fields, 0,strlen($fields)-1);
         $tableModel = M(ucfirst($modelInfo['table_name']));
         $condition = array('_string'=>"del is null");
+        $con = $this->getSiteCondition();
+        if(!empty($con)) $condition = array_merge ($condition,$con);
         if(!empty($searchCon)) $condition = array_merge ($condition,$searchCon);
+       
         //是否开启分页
         if($modelInfo['page_open']==1)
         {

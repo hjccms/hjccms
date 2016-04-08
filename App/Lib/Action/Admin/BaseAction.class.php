@@ -106,7 +106,7 @@ class BaseAction  extends Action
                 $adminStr .= ','.$v['id'];
             }
             $adminStr = $adminId.$adminStr;
-            $condition['id'] = array('in',$adminStr);
+            $condition['admin_id'] = array('in',$adminStr);
         }
         return $condition;
     }

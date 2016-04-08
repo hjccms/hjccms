@@ -11,6 +11,11 @@ class AdminAction  extends BaseAction
         //获取所有的管理员
         //获取站点和管理员的权限
         $condition = $this->getSiteCondition();
+        if(!empty($condition))
+        {
+            $condition['id'] = $condition['admin_id'];
+            unset($condition['admin_id']);
+        }
         //分页部分
         $listNum = 10;
         $page = $this->_get('page');
