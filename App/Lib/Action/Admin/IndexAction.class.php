@@ -20,6 +20,7 @@ class IndexAction  extends BaseAction
         $result = D('Menu')->getMenu(0,true,false);
         $menuTree = D('Menu')->getTopTree($result);
         $this->assign('menuTree',$menuTree);
+        $this->assign('adminName',$this->adminInfo->username);
         $this->display();
     }
     
