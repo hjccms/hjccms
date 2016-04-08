@@ -6,6 +6,7 @@
         <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Laypage/laypage.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/model.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
@@ -72,7 +73,7 @@
                         <td>{$val.mobile}</td>
                         <td>{$site[$val[site_id]]}</td>
                         <td><if condition="$val['valid'] eq 0"><font color="red">已禁用</font><else/>正常</if></td>
-                        <td><a href="{:U('/Admin/Fieldinfo/fieldEdit/modelId/'.$modelId,'id='.$val['id'])}" class="tablelink">修改</a> | <a href="#" class="tablelink  delField" modelid='{$modelId}' fieldid='{$val.id}' >删除</a></td>
+                        <td>{:get_list_button($listButton,array('id'=>$val[id]))}</td>
                     </tr> 
                         
                     </volist>
@@ -81,8 +82,20 @@
             <div class="mid" style=" display:none;width:100%;  height:100%;  background:#000;  position:absolute;top:0;  left:0;  z-index:10;  opacity:0.4;  filter:alpha(opacity =40);  "></div>
             
         </div>
+       <div id="pages" style="text-align: center" ></div>
         <script type="text/javascript">
             $('.tablelist tbody tr:odd').addClass('odd');
+            laypage({
+                cont: 'pages',
+                skip: true, 
+                pages: '{$pageNum}', //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18
+                curr: '{$page}', 
+                jump: function(e, first){ //触发分页后的回调
+                    if(!first){ //一定要加此判断，否则初始时会无限刷新
+                        location.href = '?page='+e.curr;
+                    }
+                }
+            });
         </script>
 
     </body>
