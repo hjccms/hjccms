@@ -30,10 +30,12 @@ class BaseAction  extends Action
             $this->assign('adminInfo',$this->adminInfo);
             $this->menuId = $this->getMenuId();
             $this->getPosition();
-            
+            if(!$this->menuId){
+                return true;
+            }
             //查看是否有权限访问该站点
             if($this->adminInfo->role_type > 2){
-                $isCheck = D("Site")->checkSite($this->adminInfo->id);
+                $isCheck = D("Site")->checkSite($this->adminInfo->site_id);
                 if(!$isCheck){
                     $this->error("没有权限访问该站点！");die;
                 }
@@ -104,7 +106,7 @@ class BaseAction  extends Action
                 $adminStr .= ','.$v['id'];
             }
             $adminStr = $adminId.$adminStr;
-            $condition['admin_id'] = array('in',$adminStr);
+            $condition['id'] = array('in',$adminStr);
         }
         return $condition;
     }

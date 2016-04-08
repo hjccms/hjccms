@@ -29,7 +29,7 @@
                 {:inputPassword(array('title'=>'确认密码','inputName'=>'password2','tipMsg'=>'如需修改密码请填写','addHtml'=>'datatype="s" ignore="ignore" recheck="password"  errormsg="密码不一致"','value'=>''))}
                 {:hideInput(array('inputName'=>'importAction','value'=>'AdminAction'))}
                 {:hideInput(array('inputName'=>'importFun','value'=>'ajaxAdminEdit'))}
-                {:select(array('title'=>'角色类型','inputName'=>'role_id','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择" id="juese" ','value'=>$info['role_id'],'paramArr'=>$roles))}
+                {$roleStr}
                 {$siteStr}
                 {$adminStr}
                 {:input(array('title'=>'手机号码','inputName'=>'mobile','isMust'=>'1','tipMsg'=>'管理员手机号码','addHtml'=>'datatype="m"     errormsg="格式错误"','value'=>$info['mobile']))}

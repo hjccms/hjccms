@@ -39,7 +39,7 @@ class LoginAction  extends Action
         if(!$adminInfo) $this->ajaxReturn('','账号密码错误！',0);
         if($adminInfo['valid']!=1) $this->ajaxReturn('','管理员已被禁用！',0);
         if($adminInfo['role_type'] > 2){
-            $isCheck = D("Site")->checkSite($adminInfo["id"]);
+            $isCheck = D("Site")->checkSite($adminInfo["site_id"]);
             if(!$isCheck){
                 $this->ajaxReturn('','您没有访问该站点的权限！',0);
             }

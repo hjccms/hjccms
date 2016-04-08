@@ -11,7 +11,6 @@ class AdminAction  extends BaseAction
         //获取所有的管理员
         //获取站点和管理员的权限
         $condition = $this->getSiteCondition();
-        
         //分页部分
         $listNum = 10;
         $page = $this->_get('page');
@@ -53,27 +52,42 @@ class AdminAction  extends BaseAction
         //调用角色
         $site_id = $this->adminInfo->site_id;
         $id = $this->_get('id');
+        $info = D('Admin')->getAdminInfo("id='$id'");
         $condition = array('valid'=>1,'site_id'=>$site_id);
         if($site_id>1) $condition['_string'] = " id != 1";
-        $roles = D('Role')->getRole($condition);
-        $this->assign('roles',$roles);
+        //求出自身角色
+        $selfRole =  D('Role')->getRoleInfo(array("id"=>$this->adminInfo->role_id));
+        if($this->adminInfo->parent_id==0)
+        {
+            $roles = D('Role')->getRole($condition);
+            //自身如果是总站分配的角色的话 要相应的加上
+            if($selfRole['site_id']==1)
+            {
+                array_push($roles, $selfRole);
+            }
+            $roleStr = select(array('isMust'=>false,'paramArr'=>$roles,'title'=>'角色类型','inputName'=>'role_id','addHtml'=>' id="juese" errormsg="请选择"','value'=>$info['role_id']));
         
-        $info = D('Admin')->getAdminInfo("id='$id'");
+            $this->assign('roleStr',$roleStr);
+        }
+        
+        
+        
         $siteStr = '';
         $adminStr = '';
-        if($info['role_type']==3)
+        if($info['role_type']==3&&$this->adminInfo->parent_id==0) //只有分站管理员才有权限修改本站管理员等级关系
         {
-            //获取所有分站
-            $sites = D('Site')->getSite("id>1 and valid=1");
-            $siteStr = select(array('isMust'=>1,'paramArr'=>$sites,'title'=>'站点选择','inputName'=>'site_id','addHtml'=>'datatype="*" id="selsite" errormsg="请选择"','value'=>$info['site_id']));
-            if($info['parent_id']>0)
+            if($this->adminInfo->site_id==1) //只有超级后台才有权限修改所属站点
             {
-                $admins = D('Admin')->getSiteAdmins($info['site_id']);
-        
-                $allAdmins = D('Admin')->sortChilds($admins,0);
-                $adminStr = select(array('isMust'=>false,'paramArr'=>$allAdmins,'title'=>'上级管理员','inputName'=>'parent_id','addHtml'=>' id="seladmin" errormsg="请选择"','value'=>$info['parent_id']));
-        
+            //获取所有分站
+                $sites = D('Site')->getSite("id>1 and valid=1");
+                $siteStr = select(array('isMust'=>1,'paramArr'=>$sites,'title'=>'站点选择','inputName'=>'site_id','addHtml'=>'datatype="*" id="selsite" errormsg="请选择"','value'=>$info['site_id']));
             }
+            $admins = D('Admin')->getSiteAdmins($info['site_id']);
+
+            $allAdmins = D('Admin')->sortChilds($admins,0);
+            $adminStr = select(array('isMust'=>false,'paramArr'=>$allAdmins,'title'=>'上级管理员','inputName'=>'parent_id','addHtml'=>' id="seladmin" errormsg="请选择"','value'=>$info['parent_id']));
+        
+            
         }
         $this->assign('siteStr',$siteStr);
         $this->assign('adminStr',$adminStr);
@@ -133,11 +147,13 @@ class AdminAction  extends BaseAction
         if(intval($site_id)>1&&$this->adminInfo->site_id==1&&$post['role_type']==3) $post['site_id'] = $site_id;
         else  $post['site_id'] = $this->adminInfo->site_id;
         //重新验证密码
-        $oldPassword = md5(encrypt($this->_post('oldpassword'),'E'));
-        $check = D('Admin')->getAdminInfo("id='$post[id]' and password='$oldPassword'");
-        if(!$check)  $this->ajaxReturn('','旧密码错误！',0);
-        if($post['password']!=$post['password2'])   $this->ajaxReturn('','密码不一致！',0);
-        
+        if($this->_post('oldpassword'))
+        {
+            $oldPassword = md5(encrypt($this->_post('oldpassword'),'E'));
+            $check = D('Admin')->getAdminInfo("id='$post[id]' and password='$oldPassword'");
+            if(!$check)  $this->ajaxReturn('','旧密码错误！',0);
+            if($post['password']!=$post['password2'])   $this->ajaxReturn('','密码不一致！',0);
+        }
         $post['password'] = md5(encrypt($post['password'], 'E'));
         return $post;
     }

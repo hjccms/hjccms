@@ -86,7 +86,7 @@ function select($data)
         if(is_array($v['childs'])||!empty($v['childs'])) $optionStr .=   selectChild($v['childs'],$data['value']);
         unset($selected);
     }
-    $startOption = empty($data['value'])?'<option value="" selected >请选择</option>':'';
+    $startOption = '<option value=""  >请选择</option>';
     $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
                 <div class="vocation Validform_error">
                     <select class="select1 '.$data['addClass'].'" name="'.$data['inputName'].'"   '.$data['addHtml'].' >
