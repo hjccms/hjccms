@@ -6,20 +6,28 @@ class RoleAction extends BaseAction{
         load('@.form');
         $this->getListButton();
         $this->getContentButton();
-        $site_id = ($this->_get('site_id') !== null)?$this->_get('site_id'):$this->adminInfo->site_id;
-        $condition['valid'] = 1;
-        if($site_id>0){ 
-            $condition['site_id'] = $site_id;
+        if($this->adminInfo->site_id>1){ 
+            $condition['site_id'] = $this->adminInfo->site_id;
+            $condition['_string'] = "type>2";
+        }else{
+            $site_id = ($this->_get('site_id') !== null)?$this->_get('site_id'):$this->adminInfo->site_id;
+            $condition['valid'] = 1;
+            if($site_id>0){ 
+                $condition['site_id'] = $site_id;
+            }
         }
         $this->assign('sites',$this->getSite());
         $this->assign('roles',D('Role')->getRole($condition));
         $this->assign('data',$condition);
+        $this->assign('site_id',$this->adminInfo->site_id);
         $this->display();
     }
     
     function add(){
         load('@.form');
-        $this->assign('menus',D('Menu')->getMenu(false,true));
+        $roleInfo = D("Role")->getRoleInfo('id='.$this->adminInfo->role_id);
+        $this->assign('role_type',$this->adminInfo->role_type);
+        $this->assign('menus',D('Menu')->getMenu(false,true,true,null,$roleInfo['menu_ids']));
         $this->display();
     }
     
@@ -30,8 +38,10 @@ class RoleAction extends BaseAction{
             $info = D('Role')->getRoleInfo("id=".$id);
             $info["menu_ids"] = explode(",", $info["menu_ids"]);
         }
+        $roleInfo = D("Role")->getRoleInfo('id='.$this->adminInfo->role_id);
         $this->assign('info',$info);
-        $this->assign('menus',D('Menu')->getMenu(false,true));
+        $this->assign('role_type',$this->adminInfo->role_type);
+        $this->assign('menus',D('Menu')->getMenu(false,true,true,null,$roleInfo['menu_ids']));
         $this->display('add');
     }
     
