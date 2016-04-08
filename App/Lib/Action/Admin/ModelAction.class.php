@@ -96,7 +96,7 @@ class ModelAction  extends BaseAction
                 $searchCon[$v['field_name']] = array('like','%'.$get.'%');
             }
         }
-        $formInput = formField($searchFiled);
+        $formInput = formField($searchFiled,$this->_get());
         $this->assign('formInput',$formInput);
         
         
