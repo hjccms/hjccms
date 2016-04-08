@@ -158,7 +158,7 @@ class MenuModel extends Model
             if(!$isCheck){
                 continue;
             }
-            $url = $v['module']?U('Admin/Index/left','id='.$v['id']):'';
+            $url = U('Admin/Index/left','id='.$v['id']);
             $tree .= '<li><a href="'.$url.'" target="leftFrame"><img src="'.$v['icon'].'" title="'.$v['name'].'" /><h2>'.$v['name'].'</h2></a></li>';
         }
         return $tree;
