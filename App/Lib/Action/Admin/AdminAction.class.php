@@ -101,6 +101,8 @@ class AdminAction  extends BaseAction
         load("@.form");
         $this->display();
     }
+    //删除管理员
+    
     function changeRole()
     {
         load("@.form");

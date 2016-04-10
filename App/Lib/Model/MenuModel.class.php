@@ -247,7 +247,8 @@ class MenuModel extends Model
             $str = $k!=0?' | ':'';
             $paramArr['param'] = $v['param'];
             $param = $this->replaceParam($paramArr);
-            $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
+           // $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
+            $url = $v['func']?'#':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
             $funcArr['func'] = $v['func'];
             $func = $this->replaceFuncParam($funcArr);
             $tree .= $str.'<a class="tablelink" href="'.$url.'" onclick="'.$func.'">'.$v['name'].'</a>';
@@ -320,17 +321,40 @@ class MenuModel extends Model
     function getIdByUrl($module,$action,$param=null){
         if(!$module || !$action) return false;
         $condition = array();
-        $condition['module'] = $module;
+        $condition['module'] = ucfirst($module);
         $condition['action'] = $action;
-        $condition2 = $condition;
+        $paramArr = $this->where($condition)->getField('id,param');
+        if(empty($paramArr)) return false;
+        foreach($paramArr as $k=>$v)
+        {
+           $paramArr[$k] = httpBuildQuery($v); //重新实例化和排序url参数组合
+        }
+        $paramArrId = array_flip($paramArr); //反转键值 容易返回ID
+        if(empty($param)) return reset($paramArrId);  //如果没有第三方参数传入 直接返回结果的第一个ID
         if($param){
-            $condition['param'] = $param;
+            $param = httpBuildQuery($param); //实例化和排序参数组合
+            //所有参数都经过了排序和实体化 直接可以比较了
+            if(in_array($param, $paramArr)) return $paramArrId[$param]; //如果直接有相等的 就直接返回ID
+            $getParamArr = urlStrToArr($param); //参数转换为排过序的数组
+            foreach($paramArr as $k=>$v)
+            {
+                $arr = urlStrToArr($v);
+                if(count($arr)!=count($getParamArr))                    continue;  //参数元素比较，如果不相等直接跳到下一次循环
+                
+                preg_match_all('/{([\s\S]*?)}/',$v,$match); //匹配出 要替换的参数
+                foreach($match['1'] as $key=>$val)
+                {
+                    $getParamArr[$val] = $match['0'][$key];
+                }
+                $newParam = urldecode(http_build_query($getParamArr)); //把获得的url参数根据要匹配的值进行转换  进行比较
+                if($newParam==$v)
+                {
+                     return $k; //有相等的直接返回ID
+                     break;//结束循环
+                }
+            }
         }
-        $id = $this->where($condition)->getField("id");
-        if(!$id){
-            $id = $this->where($condition2)->getField("id");
-        }
-        return $id;
+        return false; //没有值 返回false
     }
     
     //链接参数替换

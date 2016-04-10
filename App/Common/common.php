@@ -78,13 +78,35 @@ function get_param(){
         $val = null;
         $val = $_GET[$v];
         if($val){
-            $param .= $v."=".$val."&";
+            $param[$v] = $val;
         }
     }
-    $param = trim($param,"&");
+    //根据键的升序对数据进行排序
+    ksort($param);
+    $param = http_build_query($param);
     return $param;
 }
-
+//对URL 参数进行排序处理
+function httpBuildQuery($str)
+{
+    $newArr = urlStrToArr($str);
+    $str = urldecode(http_build_query($newArr)); //重新组合成已经排序过的字符串
+    return $str;
+}
+//URl参数 转变成数组
+function urlStrToArr($str)
+{
+    $str = urldecode($str); //实体化URL参数  避免有些编码的url解析错误
+    if(empty($str)) return '';
+    $arr = explode('&',$str);
+    foreach($arr as $key=>$val)
+    {
+        $arrZi = explode('=',$val,2);
+        $newArr[$arrZi['0']] = $arrZi['1'];
+    }
+    ksort($newArr);
+    return $newArr;
+}
 //获取列表按钮
 function get_list_button($listButton,$arr){
     echo D('Menu')->getListButton($listButton,$arr);

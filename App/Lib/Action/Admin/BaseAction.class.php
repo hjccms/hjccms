@@ -37,14 +37,16 @@ class BaseAction  extends Action
             if($this->adminInfo->role_type > 2){
                 $isCheck = D("Site")->checkSite($this->adminInfo->site_id);
                 if(!$isCheck){
-                    $this->error("没有权限访问该站点！");die;
+                    if(IS_AJAX) $this->ajaxReturn('','没有权限访问该站点!',0);
+                    else $this->error("没有权限访问该站点！");die;
                 }
             }
             //查看是否有权限访问该模块
             if($this->adminInfo->role_type != 1 && MODULE_NAME != 'Index'){
                 $isCheck = D("Menu")->checkMenu($this->adminInfo->role_id, $this->menuId, explode(",", encrypt($this->adminInfo->menu_ids,'D')));
                 if(!$isCheck){
-                    $this->error("没有权限访问该模块！");die;
+                    if(IS_AJAX) $this->ajaxReturn('','没有权限访问该模块!',0);
+                    else $this->error("没有权限访问该模块！");die;
                 }
             }
         }
