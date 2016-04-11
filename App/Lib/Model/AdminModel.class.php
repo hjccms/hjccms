@@ -20,7 +20,9 @@ class AdminModel extends Model
     {
         if($site_id!='') $condition['site_id'] = $site_id;
         if($valid!='') $condition['valid'] = $valid;
-        if($_string!='') $condition['_string'] = $_string;
+        $condition['_string'] = " del is null ";
+        if($_string!='') $condition['_string'] .= ' and '.$_string;
+        
         $admins = $this->where($condition)->select();
         return $admins;
     }

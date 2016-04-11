@@ -89,10 +89,7 @@ class BaseAction  extends Action
         return $id;
     }
     
-    function error($info){
-        $this->assign('info',$info);
-        $this->display("Index:error");
-    }
+    
     //判断站点和管理员的条件
     function getSiteCondition()
     {

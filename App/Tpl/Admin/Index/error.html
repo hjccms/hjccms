@@ -15,11 +15,34 @@
 </script> 
 </head>
 <body style="background:#edf6fa;">
+    <present name='message' >
     <div class="error">
-        <h2>{$info}</h2>
+        <h2><?php echo $message; ?></h2>
         <p>看到这个提示，就自认倒霉吧!</p>
         <div class="reindex"><a href="/Admin/Index" target="_parent">返回首页</a></div>
     </div>
+    <else/>
+    <div class="error">
+        <h2><?php echo $error; ?></h2>
+        <p>看到这个提示，就自认倒霉吧!</p>
+        <div class="reindex"><a id="href" href="<?php echo $jumpUrl; ?>" target="_parent">返回(<b id="wait"><?php echo($waitSecond); ?></b>)</a></div>
+    </div>
+    </present>
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+        var time = --wait.innerHTML;
+        if(time == 0) {
+                location.href = href;
+                clearInterval(interval);
+        };
+}, 1000);
+})();
+</script>
 </body>
 
 </html>
+
+
+

@@ -49,6 +49,19 @@
                 <ul class="toolbar">
                     {$contentButton}
                 </ul>
+                <form action="" method="get" name="search" id="search" >
+                    <ul class="seachform">
+                        <if condition="$site_id eq '1'">
+                            {:select(array('title'=>'站点','inputName'=>'site_id','value'=>$info['site_id'],'tipMsg'=>'','addHtml'=>'nullmsg="所有"','paramArr'=>$sites))}
+                        </if>
+                            {:input(array('title'=>'姓名','inputName'=>'name','addHtml'=>'  sucmsg="验证通过！"','value'=>$info['name']))}
+                            {:input(array('title'=>'用户名','inputName'=>'username','addHtml'=>'  sucmsg="验证通过！"','value'=>$info['username']))}
+                            <li>
+                                <label>&nbsp;</label><input name="" type="submit" class="scbtn" value="查询"/>
+                            </li>
+                        
+                    </ul>
+                </form>
             </div>
 
 

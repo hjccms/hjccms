@@ -12,6 +12,9 @@ return array(
     'URL_MODEL' => '2',
     'LOAD_EXT_CONFIG' => 'app,db,debug',  //加载其他配置
     //其他配置
-    
+    //默认错误跳转对应的模板文件
+    'TMPL_ACTION_ERROR' => 'App/Tpl/Admin/Index/error.html',
+    //默认成功跳转对应的模板文件
+    'TMPL_ACTION_SUCCESS' => 'App/Tpl/Admin/Index/success.html',
 );
 ?>
