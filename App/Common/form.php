@@ -34,7 +34,13 @@ function hideInput($data)
     $str = '<input name="'.$data['inputName'].'" value="'.$data['value'].'" type="hidden" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' />';
     return $str;
 }
-
+//日期框
+function laydate($data)
+{
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text"  onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'})" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    return $str;
+}
 //radio单选框
 function radio($data)
 {
@@ -57,7 +63,8 @@ function radio($data)
 //textarea
 function textarea($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 
@@ -65,13 +72,15 @@ function textarea($data)
 //编辑器
 function editor($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><textarea name="'.$data['inputName'].'" style="width:800px;height:400px;visibility:hidden;" class="'.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea></li>';
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><textarea name="'.$data['inputName'].'" style="width:800px;height:400px;visibility:hidden;" class="'.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea></li>';
     return $str;
 }
 //上传
 function upload($data)
 {
-    $str = '<li><label>'.$data['title'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['uploadId'].'" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['uploadId'].'" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 //下啦菜单
@@ -174,7 +183,8 @@ function formField($fieldInfo,$value=array())
         }
         else
         {
-            $formInput[$k]['addHtml'] .= ' dataType='.$v['validform_type'].' ignore="ignore" ' ;
+            $dataType = $v['validform_type']?' dataType="'.$v['validform_type'].'"':'';
+            $formInput[$k]['addHtml'] .= $dataType.' ignore="ignore" ' ;
         }
         //处理ajaxurl验证唯一性  如果要想进行特殊的验证  请选择 否 然后在html里面对应增加方法
         if($v['ajax_url']==1)
