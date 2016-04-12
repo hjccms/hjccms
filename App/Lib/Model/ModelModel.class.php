@@ -10,7 +10,7 @@ class ModelModel extends Model
     function getModel($modelId='')
     {
         if($modelId&&  intval($modelId)>0) $condition = array('id'=>$modelId);
-        $ret = $this->where($condition)->order("id asc")->select();
+        $ret = $this->where($condition)->order("type asc,id asc")->select();
         if(!empty($modelId))            return $ret['0'];  //如果查询单个信息直接返回 数组
         else return $ret;
     }

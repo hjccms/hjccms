@@ -24,7 +24,7 @@
 
                 {:input(array('title'=>'模型名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符" ajaxurl="/Admin/Model/checkFieldOnly/table_name/model" sucmsg="验证通过！"','value'=>$info['name']))}
                 {:input(array('title'=>'模型表名','inputName'=>'table_name','isMust'=>'1','tipMsg'=>'数据库表名称，用纯英文小写','addHtml'=>'datatype="y1-20"  ajaxurl="/Admin/Model/checkFieldOnly/table_name/model"   errormsg="格式为纯英文或_"','value'=>$info['table_name']))}
-                {:select(array('title'=>'类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>array(array('id'=>'fun','name'=>'功能模型'),array('id'=>'con','name'=>'内容模型'))))}
+                {:select(array('title'=>'类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>$modelType))}
                 {:select(array('title'=>'列表模板','inputName'=>'template','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['template'],'paramArr'=>$tem))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 {:radio(array('title'=>'开启分页','inputName'=>'page_open','value'=>$info['page_open'],'paramArr'=>get_valid()))}

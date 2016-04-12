@@ -69,8 +69,8 @@
                         <td>{$val.id}</td>
                         <td>{$val.name}</td>
                         <td>{$val.table_name}</td>
-                        <td><if condition="$val['type'] eq 'fun'">功能模型<else/><font color="red">内容模型</font></if></td>
-                        <td>{:get_list_button($listButton,array('modelId'=>$val[id]))}</td>
+                        <td>{$modelType[$val['type']]}</td>
+                        <td>{:get_list_button($listButton,array('id'=>$val['id'],'modelId'=>$val['id']))}</td>
                     </tr> 
                         
                     </volist>

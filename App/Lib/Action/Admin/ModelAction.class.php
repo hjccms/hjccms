@@ -8,6 +8,8 @@ class ModelAction  extends BaseAction
     {
         $this->getContentButton();
         $this->getListButton();
+        $modelType = C('MODELFUNTYPE');
+        $this->assign('modelType',$modelType);
         $models = D('Model')->getModel();
         $this->assign('models',$models);
         $this->display();
@@ -29,7 +31,13 @@ class ModelAction  extends BaseAction
                 $tem[] = array('id'=>$v,'name'=>$v);
             }
         }
-        
+        $config = C('MODELFUNTYPE');
+        foreach($config as $k=>$v)
+        {
+            $modelType[$k]['id'] = $k;
+            $modelType[$k]['name'] = $v;
+        }
+        $this->assign('modelType',$modelType);
         $this->assign('tem',$tem);
         
         $this->display();
@@ -48,10 +56,18 @@ class ModelAction  extends BaseAction
                 $tem[] = array('id'=>$v,'name'=>$v);
             }
         }
+        $config = C('MODELFUNTYPE');
+        foreach($config as $k=>$v)
+        {
+            $modelType[$k]['id'] = $k;
+            $modelType[$k]['name'] = $v;
+        }
+        $this->assign('modelType',$modelType);
         $this->assign('tem',$tem);
         //info信息
         if($id>0) $info = D('Model')->getModel($id);
         else $info = array();
+     
         $this->assign('info',$info);
         $this->assign('id', $id);
         load('@.form');

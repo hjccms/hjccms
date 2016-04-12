@@ -25,7 +25,11 @@ return array(
         array('id'=>'e','name'=>'EMAIL格式'),
         array('id'=>'url','name'=>'网址格式'),
     ),
-    
+    //模型类型
+    'MODELFUNTYPE' => array(
+        '1' => '功能模型',
+        '2' => '内容模型',
+    ),
     //链接参数
     'MENUPARAM' =>array('id','pid','modelId'),
     
