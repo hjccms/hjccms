@@ -258,3 +258,5 @@ function getRadioValue($fieldValue,$value='')
     return $result;
     
 }
+
+?>
