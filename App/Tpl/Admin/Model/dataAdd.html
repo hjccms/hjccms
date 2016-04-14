@@ -111,8 +111,8 @@ $(function(){
                 {
                     if(msg.status==1)
                     {
-                        $(".ldselchild:gt("+msg.data+")").remove();
-                        $(".ldselchild:eq("+msg.data+")").after(msg.info);
+                        $(".ldselchild{$val}:gt("+msg.data+")").remove();
+                        $(".ldselchild{$val}:eq("+msg.data+")").after(msg.info);
                     }
                     else
                     {

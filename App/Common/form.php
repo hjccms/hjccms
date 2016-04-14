@@ -140,7 +140,7 @@ function ldselect($data)
     $startOption = '<option value=""  >请选择</option>';
     $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
                 <div class="vocation Validform_error" >
-                    <select class="select1 ldselchild '.$data['addClass'].'" style="width:100px;"  name="'.$data['inputName'].'" level=0   '.$data['addHtml'].' id="ld'.$data['value'].'" >
+                    <select class="select1 ldselchild'.$data['value'].' '.$data['addClass'].'" style="width:100px;"  name="'.$data['inputName'].'" level=0   '.$data['addHtml'].' id="ld'.$data['value'].'" >
                         '.$startOption.$optionStr.'
                     </select><i class="Validform_checktip">'.$data['tipMsg'].'</i>
                 </div>

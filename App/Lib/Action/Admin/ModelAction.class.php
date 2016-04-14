@@ -353,7 +353,7 @@ class ModelAction  extends BaseAction
         }
         $level = $post['level']+1;
         $startOption = '<option value=""  >请选择</option>';
-        $str =  '&nbsp;&nbsp;<select class="select1 ldselchild" style="width:100px;"  name="'.$post['modelName'].'_id" level='.$level.'  id="ld'.$post['modelName'].'" >
+        $str =  '&nbsp;&nbsp;<select class="select1 ldselchild'.$post['modelName'].'" style="width:100px;"  name="'.$post['modelName'].'_id" level='.$level.'  id="ld'.$post['modelName'].'" >
                         '.$startOption.$optionStr.'
                     </select>';  
         $this->ajaxReturn($level-1,$str,1);
