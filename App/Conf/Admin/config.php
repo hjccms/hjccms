@@ -17,6 +17,7 @@ return array(
         'uploadimg'=>array('id'=>'uploadimg','fieldType'=>'varchar','name'=>'图片上传','longth'=>'250','inputType'=>'upload'),
         'select'=>array('id'=>'select','fieldType'=>'varchar','name'=>'下拉选择','longth'=>'250','inputType'=>'select'),
         'laydata'=>array('id'=>'laydata','fieldType'=>'datetime','fieldDefault'=>'','name'=>'日期表单','longth'=>'0','inputType'=>'laydate'),
+        'ldselect'=>array('id'=>'ldselect','fieldType'=>'varchar','fieldDefault'=>'','name'=>'联动下拉','longth'=>'250','inputType'=>'ldselect'),
     ),    
     //验证规则
     'VALIDFORMTYPE' =>array(
@@ -30,6 +31,7 @@ return array(
     'MODELFUNTYPE' => array(
         '1' => '功能模型',
         '2' => '内容模型',
+        '3' => '联动模型',
     ),
     //链接参数
     'MENUPARAM' =>array('id','pid','modelId'),

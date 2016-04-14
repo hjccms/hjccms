@@ -125,7 +125,28 @@ function selectChild($childs,$value='',$i='1')
     }
     return $optionStr;
 }
-
+//联动下拉菜单
+function ldselect($data)
+{
+    if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    
+    foreach($data['paramArr'] as $k=>$v)
+    {
+        $selected = ($v['id']==$data['value'])?"selected":"";
+        $optionStr .= '<option value="'.$v['id'].'" '.$selected.' >'.$v['name'].'</option>';
+        if(is_array($v['childs'])||!empty($v['childs'])) $optionStr .=   selectChild($v['childs'],$data['value']);
+        unset($selected);
+    }
+    $startOption = '<option value=""  >请选择</option>';
+    $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
+                <div class="vocation Validform_error" >
+                    <select class="select1 ldselchild '.$data['addClass'].'" style="width:100px;"  name="'.$data['inputName'].'" level=0   '.$data['addHtml'].' id="ld'.$data['value'].'" >
+                        '.$startOption.$optionStr.'
+                    </select><i class="Validform_checktip">'.$data['tipMsg'].'</i>
+                </div>
+            </li>';
+    return $str;
+}
 //复选框
 function checkbox($data)
 {
@@ -216,9 +237,15 @@ function formField($fieldInfo,$value=array())
                 $formInput[$k]['paramArr'] = $ret;
             }
         }
+        //如果是联动模型的
+        if($v['type']=='ldselect')
+        {
+            $formInput[$k]['paramArr'] = D('Model')->getSelAll($v['form_value'],0,false);
+        }
     }
     return $formInput;
 }
+//联动字段处理方法
 
 
 //解析radio select等字段的值
@@ -229,8 +256,26 @@ function getRadioValue($fieldValue,$value='')
     //首先解析是方法的参数
     if(strpos($fieldValue,'fun__')===0)
     {
-        $fun = substr($fieldValue,4);
+        $fun = substr($fieldValue,5);
         $result = $fun;
+        return $result;
+    }
+    //模型的方法
+    if(strpos($fieldValue,'model__')===0)
+    {
+        $fun = substr($fieldValue,7);
+        $arr = explode('_',$fun);
+       
+        if(empty($arr['1'])) //如果不存在 视为ModelModel里面的方法  这个以后可能还得再加强灵活性
+        {
+            $modelFun = explode('-', $arr['0']);
+            
+            $result = D('Model')->$modelFun['0']($modelFun['1']);
+        }
+        else
+        {
+            //$result = D(ucfirst($arr['0']))->$arr['1'];
+        }
         return $result;
     }
     $i = 0;

@@ -24,7 +24,7 @@
 
                 {:input(array('title'=>'字段名称','inputName'=>'name','isMust'=>'1','tipMsg'=>'标题不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符" ajaxurl="/Admin/Fieldinfo/checkName/modelId/'.$modelId.'" sucmsg="验证通过！"','value'=>$info['name']))}
                 {:input(array('title'=>'字段','inputName'=>'field_name','isMust'=>'1','tipMsg'=>'数据库字段名，用纯英文小写','addHtml'=>'datatype="y1-20"  ajaxurl="/Admin/Fieldinfo/checkName/modelId/'.$modelId.'"   errormsg="格式为纯英文"','value'=>$info['field_name']))}
-                {:select(array('title'=>'类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['type'],'paramArr'=>$fieldType))}
+                {:select(array('title'=>'类型','inputName'=>'type','isMust'=>'1','addHtml'=>'datatype="*" id="fieldType" errormsg="请选择"','value'=>$info['type'],'paramArr'=>$fieldType))}
                 {:input(array('title'=>'字段长度','inputName'=>'field_longth','isMust'=>'1','tipMsg'=>'数据库字段长度','addHtml'=>'datatype="n"  ajaxurl="/Admin/Fieldinfo/checkLongth/modelId/'.$modelId.'"   errormsg="格式为正整数"','value'=>100))}
                 {:radio(array('title'=>'是否必填','inputName'=>'must','value'=>0,'paramArr'=>get_valid()))}
                 {:radio(array('title'=>'验证唯一性','inputName'=>'ajax_url','value'=>0,'paramArr'=>get_valid()))}
@@ -77,7 +77,10 @@ $(function(){
                         }
 		}
 	});
+        
+        
 })
 </script>
+
 </html>
 

@@ -97,4 +97,6 @@ class FieldinfoAction  extends BaseAction
         if($ret) $this->ajaxReturn('','删除成功！',1);
         else $this->ajaxReturn('','删除失败！',0);
     }
+    
+    
 }

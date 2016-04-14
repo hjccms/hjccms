@@ -92,5 +92,41 @@ $(function(){
 })
 </script>
 <script type="text/javascript" src="__PUBLIC__/Plugins/Laydate/laydate.js"></script>
+
+<volist name="ldselect" id="val">
+<script type="text/javascript">
+
+$(function(){
+	
+        $(document).on("change", "#ld{$val}", function(e) {
+            var dataId = $(this).val();
+            var level = $(this).attr('level')
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Model/getLdChilds/",
+                data: "id="+dataId+"&modelName={$val}&level="+level,
+                dataType: "json",
+                
+                success: function(msg)
+                {
+                    if(msg.status==1)
+                    {
+                        $(".ldselchild:gt("+msg.data+")").remove();
+                        $(".ldselchild:eq("+msg.data+")").after(msg.info);
+                    }
+                    else
+                    {
+                        alert(msg.info);
+                    }
+                }
+             });
+            
+
+            
+        });
+        
+})
+</script>    
+</volist>
 </html>
 

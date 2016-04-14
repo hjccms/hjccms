@@ -7,9 +7,10 @@ class ModelModel extends Model
     //自动完成
     protected $_auto = array( array('create_time','time',1,'function') );
     //站点信息  支持全部和单个
-    function getModel($modelId='')
+    function getModel($modelId='',$con='')
     {
         if($modelId&&  intval($modelId)>0) $condition = array('id'=>$modelId);
+        if(!empty($con)) $condition['_string'] = $con;
         $ret = $this->where($condition)->order("type asc,id asc")->select();
         if(!empty($modelId))            return $ret['0'];  //如果查询单个信息直接返回 数组
         else return $ret;
@@ -54,5 +55,43 @@ class ModelModel extends Model
         if($ret) return true; else return false;
     }
     
+    //获取sel的数据方法
+    function getSelAll($model,$parentId='0',$childs=true)
+    {
+        $adminInfo = Cookie('adminInfo');
+        $condition = " site_id = ".$adminInfo->site_id." and del is null";
+        
+        if($childs==false) $condition .= " AND parent_id = '$parentId' ";
+        $selAll = M(ucfirst($model))->where($condition)->field('id,name,parent_id')->select();
+        
+        if($childs==true&&!empty($selAll))
+        {
+            $parentId = $parentId?$parentId:0;
+            $result = $this->sortChilds($selAll, $parentId);
+            return $result;
+        }
+        else 
+        {
+            return $selAll;
+        }
+    }
     
+    function sortChilds($dataArr,$parentId,$child,$type)
+    {
+        if(!is_array($dataArr)||empty($dataArr)) return '';
+        foreach ($dataArr as $k=>$v)
+        {
+            $allParents[$k] = $v['parent_id'];
+        }
+        if(!in_array($parentId,$allParents)) return ''; 
+        foreach ($dataArr as $k=>$v)
+        {
+            if($v['parent_id']==$parentId)
+            {
+                $result[$k] = $v;
+                $result[$k]['childs'] = $this->sortChilds($dataArr , $v['id']);
+            }
+        }
+        return $result;
+    }
 }

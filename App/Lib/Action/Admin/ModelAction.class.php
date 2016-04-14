@@ -185,6 +185,16 @@ class ModelAction  extends BaseAction
         //要显示的字段信息
         $fieldInfo = D('Fieldinfo')->getFields($modelId);
         $formInput = formField($fieldInfo);
+        
+        $ldselect = '';
+        foreach($formInput as $k=>$v)
+        {
+            if($v['inputType']=='ldselect')
+            {
+                $ldselect[$k] = $v['value'];
+            }
+        }
+        $this->assign('ldselect',$ldselect);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
         
@@ -326,5 +336,26 @@ class ModelAction  extends BaseAction
         if($ret) $ret = array('info'=>'数据重复！','status'=>'n');
         else  $ret = array('info'=>'验证成功！','status'=>'y');
         die(json_encode($ret));
+    }
+    //联动字段 获取下一级菜单
+    function getLdChilds()
+    {
+        if(!IS_AJAX) $this->ajaxReturn('','错误请求！',0);
+        $post = $this->_post();
+        $modelName = ucfirst($post['modelName']);
+        $result = D('Model')->getSelAll($modelName,$post['id'],false);
+        if(empty($result)) $this->ajaxReturn($post['level'],'',1);
+        foreach($result as $k=>$v)
+        {
+          
+            $optionStr .= '<option value="'.$v['id'].'"  >'.$v['name'].'</option>';
+            
+        }
+        $level = $post['level']+1;
+        $startOption = '<option value=""  >请选择</option>';
+        $str =  '&nbsp;&nbsp;<select class="select1 ldselchild" style="width:100px;"  name="'.$post['modelName'].'_id" level='.$level.'  id="ld'.$post['modelName'].'" >
+                        '.$startOption.$optionStr.'
+                    </select>';  
+        $this->ajaxReturn($level-1,$str,1);
     }
 }
