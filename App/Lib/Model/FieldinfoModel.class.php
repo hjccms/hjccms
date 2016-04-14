@@ -10,7 +10,7 @@ class FieldinfoModel extends Model
     {
         if($modelId&&  intval($modelId)>0) $condition = array('model_id'=>$modelId);
         if(!empty($con)&&  is_array($con)) $condition = array_merge ($condition,$con);
-        $ret = $this->where($condition)->order("sort asc")->select();
+        $ret = $this->where($condition)->order("sort asc,id asc")->select();
         return $ret;
     }
     function getInfo($id='')
