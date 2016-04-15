@@ -217,10 +217,15 @@ class MenuModel extends Model
             if(!$isCheck){
                 continue;
             }
+           
+            
             $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
-            $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
+            //$url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
+            $url = $v['func']?'#':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
+            $funcArr['func'] = $v['func'];
+            $func = $this->replaceFuncParam($funcArr);
             $tree .= '<li>';
-            $tree .= '<a href="'.$url.'"><span><img src="'.$v['icon'].'" /></span>'.$v['name'].'</a>';
+            $tree .= '<a href="'.$url.'"  onclick="'.$func.'"><span><img src="'.$v['icon'].'" /></span>'.$v['name'].'</a>';
             $tree .= '</li>';
         }
         return $tree;

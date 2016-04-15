@@ -119,7 +119,7 @@ class ModelAction  extends BaseAction
         $modelInfo = D('Model')->getModel($modelId);
         //要显示的字段信息
         $fieldInfo = D('Fieldinfo')->getFields($modelId,array('list_show'=>1));
-        $fields = 'id,valid,create_time,';
+        $fields = 'id,valid,create_time,sort,';
         foreach($fieldInfo as $k=>$v)
         {
             $fields .= $v['field_name'].',';
@@ -142,12 +142,13 @@ class ModelAction  extends BaseAction
             $startNum = $modelInfo['page_num']*($page-1);
             $pageNum = ($listCount%$modelInfo['page_num']==0)?($listCount/$modelInfo['page_num']):($listCount/$modelInfo['page_num']+1);
             
-            $dataList = $tableModel->where($condition)->field($fields)->order("id asc")->limit($startNum,$modelInfo['page_num'])->select();
+            $dataList = $tableModel->where($condition)->field($fields)->order("sort asc,id desc")->limit($startNum,$modelInfo['page_num'])->select();
         }
         else
         {
-            $dataList = $tableModel->where($condition)->field($fields)->order("id asc")->select();
+            $dataList = $tableModel->where($condition)->field($fields)->order("sort asc,id desc")->select();
         }
+       
         $this->assign('page',$page?$page:'');
         $this->assign('pageNum',$pageNum?$pageNum:'');
         //处理一些特殊的字段
@@ -300,7 +301,7 @@ class ModelAction  extends BaseAction
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
         
-        die();
+        
         $del = $this->_get('del');
         $condition = array('id'=>$id);
         if($del==1)  //真删除
@@ -313,6 +314,37 @@ class ModelAction  extends BaseAction
             $tableModel->where($condition)->save($data);
         }
         $this->ajaxReturn('','删除成功！',1);
+    }
+    //数据排序
+    function dataSort()
+    {
+        if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
+        //$id = $this->_param('id');
+        $modelId = $this->_param('modelId');
+        if(intval($modelId)>0)
+        {
+            $modelInfo = D('Model')->getModel($modelId);
+            $tableModel = M(ucfirst($modelInfo['table_name']));
+        }
+        else
+        {
+            $tableModel = M(ucfirst($this->_param('table_name')));
+        }
+        $post = $this->_post();
+        $i = 0;
+        foreach($post as $k=>$v)
+        {
+            if(strpos($k, '__')===false)                continue;
+            $arr = explode('__',$k);
+            $condition[$i]['id'] = $arr['1'];
+            $condition[$i][$arr['0']] = $v;
+            $i ++;
+        }
+        foreach($condition as $k=>$v)
+        {
+            $tableModel->save($v);
+        }
+        $this->ajaxReturn('','修改成功！',1);
     }
     //验证数据唯一性 通用方法
     function checkFieldOnly()

@@ -42,7 +42,7 @@ class ModelModel extends Model
     //创建数据库
     function createTable($tableName)
     {
-        $sql = 'CREATE TABLE `'.C('DB_PREFIX').$tableName.'` ( `id`  int(11) NOT NULL AUTO_INCREMENT ,`site_id`  int(11) NOT NULL  ,`admin_id`  int(11) NOT NULL  ,`create_time`  int(11) NOT NULL ,`valid`  tinyint(2) NOT NULL DEFAULT 1 ,`del`  tinyint(2) NULL DEFAULT NULL ,PRIMARY KEY (`id`),INDEX `id` (`id`) ) ENGINE=MyISAM DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci CHECKSUM=0 DELAY_KEY_WRITE=0 ';
+        $sql = 'CREATE TABLE `'.C('DB_PREFIX').$tableName.'` ( `id`  int(11) NOT NULL AUTO_INCREMENT ,`site_id`  int(11) NOT NULL  ,`admin_id`  int(11) NOT NULL  ,`create_time`  int(11) NOT NULL ,`valid`  tinyint(2) NOT NULL DEFAULT 1 ,`del`  tinyint(2) NULL DEFAULT NULL ,`sort`  int(11) NOT NULL DEFAULT 0 , PRIMARY KEY (`id`),INDEX `id` (`id`) ) ENGINE=MyISAM DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci CHECKSUM=0 DELAY_KEY_WRITE=0 ';
         if(mysql_query($sql)) return true;
         else return false;
         

@@ -69,3 +69,38 @@ function dataDel(modelId,id,del,table_name)
           
         });
 }
+//排序函数
+function dataSort(modelId,table_name)
+{
+    var data = '';
+    $(".idsort").each(function(){
+        var val = $(this).val();
+        data += "&"+$(this).attr('name')+"="+val;
+    });
+    
+    $.ajax({
+        type: "POST",
+        url: "/Admin/Model/dataSort",
+        data: "modelId="+modelId+"&table_name="+table_name+data,
+        dataType: "json",
+        beforeSend:function()
+        {
+            layer.load('正在请求...', 3);
+        },
+        success: function(msg)
+        {
+            if(msg.status==1)
+            {
+                //layer.alert('删除成功！', 1); //风格一
+                location.reload() ;
+            }
+            else
+            {
+                layer.alert(msg.info, 8); //风格一
+            }
+        }
+    });
+            
+          
+      
+}

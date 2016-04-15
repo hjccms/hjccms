@@ -76,7 +76,7 @@
                 <tbody>
                     <volist name='dataList' id='val' >
                     <tr>
-                        <td>{$val.id}</td>
+                        <td><input name="sort__{$val.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$val['sort']}" id="sort" />（{$val.id})</td>
                         
                         <volist name="fieldInfo" id="field" >
                         <td>{$val[$field['field_name']]}</td>
