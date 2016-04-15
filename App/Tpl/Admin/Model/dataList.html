@@ -106,7 +106,46 @@
                 }
             });
         </script>
+<volist name="ldselect" id="val">
+<script type="text/javascript">
+var num = 0;
+$(".ldselchild{$val}").each(function(){
+    $(this).attr('level',num);
+    num++ ;
+});
+$(function(){
+	
+        $(document).on("change", "#ld{$val}", function(e) {
+            var dataId = $(this).val();
+            var level = $(this).attr('level');
+            
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Model/getLdChilds/",
+                data: "id="+dataId+"&modelName={$val}&level="+level,
+                dataType: "json",
+                
+                success: function(msg)
+                {
+                    if(msg.status==1)
+                    {
+                        $(".ldselchild{$val}:gt("+msg.data+")").remove();
+                        $(".ldselchild{$val}:eq("+msg.data+")").after(msg.info);
+                    }
+                    else
+                    {
+                        alert(msg.info);
+                    }
+                }
+             });
+            
 
+            
+        });
+        
+})
+</script>    
+</volist>
     </body>
 
 </html>
