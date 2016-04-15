@@ -15,9 +15,9 @@ return array(
         'text'=>array('id'=>'text','fieldType'=>'text','name'=>'编辑器','longth'=>'1','inputType'=>'editor'),
         'radio'=>array('id'=>'radio','fieldType'=>'tinyint','name'=>'单选按钮','longth'=>'5','inputType'=>'radio'),
         'uploadimg'=>array('id'=>'uploadimg','fieldType'=>'varchar','name'=>'图片上传','longth'=>'250','inputType'=>'upload'),
-        'select'=>array('id'=>'select','fieldType'=>'varchar','name'=>'下拉选择','longth'=>'250','inputType'=>'select'),
+        'select'=>array('id'=>'select','fieldType'=>'tinyint','fieldDefault'=>'0','name'=>'下拉选择','longth'=>'250','inputType'=>'select'),
         'laydata'=>array('id'=>'laydata','fieldType'=>'datetime','fieldDefault'=>'','name'=>'日期表单','longth'=>'0','inputType'=>'laydate'),
-        'ldselect'=>array('id'=>'ldselect','fieldType'=>'int','fieldDefault'=>'0','name'=>'联动下拉','longth'=>'250','inputType'=>'ldselect'),
+        'ldselect'=>array('id'=>'ldselect','fieldType'=>'tinyint','fieldDefault'=>'0','name'=>'联动下拉','longth'=>'250','inputType'=>'ldselect'),
     ),    
     //验证规则
     'VALIDFORMTYPE' =>array(
