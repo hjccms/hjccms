@@ -59,7 +59,7 @@ class FieldinfoModel extends Model
         $type = $fieldType[$data['type']]['fieldType'];
       
         $type .= ($fieldType[$data['type']]['longth']&&intval($data['field_longth'])>0)?'('.$data['field_longth'].')':'';
-        $default =  $fieldType[$data['type']]['fieldDefault']?'  DEFAULT '.$fieldType[$data['type']]['fieldDefault']:'';
+        $default =  isset($fieldType[$data['type']]['fieldDefault'])?'  DEFAULT '.$fieldType[$data['type']]['fieldDefault']:'';
         $sql = 'ALTER TABLE `'.C('DB_PREFIX').$modelName.'` ADD COLUMN `'.$data['field_name'].'`  '.$type.' NOT NULL '.$default;
        
         if(mysql_query($sql)) return true;
