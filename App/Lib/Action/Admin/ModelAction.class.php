@@ -112,7 +112,18 @@ class ModelAction  extends BaseAction
                 $searchCon[$v['field_name']] = array('like','%'.$get.'%');
             }
         }
+        
+     
         $formInput = formField($searchFiled,$this->_get());
+        $ldselect = '';
+        foreach($formInput as $k=>$v)
+        {
+            if($v['inputType']=='ldselect')
+            {
+                $ldselect[$k] = $v['form_value'];
+            }
+        }
+        $this->assign('ldselect',$ldselect);
         $this->assign('formInput',$formInput);
         
         
@@ -157,10 +168,21 @@ class ModelAction  extends BaseAction
         {
             foreach($v as $key=>$val)
             {
-                
                 if($fieldNewInfo[$key]['type']=='radio'||$fieldNewInfo[$key]['type']=='select')
                 {
                     $dataList[$k][$key] = getRadioValue($fieldNewInfo[$key]['form_value'], $val);
+                }
+                
+                if($fieldNewInfo[$key]['type']=='ldselect')
+                {
+                    if(!$GLOBALS['ld'.$fieldNewInfo[$key]['form_value']])
+                    {
+                        $siteId = $this->adminInfo->site_id;
+                        $ldInfo = M(ucfirst($fieldNewInfo[$key]['form_value']))->where(array('site'=>$siteId))->getField('id,name');
+                        $GLOBALS['ld'.$fieldNewInfo[$key]['form_value']] = $ldInfo;
+                    }
+                    
+                    $dataList[$k][$key] = $GLOBALS['ld'.$fieldNewInfo[$key]['form_value']][$val];
                 }
             }
         }
@@ -192,7 +214,7 @@ class ModelAction  extends BaseAction
         {
             if($v['inputType']=='ldselect')
             {
-                $ldselect[$k] = $v['value'];
+                $ldselect[$k] = $v['form_value'];
             }
         }
         $this->assign('ldselect',$ldselect);
@@ -222,6 +244,15 @@ class ModelAction  extends BaseAction
         //要显示的字段信息
         $fieldInfo = D('Fieldinfo')->getFields($modelId);
         $formInput = formField($fieldInfo,$info);
+        $ldselect = '';
+        foreach($formInput as $k=>$v)
+        {
+            if($v['inputType']=='ldselect')
+            {
+                $ldselect[$k] = $v['form_value'];
+            }
+        }
+        $this->assign('ldselect',$ldselect);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
         $this->assign('id',$id);
@@ -374,6 +405,7 @@ class ModelAction  extends BaseAction
     {
         if(!IS_AJAX) $this->ajaxReturn('','错误请求！',0);
         $post = $this->_post();
+        if($post['id']=='') $this->ajaxReturn($post['level'],'',1); 
         $modelName = ucfirst($post['modelName']);
         $result = D('Model')->getSelAll($modelName,$post['id'],false);
         if(empty($result)) $this->ajaxReturn($post['level'],'',1);

@@ -130,6 +130,17 @@ function ldselect($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
     
+    if(intval($data['value'])>0)
+    {
+        $positionStr = positionLd($data,$data['form_value'],$data['value']);
+        $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
+                <div class="vocation Validform_error ldselect" >'.$positionStr.'
+                    <i class="Validform_checktip">'.$data['tipMsg'].'</i>
+                </div>
+            </li>';
+        return $str;
+    }
+    
     foreach($data['paramArr'] as $k=>$v)
     {
         $selected = ($v['id']==$data['value'])?"selected":"";
@@ -137,14 +148,35 @@ function ldselect($data)
         if(is_array($v['childs'])||!empty($v['childs'])) $optionStr .=   selectChild($v['childs'],$data['value']);
         unset($selected);
     }
+    
     $startOption = '<option value=""  >请选择</option>';
     $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
-                <div class="vocation Validform_error" >
-                    <select class="select1 ldselchild'.$data['value'].' '.$data['addClass'].'" style="width:100px;"  name="'.$data['inputName'].'" level=0   '.$data['addHtml'].' id="ld'.$data['value'].'" >
+                <div class="vocation Validform_error ldselect" >
+                    <select class="select1 ldselchild'.$data['form_value'].' '.$data['addClass'].'" style="width:100px;"  name="'.$data['inputName'].'" level=0   '.$data['addHtml'].' id="ld'.$data['form_value'].'" >
                         '.$startOption.$optionStr.'
                     </select><i class="Validform_checktip">'.$data['tipMsg'].'</i>
                 </div>
             </li>';
+    return $str;
+}
+//定位联动菜单
+function positionLd($fieldInfo,$model,$value)
+{
+    
+    $parent_id = M(ucfirst($model))->where('id='.$value)->getField('parent_id');
+    if($parent_id=='') return '';
+    $data = D('Model')->getSelAll($model,$parent_id,false);
+    
+    foreach($data as $k=>$v)
+    {
+        $selected = ($v['id']==$value)?"selected":"";
+        $optionStr .= '<option value="'.$v['id'].'" '.$selected.' >'.$v['name'].'</option>';
+        unset($selected);
+    }
+    $startOption = '<option value=""  >请选择</option>';
+    $str =  '<select class="select1 ldselchild'.$fieldInfo['form_value'].' '.$fieldInfo['addClass'].'" style="width:100px;"  name="'.$fieldInfo['inputName'].'" level=0   '.$fieldInfo['addHtml'].' id="ld'.$fieldInfo['form_value'].'" >'.$startOption.$optionStr.'</select>';
+    $parStr = positionLd($fieldInfo, $model, $parent_id);
+    if($parStr) $str = $parStr.$str;
     return $str;
 }
 //复选框
@@ -241,6 +273,9 @@ function formField($fieldInfo,$value=array())
         if($v['type']=='ldselect')
         {
             $formInput[$k]['paramArr'] = D('Model')->getSelAll($v['form_value'],0,false);
+            $formInput[$k]['form_value'] = $v['form_value'];
+            if(empty($value)) $formInput[$k]['value'] = '';
+            else  $formInput[$k]['value'] = $value[$v['field_name']];
         }
     }
     return $formInput;
