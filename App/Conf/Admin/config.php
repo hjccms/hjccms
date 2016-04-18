@@ -34,9 +34,9 @@ return array(
         '3' => '联动模型',
     ),
     //链接参数
-    'MENUPARAM' =>array('id','pid','modelId'),
+    'MENUPARAM' =>array('id','pid','modelId','importAction','importFun','fromUrl'),
     
     //函数参数
-    'MENUFUNCPARAM' =>array('id','pid','modelId'),
+    'MENUFUNCPARAM' =>array('id','pid','modelId','importAction','importFun','fromUrl'),
 );
 ?>

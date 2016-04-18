@@ -48,6 +48,7 @@ class ModelAction  extends BaseAction
         $id = $this->_get('id');
         //获取可用的列表模板
         $dir = './App/Tpl/Admin/Model';
+        
         $files = readFiles($dir);
         foreach($files as $k=>$v)
         {
@@ -67,7 +68,7 @@ class ModelAction  extends BaseAction
         //info信息
         if($id>0) $info = D('Model')->getModel($id);
         else $info = array();
-     
+        $this->assign('fromUrl',$_GET['fromUrl']);
         $this->assign('info',$info);
         $this->assign('id', $id);
         load('@.form');
@@ -186,10 +187,22 @@ class ModelAction  extends BaseAction
                 }
             }
         }
+        //导入外部处理机制
+        $importAction = $this->_get('importAction');
+        $importFun = $this->_get('importFun');
+        if($importAction&&$importFun)
+        {
+            $importAction = ucfirst($importAction);
+            import("@.Action.Admin.".$importAction);
+            $model = new $importAction();
+            $dataList = $model->$importFun($dataList);
+        }
         
         
         $this->getContentButton();
         $this->getListButton();
+        if(!empty($_GET['fromUrl'])) $this->assign('fromUrl',$_GET['fromUrl']);
+        else $this->assign('fromUrl',encrypt(urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']),'E'));
         $this->assign('modelId',$modelId);
         $this->assign('fieldInfo',$fieldInfo);
         $this->assign('dataList',$dataList);
@@ -227,6 +240,7 @@ class ModelAction  extends BaseAction
     function  dataEdit()
     {
         $modelId = $this->_get('modelId'); 
+        
         $id =  $this->_get('id'); 
         if(empty($id)||  intval($id)<=0) die('数据错误！');
         load('@.form');
@@ -252,6 +266,7 @@ class ModelAction  extends BaseAction
                 $ldselect[$k] = $v['form_value'];
             }
         }
+        
         $this->assign('ldselect',$ldselect);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
@@ -277,6 +292,8 @@ class ModelAction  extends BaseAction
         $post['create_time'] = time();
         $post['admin_id'] = $this->adminInfo->id;
         $post['site_id'] = $this->adminInfo->site_id;
+        $fromUrl = urldecode(encrypt($post['fromUrl'],'D'));
+        unset($post['fromUrl']);
         //导入外部处理机制
         if($post['importAction']&&$post['importFun'])
         {
@@ -297,15 +314,32 @@ class ModelAction  extends BaseAction
         }
         if($post['id']>0)
         {
-            if(!$tableModel->save()) $this->ajaxReturn ('','您没有修改数据或者发生错误！',0);
-            else $this->ajaxReturn ('','修改成功！',1);
+            
+            
+            if(!$tableModel->save())
+            {
+                $this->ajaxReturn ('','您没有修改数据或者发生错误！',0);
+            }
+            else
+            {
+                $ret['status'] = 1;
+                $ret['info'] = '修改成功！';
+                if(!empty($fromUrl))
+                {
+                    $ret['url'] = $fromUrl;
+                    $ret['status'] = 2;
+                }
+                $this->ajaxReturn ($ret,'JSON');
+            }
         }
         else
         {
             if($id = $tableModel->add())
             {
-               
-                $this->ajaxReturn ('','添加成功！',1);
+                $ret['status'] = 1;
+                $ret['info'] = '添加成功！';
+                if(!empty($fromUrl)) $ret['url'] = $fromUrl;
+                $this->ajaxReturn ($ret,'JSON');
             }
             else
             {

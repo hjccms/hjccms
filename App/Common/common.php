@@ -9,6 +9,11 @@ function encrypt($string, $operation, $key = '')
     if($key=='') $key = C('APP_KEY');
     $key = md5($key);
     $key_length = strlen($key);
+    if($operation=='D')
+    {
+        $string = str_replace ('-hjc-', '+', $string);
+        $string = str_replace ('_hjc_', '/', $string);
+    }
     $string = $operation == 'D' ? base64_decode($string) : substr(md5($string . $key), 0, 8) . $string;
     $string_length = strlen($string);
     $rndkey = $box = array();
@@ -38,7 +43,10 @@ function encrypt($string, $operation, $key = '')
             return'';
         }
     } else {
-        return str_replace('=', '', base64_encode($result));
+        $ret = str_replace('=', '', base64_encode($result));
+        $ret = str_replace('+', '-hjc-', $ret);
+        $ret = str_replace('/', '_hjc_', $ret);
+        return $ret;
     }
     
 }

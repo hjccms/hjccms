@@ -40,20 +40,13 @@
 
     <body>
 
-        <div class="place">
-            <span>位置：</span>
-            <ul class="placeul">
-                <li><a href="#">首页1</a></li>
-                <li><a href="#">数据表</a></li>
-                <li><a href="#">基本内容</a></li>
-            </ul>
-        </div>
+        <include file="Index:position"/>
 
         <div class="rightinfo">
 
             <div class="tools">
                 
-                <ul class="toolbar">
+                 <ul class="toolbar">
                     {$contentButton}
                 </ul>
                 <form action="" method="get" name="search" id="search" >
@@ -73,9 +66,9 @@
                 <thead>
                     <tr>
                         <th>排序<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
-                        <volist name="fieldInfo" id="val" >
-                        <th>{$val.name}</th>
-                        </volist>
+                        
+                        <th>地区名称</th>
+                        
                       
                         <th>操作</th>
                     </tr>
@@ -83,17 +76,42 @@
                 <tbody>
                     <volist name='dataList' id='val' >
                     <tr>
-                        <td>{$val.id}</td>
+                        <td><input name="sort__{$val.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$val['sort']}" id="sort" />({$val.id})</td>
                         
-                        <volist name="fieldInfo" id="field" >
-                        <td>{$val[$field['field_name']]}</td>
-                        </volist>
+                        
+                        <td>{$val['name']}</td>
+                        
                        
                       
-                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId))}</td>
+                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
                     </tr> 
-                        
+                        <volist name='val[childs]' id='va' >
+                        <tr>
+                            <td><input name="sort__{$va.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$va['sort']}" id="sort" />({$va.id})</td>
+
+
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;├─ {$va['name']}</td>
+
+
+
+                            <td>{:get_list_button($listButton,array('id'=>$va[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                        </tr> 
+                            <volist name='va[childs]' id='v' >
+                            <tr>
+                                <td><input name="sort__{$v.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$v['sort']}" id="sort" />({$v.id})</td>
+
+
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ {$v['name']}</td>
+
+
+
+                                <td>{:get_list_button($listButton,array('id'=>$v[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                            </tr> 
+
+                            </volist>
+                        </volist>
                     </volist>
+                    
                 </tbody>
             </table>
            
