@@ -49,6 +49,7 @@ class BaseAction  extends Action
                     else $this->error("没有权限访问该模块！");die;
                 }
             }
+            if(!empty($_GET['fromUrl'])) $this->assign('fromUrl',$_GET['fromUrl']);
         }
         else
         {

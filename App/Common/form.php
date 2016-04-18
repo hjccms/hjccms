@@ -338,5 +338,22 @@ function getRadioValue($fieldValue,$value='')
     return $result;
     
 }
-
+function sortChilds($dataArr,$parentId)
+{
+    if(!is_array($dataArr)||empty($dataArr)) return '';
+    foreach ($dataArr as $k=>$v)
+    {
+        $allParents[$k] = $v['parent_id'];
+    }
+    if(!in_array($parentId,$allParents)) return ''; 
+    foreach ($dataArr as $k=>$v)
+    {
+        if($v['parent_id']==$parentId)
+        {
+            $result[$k] = $v;
+            $result[$k]['childs'] = sortChilds($dataArr , $v['id']);
+        }
+    }
+    return $result;
+}
 ?>
