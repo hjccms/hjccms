@@ -369,6 +369,14 @@ class ModelAction  extends BaseAction
         
         $del = $this->_get('del');
         $condition = array('id'=>$id);
+        //如果存在子级有数据的情况 不能删除
+        
+        $fields = $tableModel->getDbFields();
+        if(in_array('parent_id', $fields))
+        {
+            $childs = $tableModel->where('parent_id='.$id.' and del is null')->getField('id');
+            if($childs) $this->ajaxReturn('','请先删除此条数据下面的子数据！',0);
+        }
         if($del==1)  //真删除
         {
             $tableModel->where($condition)->delete();
