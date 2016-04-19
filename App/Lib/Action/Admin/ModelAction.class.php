@@ -416,7 +416,7 @@ class ModelAction  extends BaseAction
         {
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
-        $condition = array($post['name']=>$post['param']);
+        $condition = array($post['name']=>$post['param'],'site_id'=>$this->adminInfo->site_id);
         if(intval($id)>0) $condition['_string'] = "id!='$id'";
         $ret = $tableModel->where($condition)->getField('id');
         if($ret) $ret = array('info'=>'数据重复！','status'=>'n');
