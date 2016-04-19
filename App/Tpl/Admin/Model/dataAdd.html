@@ -6,10 +6,12 @@
         <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
         
         <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
-     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
+        <if condition="$editorPlugins OR $uploadPlugins">
         <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
         <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
         <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+        </if>
         
     </head>
 
@@ -34,33 +36,37 @@
     </body>
     
 <script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<!--编辑器插件-->
+<if condition="$editorPlugins OR $uploadPlugins">
 <script type="text/javascript">
 KindEditor.ready(function(K) {
-    editor = K.create('textarea[id="editor"]', {
+    <volist name="editorPlugins" id="val">
+    {$val.inputName} = K.create('textarea[name="{$val.inputName}"]', {
             allowFileManager : true,
             uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
-            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager'
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager',
+            afterBlur: function(){this.sync();}
     });
-    var editor = K.editor({
-            allowFileManager : true,
-            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
-            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager&type=Sysicon'
-    });
+    </volist>
     
-    K('#image1').click(function() {
+    <volist name="uploadPlugins" id="val">
+    K('#{$val.inputName}but').click(function() {
             editor.loadPlugin('image', function() {
                     editor.plugin.imageDialog({
-                            showLocal : false,
-                            imageUrl : K('#url1').val(),
+                            showLocal : true,
+                            imageUrl : K('input[name="{$val.inputName}"]').val(),
                             clickFn : function(url) {
-                                    K('#url1').val(url);
+                                    K('input[name="{$val.inputName}"]').val(url);
                                     editor.hideDialog();
                             }
                     });
             });
     });
-
+    </volist>
 });
+</script>
+</if>
+<script type="text/javascript">
 $(function(){
 	$(".registerform").Validform({
 		tiptype:function(msg,o,cssctl){
@@ -76,8 +82,13 @@ $(function(){
                         "y3-10": /\w{3,10}/i,
                         "y1-20": /^[a-zA-Z_\/]{1,20}$/,
                 },
+                
                 ajaxPost:true,
+                beforeSubmit:function(){
+                    layer.load('正在请求...', 3);
+                },
                 callback:function(data){
+                        layer.closeAll();
                         if(data.status==1)
                         {
                             alert(data.info);
@@ -91,9 +102,13 @@ $(function(){
 	});
 })
 </script>
+<!--日期插件-->
+<if condition="$dataPlugins" >
 <script type="text/javascript" src="__PUBLIC__/Plugins/Laydate/laydate.js"></script>
-
+</if>
+<!--联动插件-->
 <volist name="ldselect" id="val">
+    
 <script type="text/javascript">
 
 $(function(){

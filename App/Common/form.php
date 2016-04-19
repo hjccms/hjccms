@@ -80,7 +80,7 @@ function editor($data)
 function upload($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['uploadId'].'" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['inputName'].'but" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 //下啦菜单

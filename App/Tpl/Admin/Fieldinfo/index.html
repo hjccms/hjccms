@@ -39,7 +39,11 @@
 
     <body>
 
-        <include file="Index:position"/>
+        <div class="place">
+            <span>位置：</span>
+            <ul class="placeul">
+                <li><a href="#">工作台</a></li><li><a href="#">模型管理</a></li><li><a href="#">字段管理</a></li>    </ul>
+        </div>
 
         <div class="rightinfo">
 
@@ -47,6 +51,7 @@
                 
                 <ul class="toolbar">
                     <li class="click_add"><a href="{:U('/Admin/Fieldinfo/fieldAdd/modelId/'.$modelId)}"><span><img src="__PUBLIC__/Style/Admin/images/t01.png" /></span>添加字段</a></li>
+                    <li class="click_add"><a href="javascript:void(0)" onclick="dataSort('','fieldinfo')"><span><img src="/Public/Sysicon/24X24/t02.png" /></span>批量排序</a></li>
                 </ul>
             </div>
 
@@ -66,7 +71,7 @@
                 <tbody>
                     <volist name='fields' id='val' >
                     <tr>
-                        <td>{$val.sort}</td>
+                        <td><input name="sort__{$val.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$val['sort']}" id="sort" /></td>
                         <td>{$val.name}</td>
                         <td>{$val.field_name}</td>
                         <td>{$val.type}</td>

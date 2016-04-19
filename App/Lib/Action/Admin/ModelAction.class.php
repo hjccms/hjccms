@@ -116,16 +116,12 @@ class ModelAction  extends BaseAction
         
      
         $formInput = formField($searchFiled,$this->_get());
-        $ldselect = '';
-        foreach($formInput as $k=>$v)
-        {
-            if($v['inputType']=='ldselect')
-            {
-                $ldselect[$k] = $v['form_value'];
-            }
-        }
-        $this->assign('ldselect',$ldselect);
         $this->assign('formInput',$formInput);
+        //特殊字段需要加在特殊的插件或者js
+        
+        $this->fieldAddPlugins($formInput);
+       
+        
         
         
         $modelInfo = D('Model')->getModel($modelId);
@@ -222,15 +218,9 @@ class ModelAction  extends BaseAction
         $fieldInfo = D('Fieldinfo')->getFields($modelId);
         $formInput = formField($fieldInfo);
         
-        $ldselect = '';
-        foreach($formInput as $k=>$v)
-        {
-            if($v['inputType']=='ldselect')
-            {
-                $ldselect[$k] = $v['form_value'];
-            }
-        }
-        $this->assign('ldselect',$ldselect);
+        $this->fieldAddPlugins($formInput);
+        
+        
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
         
@@ -258,16 +248,7 @@ class ModelAction  extends BaseAction
         //要显示的字段信息
         $fieldInfo = D('Fieldinfo')->getFields($modelId);
         $formInput = formField($fieldInfo,$info);
-        $ldselect = '';
-        foreach($formInput as $k=>$v)
-        {
-            if($v['inputType']=='ldselect')
-            {
-                $ldselect[$k] = $v['form_value'];
-            }
-        }
-        
-        $this->assign('ldselect',$ldselect);
+        $this->fieldAddPlugins($formInput);
         $this->assign('formInput',$formInput);
         $this->assign('modelId',$modelId);
         $this->assign('id',$id);
@@ -463,5 +444,39 @@ class ModelAction  extends BaseAction
                         '.$startOption.$optionStr.'
                     </select>';  
         $this->ajaxReturn($level-1,$str,1);
+    }
+    
+    
+    //处理特殊的字段 需要加载的不同插件  以后如果需要加载其它的插件  都在这里统一添加
+    function fieldAddPlugins($formInput)
+    {
+        $ldselect = ''; //联动菜单
+        $editorPlugins = ''; //编辑器
+        $uploadPlugins = ''; //单图上传按钮
+        $dataPlugins = '';//日期插件
+        foreach($formInput as $k=>$v)
+        {
+            if($v['inputType']=='ldselect')
+            {
+                $ldselect[$k] = $v['form_value'];
+            }
+            if($v['inputType']=='laydate')
+            {
+                $dataPlugins[$k] = $v;
+            }
+            if($v['inputType']=='upload')
+            {
+                $uploadPlugins[$k] = $v;
+            }
+            if($v['inputType']=='editor')
+            {
+                $editorPlugins[$k] = $v;
+            }
+        }
+        
+        $this->assign('ldselect',$ldselect);
+        $this->assign('dataPlugins',$dataPlugins);
+        $this->assign('uploadPlugins',$uploadPlugins);
+        $this->assign('editorPlugins',$editorPlugins);
     }
 }

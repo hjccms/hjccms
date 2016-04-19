@@ -221,7 +221,7 @@ class MenuModel extends Model
             
             $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
             //$url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
-            $url = $v['func']?'#':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
+            $url = $v['func']?'javascript:void(0)':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
             $funcArr['func'] = $v['func'];
             $func = $this->replaceFuncParam($funcArr);
             $tree .= '<li>';
@@ -253,7 +253,7 @@ class MenuModel extends Model
             $paramArr['param'] = $v['param'];
             $param = $this->replaceParam($paramArr);
            // $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
-            $url = $v['func']?'#':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
+            $url = $v['func']?'javascript:void(0)':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
             $funcArr['func'] = $v['func'];
             $func = $this->replaceFuncParam($funcArr);
             $tree .= $str.'<a class="tablelink" href="'.$url.'" onclick="'.$func.'">'.$v['name'].'</a>';
