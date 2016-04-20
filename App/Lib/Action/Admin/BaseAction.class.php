@@ -101,7 +101,6 @@ class BaseAction  extends Action
         {
             $condition['site_id'] = $site_id;
             $admins = D('Admin')->getSiteAdmins($site_id,1,'parent_id='.$adminId);
-            print_r($admins);
             foreach($admins as $k=>$v)
             {
                 $adminStr .= ','.$v['id'];
