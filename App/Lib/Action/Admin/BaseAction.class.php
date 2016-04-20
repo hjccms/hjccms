@@ -96,9 +96,9 @@ class BaseAction  extends Action
         $condition = array();
         $site_id = $this->adminInfo->site_id;
         $adminId = $this->adminInfo->id;
-        if($site_id>1) $condition['site_id'] = $site_id;
-        if($this->adminInfo->parent_id>0)  //如果不是某站点顶级管理员的话 只能取他自己和自己下级的数据
+        if($site_id>1)  //如果不是不是超级站点的话  取当前站点 当前管理员 以及当前管理员下面的数据
         {
+            $condition['site_id'] = $site_id;
             $admins = D('Admin')->getSiteAdmins($site_id,1,'parent_id='.$adminId);
             foreach($admins as $k=>$v)
             {
