@@ -10,7 +10,16 @@ class TestAction extends Action {
     
     
     function test(){
-        echo date("t",  strtotime("2016-02"));
+//        $arr = array("xue1","xue2","xue3",'xue4','xue5','xue6','xue7','xue8','xue9','xue10');
+//        foreach ($arr as $k=>$v){
+//            
+//        }
+        $str = "F";
+        for($j=1;$j<=50;$j++){
+            echo $str.'3'."<br>";
+            $str++;
+        }
+        
     }
     
     function testexcel(){
