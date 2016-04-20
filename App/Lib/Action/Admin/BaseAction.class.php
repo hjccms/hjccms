@@ -72,8 +72,7 @@ class BaseAction  extends Action
     //获取内容按钮
     function getContentButton(){
         if(!$this->menuId) return false;
-        $menu = D('Menu')->getMenu($this->menuId,true,false,2);
-        $contentButton = D('Menu')->getContentButton($menu);
+        $contentButton = D('Menu')->getMenu($this->menuId,true,false,2);
         $this->assign('contentButton',$contentButton);
     }
     
