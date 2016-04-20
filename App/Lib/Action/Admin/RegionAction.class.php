@@ -6,7 +6,7 @@ class RegionAction  extends BaseAction
 {
     function index($dataList)
     {
-        
+        if(empty($dataList)) return '';
         foreach($dataList as $k=>$v)
         {
             $ids .= $v['id'].',';
