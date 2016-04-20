@@ -319,7 +319,11 @@ class ModelAction  extends BaseAction
             {
                 $ret['status'] = 1;
                 $ret['info'] = '添加成功！';
-                if(!empty($fromUrl)) $ret['url'] = $fromUrl;
+                if(!empty($fromUrl))
+                {
+                    $ret['url'] = $fromUrl;
+                    $ret['status'] = 2;
+                }
                 $this->ajaxReturn ($ret,'JSON');
             }
             else
