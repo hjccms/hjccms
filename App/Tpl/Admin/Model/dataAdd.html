@@ -28,6 +28,7 @@
                 {:$val['inputType']($val)}
                 </volist>
                 {:hideInput(array('inputName'=>'model_id','value'=>$modelId))}
+                {:hideInput(array('inputName'=>'fromUrl','value'=>$fromUrl))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
 
@@ -92,7 +93,17 @@ $(function(){
                         if(data.status==1)
                         {
                             alert(data.info);
+                            
                             location.href="{:U('/Admin/Model/dataList/modelId/'.$modelId)}";
+                            
+                        }
+                        else if(data.status==2)
+                        {
+                            alert(data.info);
+                            
+                            location.href=data.url;
+                            
+                            
                         }
                         else
                         {

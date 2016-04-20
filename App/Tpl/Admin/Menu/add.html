@@ -32,6 +32,7 @@
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
                 {:input(array('title'=>'排序','inputName'=>'sort','value'=>$info['sort'],'addHtml'=>'datatype="n" ignore="ignore" errormsg="只能输入整数"'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                
                 {:upload(array('title'=>'icon图标','inputName'=>'icon','addId'=>'url1','value'=>$info['icon'],'uploadId'=>'image1'))}
                 {:textarea(array('title'=>'描述','inputName'=>'description','value'=>$info['description'],'width'=>345,'height'=>100))}
                 
@@ -57,7 +58,7 @@ KindEditor.ready(function(K) {
             fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager&dirname=Sysicon'
     });
     
-    K('#image1').click(function() {
+    K('#iconbut').click(function() {
             editor.loadPlugin('image', function() {
                     editor.plugin.imageDialog({
                             showLocal : false,

@@ -185,6 +185,7 @@ class AdminAction  extends BaseAction
         $post['role_type'] = $roleInfo['type'];
         if(intval($site_id)>1&&$this->adminInfo->site_id==1&&$post['role_type']==3) $post['site_id'] = $site_id;
         else  $post['site_id'] = $this->adminInfo->site_id;
+        if($post['parent_id']==''&&$this->adminInfo->site_id>1)  $post['parent_id'] = $this->adminInfo->id;
         if($post['password']!=$post['password2'])   $this->ajaxReturn('','密码不一致！',0);
         $post['password'] = md5(encrypt($post['password'], 'E'));
         return $post;
