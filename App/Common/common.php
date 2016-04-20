@@ -120,6 +120,11 @@ function get_list_button($listButton,$arr){
     echo D('Menu')->getListButton($listButton,$arr);
 }
 
+//获取列表按钮
+function get_content_button($contentButton,$arr){
+    echo D('Menu')->getContentButton($contentButton,$arr);
+}
+
 //获取角色类型
 function get_role_type($flag = null,$str=false,$type=null) {
     if($type<3){
