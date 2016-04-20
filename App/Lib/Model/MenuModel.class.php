@@ -207,9 +207,11 @@ class MenuModel extends Model
      * @param type $menu  菜单 $menu = D('Menu')->getMenu($id,true,false,3); $id是父id
      * @return boolean|string
      */
-    function getContentButton($menu){
+    function getContentButton($menu,$arr){
         if(!$menu) return false;
         $tree =  null;
+        $paramArr = $arr;
+        $funcArr = $arr;
         $role_id = $this->getRoleId();
         $menu_ids = $this->getRoleMenu();
         foreach($menu as $v){
@@ -217,9 +219,8 @@ class MenuModel extends Model
             if(!$isCheck){
                 continue;
             }
-           
-            
-            $param = $this->replaceParam(array('id'=>$v['id'],'param'=>$v['param']));
+            $paramArr['param'] = $v['param'];
+            $param = $this->replaceParam($paramArr);
             //$url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
             $url = $v['func']?'javascript:void(0)':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
             $funcArr['func'] = $v['func'];
