@@ -99,9 +99,8 @@ class AdminAction  extends BaseAction
                 $siteStr = select(array('isMust'=>1,'paramArr'=>$sites,'title'=>'站点选择','inputName'=>'site_id','addHtml'=>'datatype="*" id="selsite" errormsg="请选择"','value'=>$info['site_id']));
             }
             $admins = D('Admin')->getSiteAdmins($info['site_id']);
-
-            $allAdmins = D('Admin')->sortChilds($admins,0);
-            $adminStr = select(array('isMust'=>false,'paramArr'=>$allAdmins,'title'=>'上级管理员','inputName'=>'parent_id','addHtml'=>' id="seladmin" errormsg="请选择"','value'=>$info['parent_id']));
+           
+            $adminStr = select(array('isMust'=>false,'paramArr'=>$admins,'title'=>'上级管理员','inputName'=>'parent_id','addHtml'=>' id="seladmin" errormsg="请选择"','value'=>$info['parent_id']));
         
             
         }
@@ -140,9 +139,8 @@ class AdminAction  extends BaseAction
         $site_id = $this->_post('site_id');
         if(!$site_id||  intval($site_id)<=0) $this->ajaxReturn('','数据错误！',0);
         $admins = D('Admin')->getSiteAdmins($site_id,'1');
-        
-        $allAdmins = D('Admin')->sortChilds($admins,0);
-        $siteStr = select(array('isMust'=>false,'paramArr'=>$allAdmins,'title'=>'上级管理员','inputName'=>'parent_id','addHtml'=>' id="seladmin" errormsg="请选择"','value'=>''));
+       // $allAdmins = D('Admin')->sortChilds($admins,0);
+        $siteStr = select(array('isMust'=>false,'paramArr'=>$admins,'title'=>'上级管理员','inputName'=>'parent_id','addHtml'=>' id="seladmin" errormsg="请选择"','value'=>''));
         //获取所有本站管理员
         $this->ajaxReturn('',$siteStr,'1');
     }
@@ -204,8 +202,13 @@ class AdminAction  extends BaseAction
             $check = D('Admin')->getAdminInfo("id='$post[id]' and password='$oldPassword'");
             if(!$check)  $this->ajaxReturn('','旧密码错误！',0);
             if($post['password']!=$post['password2'])   $this->ajaxReturn('','密码不一致！',0);
+            $post['password'] = md5(encrypt($post['password'], 'E'));
         }
-        $post['password'] = md5(encrypt($post['password'], 'E'));
+        else
+        {
+            unset($post['password']);
+        }
+        if($post['parent_id']==''||$post['parent_id']==$this->adminInfo->id)  unset($post['parent_id']);
         return $post;
     }
     //检查旧密码是否正确
