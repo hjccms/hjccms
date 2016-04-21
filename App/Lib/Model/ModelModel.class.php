@@ -59,11 +59,11 @@ class ModelModel extends Model
     function getSelAll($model,$parentId='0',$childs=true)
     {
         $adminInfo = Cookie('adminInfo');
-        $condition['_string'] = "  del is null";
+        $condition['_string'] = "site_id=".$adminInfo->site_id." and  del is null";
         
         if($childs==false) $condition['_string'] .= " AND parent_id = '$parentId' ";
-        $con = D('Admin')->getSiteCondition($adminInfo->site_id,$adminInfo->id);
-        if($con) $condition = array_merge ($con,$condition);
+        //$con = D('Admin')->getSiteCondition($adminInfo->site_id,$adminInfo->id);
+        //if($con) $condition = array_merge ($con,$condition);
         $selAll = M(ucfirst($model))->where($condition)->field('id,name,parent_id')->select();
         
         if($childs==true&&!empty($selAll))
