@@ -16,7 +16,7 @@ class AdminModel extends Model
         $this->data($data)->save();
     }
     //获取某一站点所有可用的管理员
-    function getSiteAdmins($site_id='',$valid='',$_string='')
+    function getSiteAdmins($site_id='',$valid='',$_string='',$parentId=0)
     {
         if($site_id!='') $condition['site_id'] = $site_id;
         if($valid!='') $condition['valid'] = $valid;
@@ -24,6 +24,11 @@ class AdminModel extends Model
         if($_string!='') $condition['_string'] .= ' and '.$_string;
         
         $admins = $this->where($condition)->select();
+        if(empty($admins)) return '';
+     
+        
+        $admins = $this->sortChilds($admins, $parentId);
+        
         return $admins;
     }
     
@@ -47,4 +52,35 @@ class AdminModel extends Model
         }
         return $result;
     }
+    
+    function getSiteCondition($site_id,$adminId,$valid='1')
+    {
+        if($site_id>1)  //如果不是不是超级站点的话  取当前站点 当前管理员 以及当前管理员下面的数据
+        {
+            $condition['site_id'] = $site_id;
+            $admins = $this->getSiteAdmins($site_id,$valid,'',$adminId);
+            
+            
+            $adminStr = $adminId.$this->sortAdminIds($admins);
+            $condition['admin_id'] = array('in',$adminStr);
+        }
+        return $condition;
+    }
+    //递归组合ID
+    function sortAdminIds($admins)
+    {
+        if(!$admins) return '';
+      
+        foreach($admins as $k=>$v)
+        {
+            $adminStr .= ','.$v['id'];
+            if(!empty($v['childs']))
+            {
+                $adminStr .= $this->sortAdminIds($v['childs']);
+              
+            }
+        }
+        return $adminStr;
+    }
+    
 }
