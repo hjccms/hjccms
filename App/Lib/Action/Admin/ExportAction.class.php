@@ -9,7 +9,7 @@ class ExportAction extends BaseAction{
     function dispatch(){
         $site_id = $this->adminInfo->site_id;
         
-        $startDate = '2016-04-01';
+        $startDate = '2016-01-01';
         $endDate = '2016-04-30';
         $startTime = strtotime($startDate);
         $endTime = strtotime($endDate);
@@ -67,22 +67,13 @@ class ExportAction extends BaseAction{
             }
         }
         $region_count = count($region);
-        $flag = 0;//用于定位sheet
+        
+        //开始绘制表格
+        $sheet = 0;//用于定位当前sheet
         for($i=$startMonth;$i<=$endMonth;$i++){
-            //数据处理
-            $new_dispatch = null;
-            
-            for($j=1;$j<=$day;$j++){
-                
-                foreach($dispatch as $k=>$v){
-                    if($start<=strtotime($v['start_time']) && $end>=strtotime($v['end_time'])){
-                        $new_dispatch[$j] = $v;
-                    }
-                }
-            }
             
             //选择操作脚本
-            $objPHPExcel->setActiveSheetIndex($flag);
+            $objPHPExcel->setActiveSheetIndex($sheet);
             $objActSheet = $objPHPExcel->getActiveSheet();
             
             //设置当前活动sheet的名称
@@ -96,30 +87,36 @@ class ExportAction extends BaseAction{
             $objBorderA5->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN); 
             $objBorderA5->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN); 
 
+            //设置单元格--派单数量start
+            $row = 1;
+            $objActSheet->setCellValue('A'.$row, '')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');
+//            $objDrawing = new PHPExcel_Worksheet_Drawing();//加logo
+//            $objDrawing->setName('Photo');
+//            $objDrawing->setDescription('Photo');
+//            $objDrawing->setPath("./Public/Style/Admin/images/excel_logo.png");
+//            $objDrawing->setHeight(38);
+//            $objDrawing->setWidth(197);
+//            $objDrawing->setCoordinates('A1');
+//            $objDrawing->setWorksheet($objActSheet);
+//            $objActSheet->getRowDimension('1')->setRowHeight(38);//设置第一行高height
+//            $objActSheet->getColumnDimension('D')->setWidth(20);//设置宽width
             
-            //设置单元格
-            $objActSheet->setCellValue('A1', '')->setCellValue('B1', '')->setCellValue('C1', '')->setCellValue('D1', '')->setCellValue('E1', '');
-            $objActSheet->setCellValue('A2', '')->setCellValue('B2', '')->setCellValue('C2', '')->setCellValue('D2', '')->setCellValue('E2', '');
-            $objActSheet->setCellValue('A3', '')->setCellValue('B3', '')->setCellValue('C3', '')->setCellValue('D3', '')->setCellValue('E3', '合计');
-            $objActSheet->setCellValue('A4', '当日计划派单数量合计')->setCellValue('B4', '')->setCellValue('C4', '')->setCellValue('D4', '');
-            $objActSheet->setCellValue('C5', '派单地点及实际数量')->setCellValue('D5', '');
+            $row++;
+            $objActSheet->setCellValue('A'.$row, '市场活动计划监测表')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');
             
-            //加logo
-            $objDrawing = new PHPExcel_Worksheet_Drawing();
-            $objDrawing->setName('Photo');
-            $objDrawing->setDescription('Photo');
-            $objDrawing->setPath('./Public/Style/Admin/images/excel_logo.png');
-            $objDrawing->setHeight(38);
-            $objDrawing->setWidth(197);
-            $objDrawing->setCoordinates('A1');
-            $objDrawing->setWorksheet($objActSheet);
+            $row++;
+            $objActSheet->setCellValue('A'.$row, '')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '合计');
             
-            //设置第一行高height
-            $objActSheet->getRowDimension('1')->setRowHeight(38);
+            $row++;
+            $color_row_1 = $row;
+            $objActSheet->setCellValue('A'.$row, '当日计划派单数量合计')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '');
             
-            //设置宽width
-            $objActSheet->getColumnDimension('D')->setWidth(20);
+            $row++;
+            $color_row_2 = $row;
+            $color_row_12_start = $row;
+            $objActSheet->setCellValue('C'.$row, '派单地点及实际数量')->setCellValue('D'.$row, '');
             
+            $row++;
             $column = "F";//开始操作列
             $start_column = $column;
             $day = date("t",  strtotime($startYear.'-'.$i.'-01'));//获取当月有多少天
@@ -128,166 +125,357 @@ class ExportAction extends BaseAction{
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 //实际派单数量
-                $row = 6;//开始操作行
-                $start_row = $row;//开始操作行
-                $day_plan_number = 0;
+                $handle_row = $row;//开始操作行
+                $day_plan_number = null;//每日计划派单总计
                 foreach($region as $k=>$v){
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
-                            $objActSheet->setCellValue("{$column}{$row}", $dv['number']);
+                            $objActSheet->setCellValue("{$column}{$handle_row}", $dv['number']);
                             $day_plan_number = $day_plan_number+$dv['plan_number'];
                         }
                     }
-                    $objActSheet->setCellValue("A{$row}", '');
-                    $objActSheet->setCellValue("B{$row}", '');
-                    $objActSheet->setCellValue("C{$row}", $v['parent_name']);
-                    $objActSheet->setCellValue("D{$row}", $v['name']);
-                    $row++;
+                    $objActSheet->setCellValue("A{$handle_row}", '');
+                    $objActSheet->setCellValue("B{$handle_row}", '');
+                    $objActSheet->setCellValue("C{$handle_row}", $v['parent_name']);//一级地址
+                    $objActSheet->setCellValue("D{$handle_row}", $v['name']);//二级地址
+                    $handle_row++;
                 }
-                //当日计划派单数量
-                $objActSheet->setCellValue("{$column}4", $day_plan_number);
-                //当日实际派单数量
-                $objActSheet->setCellValue("{$column}5", "=SUM({$column}{$start_row}:{$column}{$row})");
+                $handle_row--;
+                $color_row_12_end = $handle_row;
+                $objActSheet->setCellValue("{$column}4", $day_plan_number);//当日计划派单数量
+                $objActSheet->setCellValue("{$column}5", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际派单数量
                 
-                $row--;
                 if($j!=$day){
                     $column++;
                 }
             }
             
-            //实际派单数量按月统计
-            $tmp_1 = $start_row;
+            $tmp_row = $row;
             foreach($region as $k=>$v){
-                $objActSheet->setCellValue("E{$tmp_1}", "=SUM({$start_column}{$tmp_1}:{$column}{$tmp_1})");
-                $tmp_1 ++;
+                $objActSheet->setCellValue("E{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//实际派单数量按月统计
+                $tmp_row ++;
             }
             
+            $objActSheet->setCellValue('E4', "=SUM({$start_column}4:{$column}4)");//计划派单数量合计
+            $objActSheet->setCellValue('E5', "=SUM({$start_column}5:{$column}5)");//实际派单数量总计
             
-            //计划派单数量合计
-            $objActSheet->setCellValue('E4', "=SUM({$start_column}4:{$column}4)");
-            //实际派单数量总计
-            $objActSheet->setCellValue('E5', "=SUM({$start_column}5:{$column}5)");
-            
-            
-            if($row>6){
+            if($handle_row>$row){
                 $objActSheet->setCellValue("A5", '实际派单数量');
-                $objActSheet->mergeCells("A5:B{$row}");
+                $objActSheet->mergeCells("A5:B{$handle_row}");
             }
             
+            $objActSheet->mergeCells('A1:'.$column.'1')->mergeCells('A2:'.$column.'2')->mergeCells('A3:D3')->mergeCells('A4:D4')->mergeCells('C5:D5');//合并单元格 
             
+            $row = $handle_row;
+            //设置单元格--派单数量end
             
-            //合并单元格 
-            $objActSheet->mergeCells('A1:'.$column.'1')
-                ->mergeCells('A2:'.$column.'2')
-                ->mergeCells('A3:D3')
-                ->mergeCells('A4:D4')
-                ->mergeCells('C5:D5'); 
+            //设置单元格--获取调卷数量start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $tmp_row_1 = $row;
+            $color_row_3 = $row;
+            $objActSheet->setCellValue('A'.$row, '当日计划获取调卷数量合计');
+            $objActSheet->mergeCells('A'.$row.':D'.$row);
+            
+            $row++;
+            $tmp_row_2 = $row;
+            $color_row_4 = $row;
+            $color_row_13_start = $row;
+            $objActSheet->setCellValue('C'.$row, '调卷地点及实际获取数量');
+            $objActSheet->mergeCells('C'.$row.':D'.$row);
+            
+            $row++;
+            for($j=1;$j<=$day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                //实际调卷数量
+                $handle_row = $row;
+                $day_plan_number = null;//每日计划调卷总计
+                foreach($region as $k=>$v){
+                    foreach($v['questionnaire'] as $dk=>$dv){
+                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
+                            $objActSheet->setCellValue("{$column}{$handle_row}", $dv['number']);
+                            $day_plan_number = $day_plan_number+$dv['plan_number'];
+                        }
+                    }
+                    $objActSheet->setCellValue("A{$handle_row}", '');
+                    $objActSheet->setCellValue("B{$handle_row}", '');
+                    $objActSheet->setCellValue("C{$handle_row}", $v['parent_name']);//一级地址
+                    $objActSheet->setCellValue("D{$handle_row}", $v['name']);//二级地址
+                    
+                    $objActSheet->setCellValue("{$column}{$tmp_row_1}", $day_plan_number);//当日计划获取调卷数量
+                    $objActSheet->setCellValue("{$column}{$tmp_row_2}", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际获取调卷数量
+                    $handle_row++;
+                }
+                $handle_row--;
+                $color_row_13_end = $handle_row;
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($region as $k=>$v){
+                $objActSheet->setCellValue("E{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//实际获取调卷量按月统计
+                $tmp_row ++;
+            }
+            
+            $objActSheet->setCellValue('E'.$tmp_row_1, "=SUM({$start_column}{$tmp_row_1}:{$column}{$tmp_row_1})");//计划获取调卷数量合计
+            $objActSheet->setCellValue('E'.$tmp_row_2, "=SUM({$start_column}{$tmp_row_2}:{$column}{$tmp_row_2})");//实际获取调卷数量合计
+
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A".$tmp_row_2, '实际获取调卷数量');
+                $objActSheet->mergeCells("A".$tmp_row_2.":B{$handle_row}");
+            }
+            $row = $handle_row;
+            //设置单元格--获取调卷数量end
+            
+            //设置单元格--当日计划兼职派单人数start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $color_row_5 = $row;
+            $objActSheet->setCellValue('A'.$row, '当日计划兼职派单人数');
+            $objActSheet->mergeCells('A'.$row.':D'.$row);
+            
+            for($j=1;$j<=$day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $day_parttimer_number = null;//每日派单兼职人数总计
+                foreach($region as $k=>$v){
+                    foreach($v['dispatch'] as $dk=>$dv){
+                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
+                            $day_parttimer_number = $day_parttimer_number+$dv['parttimer_number'];
+                        }
+                    }
+                }
+                $objActSheet->setCellValue("{$column}{$row}", $day_parttimer_number);
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue('E'.$row, "=SUM({$start_column}{$row}:{$column}{$row})");//计划兼职派单人数合计
+            //设置单元格--当日计划兼职派单人数end
+
+            //设置单元格--当日学校督导人员及工作安排（批注填写）start
+            $column = "F";//开始操作列
+            $start_column = $column;
+            $row++;
+            $color_row_6 = $row;
+            $objActSheet->setCellValue('A'.$row, '当日学校督导人员及工作安排（批注填写）');
+            $objActSheet->mergeCells('A'.$row.':E'.$row);
+            
+            for($j=1;$j<=$day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $day_parttimer_number = null;//每日派单兼职人数总计
+                $supervisor = null;
+                foreach($region as $k=>$v){
+                    foreach($v['dispatch'] as $dk=>$dv){
+                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
+                            $day_parttimer_number = $day_parttimer_number+$dv['parttimer_number'];
+                            $supervisor = $dv['supervisor']?$dv['supervisor']:$supervisor;
+                        }
+                    }
+                }
+                $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("学校人员姓名:{$supervisor}");//设置批注 
+                $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("\r\n");  
+                $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("带领兼职人数:{$day_parttimer_number}");//设置批注  
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue('E'.$row, "=SUM({$start_column}{$row}:{$column}{$row})");//计划兼职派单人数合计
+            //设置单元格--当日学校督导人员及工作安排（批注填写）end
+               
+            //设置单元格--兼职派单人员工作小时start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $tmp_row_1 = $row;
+            $color_row_7 = $row;
+            $color_row_14_start = $row;
+            $objActSheet->setCellValue('C'.$row, '实际兼职派单人员工作小时合计');
+            $objActSheet->mergeCells('C'.$row.':D'.$row);
+            
+            $row++;
+            for($j=1;$j<=$day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;
+                $day_parttimer_time = null;//每日派单兼职小时总计
+                foreach($region as $k=>$v){
+                    foreach($v['dispatch'] as $dk=>$dv){
+                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
+                            $objActSheet->setCellValue("{$column}{$handle_row}", $dv['parttimer_time']);
+                            $day_parttimer_time = $day_parttimer_time+$dv['parttimer_time'];
+                        }
+                    }
+                    $objActSheet->setCellValue("A{$handle_row}", '');
+                    $objActSheet->setCellValue("B{$handle_row}", '');
+                    $objActSheet->setCellValue("C{$handle_row}", $v['parent_name']);
+                    $objActSheet->setCellValue("D{$handle_row}", $v['name']);
+                    //实际兼职派单人员工作小时合计
+                    $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$row}:{$column}{$handle_row})");
+                    $handle_row++;
+                }
+                $handle_row--;
+                $color_row_14_end = $handle_row;
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($region as $k=>$v){
+                $objActSheet->setCellValue("E{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//实际兼职派单人员工作小时合计按月统计
+                $tmp_row ++;
+            }
+            
+            $objActSheet->setCellValue("E".$tmp_row_1, "=SUM({$start_column}{$tmp_row_1}:{$column}{$tmp_row_1})");//实际兼职派单人员工作小时合计
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A".$tmp_row_1, '兼职派单人员工作小时');
+                $objActSheet->mergeCells("A".$tmp_row_1.":B{$handle_row}");
+            }
+            $row = $handle_row;
+            //设置单元格--兼职派单人员工作小时end
+            
+            //设置单元格--单页成本start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $page_row = $row;
+            $color_row_8 = $row;
+            $objActSheet->setCellValue('A'.$row, '单页成本');
+            $objActSheet->mergeCells('A'.$row.':D'.$row);
+            
+            for($j=1;$j<=$day;$j++){
+                $objActSheet->setCellValue("{$column}{$row}", "={$column}5*0.5");
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue('E'.$row, "=SUM({$start_column}{$row}:{$column}{$row})");//单页成本合计
+            //设置单元格--单页成本start
+                        
+            //设置单元格--兼职工资start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $color_row_9 = $row;
+            $objActSheet->setCellValue('A'.$row, '兼职工资');
+            $objActSheet->mergeCells('A'.$row.':D'.$row);
+            
+            for($j=1;$j<=$day;$j++){
+                $objActSheet->setCellValue("{$column}{$row}", "={$column}{$tmp_row_1}*18");
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue('E'.$row, "=SUM({$start_column}{$row}:{$column}{$row})");//兼职工资合计
+            //设置单元格--兼职工资end
+                        
+            //设置单元格--物料/租金等成本start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $materiel_row = $row;
+            $color_row_10 = $row;
+            $objActSheet->setCellValue('A'.$row, '物料/租金等成本');
+            $objActSheet->mergeCells('A'.$row.':D'.$row);
+            
+            for($j=1;$j<=$day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $day_materiel_cost = null;//每日物料/租金总计
+                foreach($region as $k=>$v){
+                    foreach($v['dispatch'] as $dk=>$dv){
+                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
+                            $day_materiel_cost = $day_materiel_cost+$dv['materiel_cost'];
+                        }
+                    }
+                }
+                $objActSheet->setCellValue("{$column}{$row}", $day_materiel_cost);
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue('E'.$row, "=SUM({$start_column}{$row}:{$column}{$row})");//物料/租金等成本合计
+            //设置单元格--物料/租金等成本end
+    
+            //设置单元格--派单总成本start
+            $column = "F";
+            $start_column = $column;
+            $row++;
+            $color_row_11 = $row;
+            $objActSheet->setCellValue('A'.$row, '派单总成本');
+            $objActSheet->mergeCells('A'.$row.':D'.$row);
+            
+            for($j=1;$j<=$day;$j++){
+                $objActSheet->setCellValue("{$column}{$row}", "=SUM({$column}{$page_row}:{$column}{$materiel_row})");
+                if($j!=$day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue('E'.$row, "=SUM({$start_column}{$row}:{$column}{$row})");//派单总成本
+            //设置单元格--派单总成本end
             
             //从指定的单元格复制样式信息. 
             $objActSheet->duplicateStyle($objActSheet->getStyle('A1'), 'A1:'.$column.$row); 
             
             
-            //实际获取调卷数量
-            $column = "F";//开始操作列
-            $start_column = $column;
-            $row++;
-            $tmp_2 = $row;
-            $objActSheet->setCellValue('A'.$row, '当日计划获取调卷数量合计');
-            $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            
-            $row++;
-            $tmp_3 = $row;
-            $objActSheet->setCellValue('C'.$row, '调卷地点及实际获取数量');
-            
-            $row++;
+            //设置填充的样式和背景色
+            $objActSheet->getStyle("A1:{$column}{$row}")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+            $column = "F";
             for($j=1;$j<=$day;$j++){
-                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
-                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
-                //实际派单数量
-                $row_2 = $row;
-                $start_row_2 = $row_2;//开始操作行
-                $day_plan_number = 0;
-                foreach($region as $k=>$v){
-                    foreach($v['questionnaire'] as $dk=>$dv){
-                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
-                            $objActSheet->setCellValue("{$column}{$row_2}", $dv['number']);
-                            $day_plan_number = $day_plan_number+$dv['plan_number'];
-                        }
-                    }
-                    $objActSheet->setCellValue("A{$row_2}", '');
-                    $objActSheet->setCellValue("B{$row_2}", '');
-                    $objActSheet->setCellValue("C{$row_2}", $v['parent_name']);
-                    $objActSheet->setCellValue("D{$row_2}", $v['name']);
-                    //当日计划获取调卷数量
-                    $objActSheet->setCellValue("{$column}{$tmp_2}", $day_plan_number);
-                    //当日实际获取调卷数量
-                    $objActSheet->setCellValue("{$column}{$tmp_3}", "=SUM({$column}{$start_row_2}:{$column}{$row_2})");
-                    $row_2++;
+                if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '6'){
+                    $objActSheet->getStyle("{$column}3:{$column}{$row}")->getFill()->getStartColor()->setRGB('89bfff');
                 }
-                $row_2--;
+                if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '0'){
+                    $objActSheet->getStyle("{$column}3:{$column}{$row}")->getFill()->getStartColor()->setRGB('c2ffff');
+                }
                 if($j!=$day){
                     $column++;
                 }
             }
+            $objActSheet->getStyle("E4:E{$row}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("A{$color_row_1}:{$column}{$color_row_1}")->getFill()->getStartColor()->setRGB('fdc30a');
+            $objActSheet->getStyle("A{$color_row_2}:{$column}{$color_row_2}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("A{$color_row_3}:{$column}{$color_row_3}")->getFill()->getStartColor()->setRGB('fdc30a');
+            $objActSheet->getStyle("A{$color_row_4}:{$column}{$color_row_4}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("A{$color_row_5}:{$column}{$color_row_5}")->getFill()->getStartColor()->setRGB('fdc30a');
+            $objActSheet->getStyle("A{$color_row_6}:{$column}{$color_row_6}")->getFill()->getStartColor()->setRGB('fdc30a');
+            $objActSheet->getStyle("A{$color_row_7}:{$column}{$color_row_7}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("A{$color_row_8}:{$column}{$color_row_8}")->getFill()->getStartColor()->setRGB('c080ff');
+            $objActSheet->getStyle("A{$color_row_9}:{$column}{$color_row_9}")->getFill()->getStartColor()->setRGB('c080ff');
+            $objActSheet->getStyle("A{$color_row_10}:{$column}{$color_row_10}")->getFill()->getStartColor()->setRGB('c080ff');
+            $objActSheet->getStyle("A{$color_row_11}:{$column}{$color_row_11}")->getFill()->getStartColor()->setRGB('fd82c0');
+            $objActSheet->getStyle("A{$color_row_12_start}:D{$color_row_12_end}")->getFill()->getStartColor()->setRGB('ffff88');
+            $objActSheet->getStyle("A{$color_row_13_start}:D{$color_row_13_end}")->getFill()->getStartColor()->setRGB('ffff88');
+            $objActSheet->getStyle("A{$color_row_14_start}:D{$color_row_14_end}")->getFill()->getStartColor()->setRGB('ffff88');
             
-            //实际获取调卷量按月统计
-            $tmp_4 = $start_row_2;
-            foreach($region as $k=>$v){
-                $objActSheet->setCellValue("E{$tmp_4}", "=SUM({$start_column}{$tmp_4}:{$column}{$tmp_4})");
-                $tmp_1 ++;
-            }
+            //设置对齐方式
+            $objActSheet->getStyle("A1:{$column}{$row}")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);//水平方向居中
+            $objActSheet->getStyle("A1:{$column}{$row}")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER); //垂直方向居中
             
-            $objActSheet->setCellValue('E'.$tmp_2, "=SUM({$start_column}{$tmp_2}:{$column}{$tmp_2})");//计划获取调卷数量合计
-            $objActSheet->setCellValue('E'.$tmp_3, "=SUM({$start_column}{$tmp_3}:{$column}{$tmp_3})");//实际获取调卷数量合计
-
-            
-            if($row_2>$row){
-                $objActSheet->setCellValue("A".$tmp_3, '实际获取调卷数量');
-                $objActSheet->mergeCells("A".$tmp_3.":B{$row_2}");
-            }
-            
-            //从指定的单元格复制样式信息. 
-            $objActSheet->duplicateStyle($objActSheet->getStyle('A1'), 'A1:'.$column.$row_2); 
-            
-            //当日计划兼职派单人数
-            $column = "F";//开始操作列
-            $start_column = $column;
-            $row_2++;
-            $objActSheet->setCellValue('A'.$row_2, '当日计划兼职派单人数');
-            $objActSheet->mergeCells('A'.$row_2.':D'.$row_2);
-            
-            for($j=1;$j<=$day;$j++){
-                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
-                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
-                $day_parttimer_number = 0;
-                foreach($region as $k=>$v){
-                    foreach($v['dispatch'] as $dk=>$dv){
-                        if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
-                            $objActSheet->setCellValue("{$column}{$row}", $dv['number']);
-                            $day_parttimer_number = $day_parttimer_number+$dv['parttimer_number'];
-                        }
-                    }
-                }
-                $objActSheet->setCellValue("{$column}{$row_2}", $day_parttimer_number);
-                if($j!=$day){
-                    $column++;
-                }
-            }
-            $objActSheet->setCellValue('E'.$row_2, "=SUM({$start_column}{$row_2}:{$column}{$row_2})");//计划兼职派单人数合计
-
-            //当日学校督导人员及工作安排（批注填写）
-            
-            $flag++;
+            $sheet++;
         }
-        //输出xls
-        $outputFileName = "北外少儿教育市场活动计划监测表test.xls"; 
-        ob_end_clean() ;
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename='.$outputFileName.'.xls');
-        header('Cache-Control: No-cache');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+//        //输出xls
+//        $outputFileName = "北外少儿教育市场活动计划监测表test.xls"; 
+//        ob_end_clean() ;
+//        header('Content-Type: application/vnd.ms-excel');
+//        header('Content-Disposition: attachment;filename='.$outputFileName.'.xls');
+//        header('Cache-Control: No-cache');
+//        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+//        $objWriter->save('php://output');
+        
+        //将$objPHPEcel对象转换成html格式的
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');  
         $objWriter->save('php://output');
+
     }
 }
 
