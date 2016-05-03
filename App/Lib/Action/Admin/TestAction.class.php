@@ -133,6 +133,10 @@ class TestAction extends Action {
         //从指定的单元格复制样式信息. 
         $objActSheet->duplicateStyle($objActSheet->getStyle('A5'), 'A9:L9'); 
         
+        //设置对齐方式
+        $objActSheet->getStyle("A1:E1")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);//水平方向居中
+        $objActSheet->getStyle("A1:E1")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER); //垂直方向居中
+        
 //        $objExcel->setActiveSheetIndex(1); 
 //        $objActSheet2 = $objExcel->getActiveSheet(); 
 //
