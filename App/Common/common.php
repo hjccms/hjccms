@@ -157,4 +157,17 @@ function readFiles($dir)
     return $files;
 }
 
+//获取数组类型
+function my_array_type($arr){  
+    $c = count($arr);  
+    $in = array_intersect_key($arr,range(0,$c-1));  
+    if(count($in) == $c) {  
+        return 'index'; //索引数组  
+    }else if(empty($in)) {  
+        return 'assoc'; //关联数组  
+    }else{  
+        return 'mix'; //混合数组  
+    }  
+}  
+
 ?>
