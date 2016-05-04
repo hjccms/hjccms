@@ -9,8 +9,9 @@ class ExportAction extends BaseAction{
     function dispatch(){
         $site_id = $this->adminInfo->site_id;
         
-        $startDate = '2016-01-01';
-        $endDate = '2016-04-30';
+        $startDate = $this->_post('start_date')?$this->post('start_date'):date("Y-m-01");
+        $endDate = $this->_post('end_date')?$this->post('end_date'):date("Y-m-d");
+        
         $startTime = strtotime($startDate);
         $endTime = strtotime($endDate);
         
@@ -119,18 +120,18 @@ class ExportAction extends BaseAction{
             $row++;
             $column = "F";//开始操作列
             $start_column = $column;
-            $day = date("t",  strtotime($startYear.'-'.$i.'-01'));//获取当月有多少天
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $objActSheet->setCellValue("{$column}3", $j);
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 //实际派单数量
                 $handle_row = $row;//开始操作行
+                $day_number = null;//每日实际派单总计
                 $day_plan_number = null;//每日计划派单总计
                 foreach($region as $k=>$v){
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
-                            $objActSheet->setCellValue("{$column}{$handle_row}", $dv['number']);
+                            $day_number = $day_number+$dv['number'];
                             $day_plan_number = $day_plan_number+$dv['plan_number'];
                         }
                     }
@@ -138,6 +139,8 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("B{$handle_row}", '');
                     $objActSheet->setCellValue("C{$handle_row}", $v['parent_name']);//一级地址
                     $objActSheet->setCellValue("D{$handle_row}", $v['name']);//二级地址
+                    
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
                     $handle_row++;
                 }
                 $handle_row--;
@@ -145,7 +148,7 @@ class ExportAction extends BaseAction{
                 $objActSheet->setCellValue("{$column}4", $day_plan_number);//当日计划派单数量
                 $objActSheet->setCellValue("{$column}5", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际派单数量
                 
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -186,16 +189,17 @@ class ExportAction extends BaseAction{
             $objActSheet->mergeCells('C'.$row.':D'.$row);
             
             $row++;
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 //实际调卷数量
                 $handle_row = $row;
+                $day_number = null;//每日实际调卷总计
                 $day_plan_number = null;//每日计划调卷总计
                 foreach($region as $k=>$v){
                     foreach($v['questionnaire'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
-                            $objActSheet->setCellValue("{$column}{$handle_row}", $dv['number']);
+                            $day_number = $day_number+$dv['number'];
                             $day_plan_number = $day_plan_number+$dv['plan_number'];
                         }
                     }
@@ -204,13 +208,15 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("C{$handle_row}", $v['parent_name']);//一级地址
                     $objActSheet->setCellValue("D{$handle_row}", $v['name']);//二级地址
                     
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    
                     $objActSheet->setCellValue("{$column}{$tmp_row_1}", $day_plan_number);//当日计划获取调卷数量
                     $objActSheet->setCellValue("{$column}{$tmp_row_2}", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际获取调卷数量
                     $handle_row++;
                 }
                 $handle_row--;
                 $color_row_13_end = $handle_row;
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -239,7 +245,7 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '当日计划兼职派单人数');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $day_parttimer_number = null;//每日派单兼职人数总计
@@ -251,7 +257,7 @@ class ExportAction extends BaseAction{
                     }
                 }
                 $objActSheet->setCellValue("{$column}{$row}", $day_parttimer_number);
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -266,7 +272,7 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '当日学校督导人员及工作安排（批注填写）');
             $objActSheet->mergeCells('A'.$row.':E'.$row);
             
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $day_parttimer_number = null;//每日派单兼职人数总计
@@ -282,7 +288,7 @@ class ExportAction extends BaseAction{
                 $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("学校人员姓名:{$supervisor}");//设置批注 
                 $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("\r\n");  
                 $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("带领兼职人数:{$day_parttimer_number}");//设置批注  
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -300,7 +306,7 @@ class ExportAction extends BaseAction{
             $objActSheet->mergeCells('C'.$row.':D'.$row);
             
             $row++;
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;
@@ -308,10 +314,10 @@ class ExportAction extends BaseAction{
                 foreach($region as $k=>$v){
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
-                            $objActSheet->setCellValue("{$column}{$handle_row}", $dv['parttimer_time']);
                             $day_parttimer_time = $day_parttimer_time+$dv['parttimer_time'];
                         }
                     }
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_parttimer_time);
                     $objActSheet->setCellValue("A{$handle_row}", '');
                     $objActSheet->setCellValue("B{$handle_row}", '');
                     $objActSheet->setCellValue("C{$handle_row}", $v['parent_name']);
@@ -322,7 +328,7 @@ class ExportAction extends BaseAction{
                 }
                 $handle_row--;
                 $color_row_14_end = $handle_row;
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -351,9 +357,9 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '单页成本');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $objActSheet->setCellValue("{$column}{$row}", "={$column}5*0.5");
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -368,9 +374,9 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '兼职工资');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $objActSheet->setCellValue("{$column}{$row}", "={$column}{$tmp_row_1}*18");
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -386,7 +392,7 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '物料/租金等成本');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $day_materiel_cost = null;//每日物料/租金总计
@@ -398,7 +404,7 @@ class ExportAction extends BaseAction{
                     }
                 }
                 $objActSheet->setCellValue("{$column}{$row}", $day_materiel_cost);
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -413,9 +419,9 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '派单总成本');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 $objActSheet->setCellValue("{$column}{$row}", "=SUM({$column}{$page_row}:{$column}{$materiel_row})");
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
@@ -430,14 +436,14 @@ class ExportAction extends BaseAction{
             //设置填充的样式和背景色
             $objActSheet->getStyle("A1:{$column}{$row}")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
             $column = "F";
-            for($j=1;$j<=$day;$j++){
+            for($j=$startDay;$j<=$endDay;$j++){
                 if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '6'){
                     $objActSheet->getStyle("{$column}3:{$column}{$row}")->getFill()->getStartColor()->setRGB('89bfff');
                 }
                 if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '0'){
                     $objActSheet->getStyle("{$column}3:{$column}{$row}")->getFill()->getStartColor()->setRGB('c2ffff');
                 }
-                if($j!=$day){
+                if($j!=$endDay){
                     $column++;
                 }
             }
