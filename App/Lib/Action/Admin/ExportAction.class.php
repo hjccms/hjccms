@@ -1,17 +1,45 @@
 <?php
     
 class ExportAction extends BaseAction{
+    
+    public $site_id;
+        
     function __construct() {
         parent::__construct();
+        $this->site_id = $this->adminInfo->site_id;
         
     }
         
     function dispatch(){
-        $site_id = $this->adminInfo->site_id;
         
-        $startDate = $this->_post('start_date')?$this->post('start_date'):date("Y-m-01");
-        $endDate = $this->_post('end_date')?$this->post('end_date'):date("Y-m-d");
+        load("@.form");
         
+        $post_start_date = $this->_post('start_date');
+        $post_end_date = $this->_post('end_date');
+        $post_site_id = $this->_post('site_id');
+
+        $site_id = $this->site_id == 1?($post_site_id?$post_site_id:$this->site_id):$this->site_id;
+        
+        if($post_start_date && $post_end_date){
+            $startDate = $post_start_date?$post_start_date:date("Y-m-01");
+            $endDate = $post_end_date?$post_end_date:date("Y-m-d");
+        }else{
+            $startDate = date("Y-m-01");
+            $endDate = date("Y-m-d");
+        }
+        
+        //如果开始时间大于结束时间返回false
+        if($startDate>$endDate){
+            return false;
+        }
+        $sites = D('Site')->getSite("valid=1");
+        $this->assign('sites',$sites);
+        $this->assign('site_id',$this->site_id);
+        $this->assign('post_site_id',$site_id);
+        $this->assign('post_start_date',$startDate);
+        $this->assign('post_end_date',$endDate);
+        $this->display();
+              
         $startTime = strtotime($startDate);
         $endTime = strtotime($endDate);
         
@@ -45,6 +73,11 @@ class ExportAction extends BaseAction{
         $dispatch = D('Dispatch')->getDispatch("site_id={$site_id} and start_time>='{$startDate}' and end_time<='{$endDate}' and valid=1 and del is null");
         $questionnaire = D('Questionnaire')->getQuestionnaire("site_id={$site_id} and start_time>='{$startDate}' and end_time<='{$endDate}' and valid=1 and del is null");    
         $regionData = D('Region')->getRegionList($site_id);
+        
+        if(!$regionData){
+            return false;
+        }
+        
         $region = null;
         foreach($regionData as $k=>$v){
             if($v['childs']){
@@ -90,7 +123,7 @@ class ExportAction extends BaseAction{
 
             //设置单元格--派单数量start
             $row = 1;
-            $objActSheet->setCellValue('A'.$row, '')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');
+            $objActSheet->setCellValue('A'.$row, $startYear.'年'.$i.'月')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');           
 //            $objDrawing = new PHPExcel_Worksheet_Drawing();//加logo
 //            $objDrawing->setName('Photo');
 //            $objDrawing->setDescription('Photo');
@@ -120,7 +153,17 @@ class ExportAction extends BaseAction{
             $row++;
             $column = "F";//开始操作列
             $start_column = $column;
-            for($j=$startDay;$j<=$endDay;$j++){
+            if($i == $startMonth){
+                $start_day = $startDay;
+            }else{
+                $start_day = 1;//获取当月有多少天
+            }
+            if($i == $endMonth){
+                $end_day = $endDay;
+            }else{
+                $end_day = date("t",  strtotime($startYear.'-'.$i.'-01'));//获取当月有多少天
+            }
+            for($j=$start_day;$j<=$end_day;$j++){
                 $objActSheet->setCellValue("{$column}3", $j);
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
@@ -143,12 +186,14 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
                     $handle_row++;
                 }
-                $handle_row--;
+                if($handle_row>$row){
+                    $handle_row--;
+                }
                 $color_row_12_end = $handle_row;
                 $objActSheet->setCellValue("{$column}4", $day_plan_number);//当日计划派单数量
                 $objActSheet->setCellValue("{$column}5", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际派单数量
                 
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -189,7 +234,7 @@ class ExportAction extends BaseAction{
             $objActSheet->mergeCells('C'.$row.':D'.$row);
             
             $row++;
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 //实际调卷数量
@@ -214,9 +259,11 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("{$column}{$tmp_row_2}", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际获取调卷数量
                     $handle_row++;
                 }
-                $handle_row--;
+                if($handle_row>$row){
+                    $handle_row--;
+                }
                 $color_row_13_end = $handle_row;
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -245,7 +292,7 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '当日计划兼职派单人数');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $day_parttimer_number = null;//每日派单兼职人数总计
@@ -257,7 +304,7 @@ class ExportAction extends BaseAction{
                     }
                 }
                 $objActSheet->setCellValue("{$column}{$row}", $day_parttimer_number);
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -272,7 +319,7 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '当日学校督导人员及工作安排（批注填写）');
             $objActSheet->mergeCells('A'.$row.':E'.$row);
             
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $day_parttimer_number = null;//每日派单兼职人数总计
@@ -288,7 +335,7 @@ class ExportAction extends BaseAction{
                 $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("学校人员姓名:{$supervisor}");//设置批注 
                 $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("\r\n");  
                 $objActSheet->getComment("{$column}{$row}")->getText()->createTextRun("带领兼职人数:{$day_parttimer_number}");//设置批注  
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -306,7 +353,7 @@ class ExportAction extends BaseAction{
             $objActSheet->mergeCells('C'.$row.':D'.$row);
             
             $row++;
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;
@@ -326,9 +373,11 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$row}:{$column}{$handle_row})");
                     $handle_row++;
                 }
-                $handle_row--;
+                if($handle_row>$row){
+                    $handle_row--;
+                }
                 $color_row_14_end = $handle_row;
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -357,9 +406,9 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '单页成本');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $objActSheet->setCellValue("{$column}{$row}", "={$column}5*0.5");
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -374,9 +423,9 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '兼职工资');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $objActSheet->setCellValue("{$column}{$row}", "={$column}{$tmp_row_1}*18");
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -392,7 +441,7 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '物料/租金等成本');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $day_materiel_cost = null;//每日物料/租金总计
@@ -404,7 +453,7 @@ class ExportAction extends BaseAction{
                     }
                 }
                 $objActSheet->setCellValue("{$column}{$row}", $day_materiel_cost);
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -419,9 +468,9 @@ class ExportAction extends BaseAction{
             $objActSheet->setCellValue('A'.$row, '派单总成本');
             $objActSheet->mergeCells('A'.$row.':D'.$row);
             
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 $objActSheet->setCellValue("{$column}{$row}", "=SUM({$column}{$page_row}:{$column}{$materiel_row})");
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -436,14 +485,14 @@ class ExportAction extends BaseAction{
             //设置填充的样式和背景色
             $objActSheet->getStyle("A1:{$column}{$row}")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
             $column = "F";
-            for($j=$startDay;$j<=$endDay;$j++){
+            for($j=$start_day;$j<=$end_day;$j++){
                 if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '6'){
                     $objActSheet->getStyle("{$column}3:{$column}{$row}")->getFill()->getStartColor()->setRGB('89bfff');
                 }
                 if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '0'){
                     $objActSheet->getStyle("{$column}3:{$column}{$row}")->getFill()->getStartColor()->setRGB('c2ffff');
                 }
-                if($j!=$endDay){
+                if($j!=$end_day){
                     $column++;
                 }
             }
@@ -469,19 +518,21 @@ class ExportAction extends BaseAction{
             
             $sheet++;
         }
-//        //输出xls
-//        $outputFileName = "北外少儿教育市场活动计划监测表test.xls"; 
-//        ob_end_clean() ;
-//        header('Content-Type: application/vnd.ms-excel');
-//        header('Content-Disposition: attachment;filename='.$outputFileName.'.xls');
-//        header('Cache-Control: No-cache');
-//        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-//        $objWriter->save('php://output');
         
-        //将$objPHPEcel对象转换成html格式的
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');  
-        $objWriter->save('php://output');
-
+        if($this->_post("subType") == "导出"){
+            //输出xls
+            $outputFileName = "北外少儿教育市场活动计划监测表"; 
+            ob_end_clean() ;
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename='.$outputFileName.'.xls');
+            header('Cache-Control: No-cache');
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }else{
+            //将$objPHPEcel对象转换成html格式的
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');  
+            $objWriter->save('php://output');
+        }
     }
 }
 
