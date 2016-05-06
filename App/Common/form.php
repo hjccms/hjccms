@@ -96,7 +96,16 @@ function upload($data)
 function select($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    
+    foreach($data['paramArr'] as $k=>$v){
+        if(count($v) == 1){
+            $param[$k]['id']=$k;
+            $param[$k]['name']=$v;
+        }
+    }
+    if($param){
+        $data['paramArr'] = null;
+        $data['paramArr'] = $param;
+    }
     foreach($data['paramArr'] as $k=>$v)
     {
         $selected = ($v['id']==$data['value'])?"selected":"";
