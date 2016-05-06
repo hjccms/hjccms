@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>菜单管理</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+     
+        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
+        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
+        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+    </head>
+
+    <body>
+
+        <include file="Index:position"/>
+        <div class="formbody">
+            <div class="formtitle"><span>添加</span></div>
+            <form class="registerform" action="{:U('/Admin/Student/ajaxPost')}">
+            <ul class="forminfo">
+                {:input(array('title'=>'手机号','isMust'=>'1','inputName'=>'mobile','addHtml'=>'datatype="m" errormsg="手机格式不正确" ajaxurl="/Admin/Model/checkFieldOnly/table_name/student/id/'.$info['id'].'" sucmsg="验证通过！"','value'=>$info['mobile']))}
+                {:inputPassword(array('title'=>'密码','isMust'=>'1','inputName'=>'password','tipMsg'=>'请设置密码','addHtml'=>'datatype="s"   errormsg="格式为纯英文"','value'=>$info['password']))}
+                {:input(array('title'=>'中文名','inputName'=>'name','value'=>$info['name']))}
+                {:input(array('title'=>'英文名','inputName'=>'en_name','value'=>$info['en_name']))}
+                {:input(array('title'=>'邮箱','inputName'=>'email','value'=>$info['email'],'addHtml'=>'datatype="e" ignore="ignore"'))}
+                {:select(array('title'=>'分配教务','inputName'=>'jw_id','value'=>$info['jw_id'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>$jw))}
+                {:select(array('title'=>'分配CC','inputName'=>'cc_id','value'=>$info['cc_id'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>$cc))}
+                {:select(array('title'=>'注册渠道','inputName'=>'channel','value'=>$info['channel'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_channel()))}
+                {:input(array('title'=>'其他渠道','li_style'=>'display:none','li_class'=>'other_channel','inputName'=>'other_channel','value'=>$info['other_channel']))}
+                {:input(array('title'=>'推荐人','li_style'=>'display:none','li_class'=>'referee','inputName'=>'referee','value'=>$info['referee']))}
+                {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
+                {:input(array('title'=>'固定电话','inputName'=>'phone','value'=>$info['phone'],'addHtml'=>'datatype="phone" ignore="ignore"'))}
+                {:input(array('title'=>'母亲手机号','inputName'=>'mother_mobile','value'=>$info['mother_mobile'],'addHtml'=>'datatype="m" ignore="ignore"'))}
+                {:input(array('title'=>'父亲手机号','inputName'=>'father_mobile','value'=>$info['father_mobile'],'addHtml'=>'datatype="m" ignore="ignore"'))}
+                {:input(array('title'=>'年龄','inputName'=>'age','value'=>$info['age']))}
+                {:radio(array('title'=>'性别','inputName'=>'gender','value'=>$info['gender'],'paramArr'=>get_gender()))}
+                {:input(array('title'=>'QQ','inputName'=>'qq','value'=>$info['qq']))}
+                {:input(array('title'=>'出生日期','inputName'=>'birthday','value'=>$info['birthday'],'tipMsg'=>'例：2005-10-12'))}
+                {:input(array('title'=>'民族','inputName'=>'nation','value'=>$info['nation'],'tipMsg'=>'例：汉族'))}
+                {:input(array('title'=>'住址','inputName'=>'address','value'=>$info['address']))}
+                {:input(array('title'=>'健康状况','inputName'=>'healthy','value'=>$info['healthy']))}
+                {:input(array('title'=>'爱好','inputName'=>'hobby','value'=>$info['hobby']))}
+                {:input(array('title'=>'就读学校','inputName'=>'school','value'=>$info['school']))}
+                {:input(array('title'=>'其他培训机构','inputName'=>'train_school','value'=>$info['train_school']))}
+                {:input(array('title'=>'紧急联系人','inputName'=>'emergency_name','value'=>$info['emergency_name']))}
+                {:input(array('title'=>'紧急联系电话','inputName'=>'emergency_mobile','value'=>$info['emergency_mobile'],'addHtml'=>'datatype="m" ignore="ignore"'))}
+                {:textarea(array('title'=>'注意事项','inputName'=>'note','value'=>$info['note'],'width'=>345,'height'=>100))}
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+            </ul>
+
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+    var validhash = $('input[name="__hash__"]').val();
+    var editor = K.editor({
+        allowFileManager : true,
+        uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+        fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager&dirname=Sysicon'
+    });
+    
+    K('#iconbut').click(function() {
+        editor.loadPlugin('image', function() {
+            editor.plugin.imageDialog({
+                showLocal : false,
+                imageUrl : K('#url1').val(),
+                clickFn : function(url) {
+                    K('#url1').val(url);
+                    editor.hideDialog();
+                } 
+            });
+        });
+    });
+});
+$(function(){
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+        datatype:{
+            "*6-20": /^[^\s]{6,20}$/,
+            "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
+            "y3-10": /\w{3,10}/i,
+            "phone":  /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/,
+        },
+        ajaxPost:true,
+        callback:function(data){
+            if(data.status==1){
+                alert(data.info);
+                location.href="{:U('Admin/Student/index')}";
+            }else{
+                alert(data.info);
+            }
+        }
+	});
+    
+    //数据初始化
+    $(".referee").hide();
+    $(".other_channel").hide();
+    $("select[name=channel]").change(function(){
+        var channel = $("select[name=channel] option:selected").val();
+        if(channel == '4' || channel == '5'){
+            $(".referee").show();
+            $(".other_channel").hide();
+        }
+        if(channel == '6'){
+            $(".other_channel").show();
+            $(".referee").hide();
+        }
+    })
+})
+</script>
+</html>
+

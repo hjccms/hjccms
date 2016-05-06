@@ -63,12 +63,24 @@ function get_valid($flag = null) {
 	}
 }
 
+function get_gender($flag = null) {
+	$arr = array(
+		'1' => '男',
+		'2' => '女',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
 //获取菜单类型
 function get_menu_type($flag = null) {
 	$arr = array(
 		'1' => '链接',
 		'2' => '内容按钮',
-                '3' => '列表按钮',
+        '3' => '列表按钮',
 	);
 	if (isset($flag)) {
 		return $arr[$flag];
@@ -157,5 +169,21 @@ function readFiles($dir)
     return $files;
 }
 
+
+function get_channel($flag = null) {
+	$arr = array(
+		'1' => '派发单页',
+		'2' => '直接上门',
+        '3' => 'LED显示屏/招牌',
+        '4' => '家属、朋友推荐',
+        '5' => '在读学员推荐',
+        '6' => '其他方式'
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
 
 ?>

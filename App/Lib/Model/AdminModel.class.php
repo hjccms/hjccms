@@ -10,6 +10,14 @@ class AdminModel extends Model
         $result = $this->where($condition)->find();
         return $result;
     }
+    
+    //获取多个管理员详细信息
+    function getAdmin($condition,$order=null,$field=null)
+    {
+        $result = $this->field($field)->where($condition)->order($order)->select();
+        return $result;
+    }
+    
     //更新管理员信息 以主键为准
     function updateAdminInfo($data)
     {

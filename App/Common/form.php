@@ -12,13 +12,15 @@
  * @param data['addId'] string        表单附加id        
  * @param data['addHtml'] string      表单附加html   一般为表单验证附加的参数    
  * @param data['tip'] string          表单默认值      
+ * @param data['li_style'] string     表单外li的style   一般用于display:none 
+ * @param data['li_class'] string     表单外li的class 
  * @return string
  */
 //普通文本框
 function input($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 //密码框
