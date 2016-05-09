@@ -5,4 +5,10 @@ class IndexAction extends Action {
         C('SHOW_PAGE_TRACE',false);
         $this->display();
     }
+    
+    function checkLevel()
+    {
+        C('SHOW_PAGE_TRACE',false);
+        $this->display();
+    }
 }

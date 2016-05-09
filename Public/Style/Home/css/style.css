@@ -78,8 +78,38 @@ h2{font-weight:normal;}
 .hezuo .xiangqing .anniu { margin-left: 125px; margin-top: 15px; width: 193px; height: 45px; background-position: 0px 0px; text-align: center; line-height: 43px; color: #fff; font-size: 16px;}
 
 .footer { background-color: #dddedf; height: 295px; width: 100%;}
-.footer .footermenu { text-align: center; line-height: 160px; height: 140px;  }
+.footer .footermenu { text-align: center; line-height: 160px; height: 140px;  width: 100%; }
 .footer .footermenu a { color: #585859; margin: 0 26px; display: inline; font-size: 16px;}
 .footer .footermenu a:hover { text-decoration: underline; }
-.footer .call { text-align: center; width: 100%;}
+.footer .call { text-align: center; width: 100%; }
 .footer .call img { margin: 0 10px;}
+
+
+
+
+
+.checklevel { width: 100%; background-color: #ebf3f5; height: 900px; padding-top: 100px;}
+
+.checklevel .top { background-color: #60e1f4; height: 550px; margin-top: 30px; border: 1px #a5aaab solid;}
+.checklevel .title { text-align: center;  height:55px; font-size: 53px; color: #000; line-height: 55px;  }
+.checklevel .smalltitle { text-align: center;  height:25px; font-size: 24px; color: #000; line-height: 25px;  }
+
+.checklevel .top .num { color: #fff; font-size: 65px; height: 95px; line-height: 120px;}
+
+.checklevel .top .testname { font-size: 20px; color: #000; height: 20px; line-height: 20px; margin-bottom: 20px;}
+.checklevel .top .children { width: 145px; height:160px; background-position: 0 -200px;  margin-left: auto; margin-right: auto; padding-top:20px;  }
+.checklevel .top .children .bofang { width: 25px; height: 30px; background-position: -320px 0px; margin-left:60px; margin-top: 75px; cursor: pointer;  }
+
+.checklevel .top .daan { height:140px; margin-top: 40px; text-align: center; width: 600px; }
+.checklevel .top .daan .picslist { float:  left; width:140px; height: 140px; cursor: pointer; }
+.checklevel .top .daan .testpics { background-image: url("/Public/Style/Home/images/testpics.png");}
+.checklevel .top .daan .testpics2 { background-image: url("/Public/Style/Home/images/testpics2.png");}
+.checklevel .top .daan .zj { margin-left: 90px; margin-right: 90px;}
+
+.checklevel .bottom { background-color: #fccf45; height: 130px; padding-top: 10px;  border: 1px #a5aaab solid; border-top:none;}
+.checklevel .bottom .prenext { margin-top: 35px; margin-left:200px; }
+
+.checklevel .bottom .prenext .next:hover { background-position: -893px 0px; width: 267px; height: 53px; text-align: center; line-height: 53px; color: #fff; font-size: 24px; cursor: pointer; float: left;}
+.checklevel .bottom .prenext .pre:hover { background-position: -893px 0px; width: 267px; height: 53px; text-align: center; line-height: 53px; color: #fff; font-size: 24px; cursor: pointer; float: left;}
+.checklevel .bottom .prenext .pre {background-position: -893px -60px; color: #e96d1f;  width: 267px; height: 53px; text-align: center; line-height: 55px;  font-size: 24px; cursor: pointer; float: left;}
+.checklevel .bottom .prenext .next { background-position: -893px -60px; color: #e96d1f; margin-left: 60px; width: 267px; height: 53px; text-align: center; line-height: 55px;  font-size: 24px; cursor: pointer; float: left;}
