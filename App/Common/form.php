@@ -27,7 +27,7 @@ function input($data)
 function inputPassword($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="password"  class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="password"  class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 //隐藏表单框
@@ -40,7 +40,7 @@ function hideInput($data)
 function laydate($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text"  onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'})" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text"  onclick="laydate({istime: true, format: \'YYYY-MM-DD hh:mm:ss\'})" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 
@@ -48,7 +48,7 @@ function laydate($data)
 function laydate2($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text"  onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" value="'.$data['value'].'" type="text"  onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})" tip＝"'.$data['tip'].'" class="dfinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].' /><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 
@@ -56,7 +56,7 @@ function laydate2($data)
 function radio($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><cite>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><cite>';
     $i = 0;
     foreach($data['paramArr'] as $k=>$v){
         $i ++ ;
@@ -75,7 +75,7 @@ function radio($data)
 function textarea($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><textarea name="'.$data['inputName'].'"  class="textinput '.$data['addClass'].'" id="'.$data['addId'].'"  '.$data['addHtml'].'>'.$data['value'].'</textarea><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 
@@ -91,7 +91,7 @@ function editor($data)
 function upload($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
-    $str = '<li><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['inputName'].'but" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
+    $str = '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label><input name="'.$data['inputName'].'" type="text" id="'.$data['addId'].'" class="dfinput '.$data['addClass'].'"  value="'.$data['value'].'" /> <input name="" type="button" id="'.$data['inputName'].'but" class="btn" value="上传图片"/><i class="Validform_checktip">'.$data['tipMsg'].'</i></li>';
     return $str;
 }
 //下啦菜单
@@ -116,7 +116,7 @@ function select($data)
         unset($selected);
     }
     $startOption = '<option value=""  >请选择</option>';
-    $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
+    $str =  '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label>
                 <div class="vocation Validform_error">
                     <select class="select1 '.$data['addClass'].'" name="'.$data['inputName'].'"   '.$data['addHtml'].' >
                         '.$startOption.$optionStr.'
@@ -153,7 +153,7 @@ function ldselect($data)
     if(intval($data['value'])>0)
     {
         $positionStr = positionLd($data,$data['form_value'],$data['value']);
-        $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
+        $str =  '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label>
                 <div class="vocation Validform_error ldselect" >'.$positionStr.'
                     <i class="Validform_checktip">'.$data['tipMsg'].'</i>
                 </div>
@@ -211,7 +211,7 @@ function checkbox($data)
         if(is_array($v['childs'])||!empty($v['childs'])) $checkboxStr .=   checkboxChild($v['childs'],$data);
         unset($checked);
     }
-    $str =  '<li><label>'.$data['title'].$data['isMustStr'].'</label>
+    $str =  '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label>
                 <ul class="checkul" style="height:'.$data['height'].'">'.$checkboxStr.'</ul>
             </li>';
     return $str;
