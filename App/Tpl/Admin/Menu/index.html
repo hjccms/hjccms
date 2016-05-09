@@ -8,30 +8,6 @@
         <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/setting.js"></script>
         <script type="text/javascript">
-            $(document).ready(function () {
-                $(".click").click(function () {
-                    $(".tip").fadeIn(200);
-                    $(".mid").fadeIn(200);
-                });
-                
-                $(".tiptop a").click(function () {
-                    $(".tip").fadeOut(200);
-                    $(".mid").fadeOut(200);
-                });
-
-                $(".sure").click(function () {
-                    $(".tip").fadeOut(100);
-                    $(".mid").fadeOut(200);
-                });
-
-                $(".cancel").click(function () {
-                    $(".tip").fadeOut(100);
-                    $(".mid").fadeOut(200);
-                });
-               
-                
-            });
-            
             function menuDel(id){
                 layer.confirm('您确定要删除么？',function(index){
                     $.ajax({
