@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>添加数据</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+     
+        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
+        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
+        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/setting.js"></script>
+        <script>
+            function delRecord(id){
+                layer.confirm('您确定要删除么？',function(index){
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Student/delRecord",
+                        data: "id="+id,
+                        dataType: "json",
+                        beforeSend:function(){
+                            layer.load('正在请求...', 3);
+                        },
+                        success: function(msg){
+                            if(msg.status==1){
+                                location.reload() ;
+                            }else{
+                                layer.alert(msg.info, 8);
+                            }
+                        }
+                     });
+                });
+            }
+        </script>
+    </head>
+
+    <body>
+
+        <include file="Index:position"/>
+        <div class="formbody">
+            <div class="formtitle"><span>添加</span></div>
+            <form class="registerform" action="{:U('/Admin/Student/ajaxPostRecord')}">
+            <ul class="forminfo">
+                {:select(array('title'=>'纪录类型','inputName'=>'type','isMust'=>'1','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*"  nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_type()))}
+                {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status1','inputName'=>'status1','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status1()))}
+                {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status2','inputName'=>'status2','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status2()))}
+                {:textarea(array('title'=>'内容','inputName'=>'content','value'=>$info['content'],'width'=>345,'height'=>100))}
+                {:hideInput(array('inputName'=>'sid','value'=>$sid))}
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+            </ul>
+
+            </form>
+        </div>
+        <div class="rightinfo">
+            <div class="tools">
+                <ul class="toolbar">
+                    {:get_content_button($contentButton)}
+                </ul>
+            </div>
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th>编号<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>内容</th>
+                        <th>添加人</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name='data' id='val' >
+                        <tr>
+                            <td>{$val.id}</td>
+                            <td>{:get_record_type($val['type'])}</td>
+                            <if condition="$val['type'] eq '1'">
+                                <td>{:get_record_status1($val['status'])}</td>
+                            </if>
+                            <if condition="$val['type'] eq '2'">
+                                <td>{:get_record_status2($val['status'])}</td>
+                            </if>
+                            <td>{$val.content}</td>
+                            <td>{$val.add_name}</td>
+                            <td>{:date('Y-m-d',$val['create_time'])}</td>
+                            <if condition="$admin_id eq $val['add_id']">
+                                <td><a class="tablelink" onclick="delRecord({$val['id']})" href="javascript:void(0)">删除</a></td>
+                            </if>
+                        </tr>                       
+                    </volist>
+                </tbody>
+            </table>
+            <div class="mid" style=" display:none;width:100%;  height:100%;  background:#000;  position:absolute;top:0;  left:0;  z-index:10;  opacity:0.4;  filter:alpha(opacity =40);  "></div>
+            <div class="tip">
+                <div class="tiptop"><span>提示信息</span><a></a></div>
+
+                <div class="tipinfo">
+                    <span><img src="__PUBLIC__/Style/Admin/images/ticon.png" /></span>
+                    <div class="tipright">
+                        <p>是否确认对信息的修改 ？</p>
+                        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+                    </div>
+                </div>
+                <div class="tipbtn">
+                    <input name="" type="button"  class="sure" value="确定" />&nbsp;
+                    <input name="" type="button"  class="cancel" value="取消" />
+                </div>
+            </div>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+    var validhash = $('input[name="__hash__"]').val();
+    var editor = K.editor({
+        allowFileManager : true,
+        uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+        fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager&dirname=Sysicon'
+    });
+    
+    K('#iconbut').click(function() {
+        editor.loadPlugin('image', function() {
+            editor.plugin.imageDialog({
+                showLocal : false,
+                imageUrl : K('#url1').val(),
+                clickFn : function(url) {
+                    K('#url1').val(url);
+                    editor.hideDialog();
+                } 
+            });
+        });
+    });
+});
+$(function(){
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+        datatype:{
+            "*6-20": /^[^\s]{6,20}$/,
+            "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
+            "y3-10": /\w{3,10}/i,
+            "phone":  /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/,
+        },
+        ajaxPost:true,
+        callback:function(data){
+            if(data.status==1){
+                alert(data.info);
+                location.href="{:U('Admin/Student/record')}";
+            }else{
+                alert(data.info);
+            }
+        }
+	});
+    
+    $("select[name=type]").change(function(){
+        var type = $("select[name=type] option:selected").val();
+        if(type == 1){
+            $(".status2").hide();
+            $(".status1").show();
+        }
+        if(type == 2){
+            $(".status1").hide();
+            $(".status2").show();
+        }
+    })
+})
+</script>
+</html>
+

@@ -177,7 +177,62 @@ function get_channel($flag = null) {
         '3' => 'LED显示屏/招牌',
         '4' => '家属、朋友推荐',
         '5' => '在读学员推荐',
-        '6' => '其他方式'
+        '100' => '其他方式'
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
+function get_record_type($flag = null) {
+	$arr = array(
+		'1' => '纪录',
+		'2' => '回访',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
+function get_record_status1($flag = null) {
+	$arr = array(
+		'1' => '电话咨询',
+		'2' => '电话上门咨询',
+        '3' => '直接上门咨询',
+        '4' => '再次上门',
+        '5' => '首次上门报名',
+        '6' => '再次上门报名',
+        '100' => '其他',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
+function get_record_status2($flag = null) {
+	$arr = array(
+		'1' => '观望',
+		'2' => '预约试用',
+		'3' => '预约联系',
+		'4' => '直接付定金',
+		'5' => '直接下单',
+		'15' => '长期跟踪',
+		'6' => '无购买能力',
+		'7' => '以为免费',
+		'8' => '非本人注册',
+		'9' => '直接拒绝',
+		'10' => '无人接听',
+		'11' => '占线',
+		'12' => '关机',
+		'13' => '拒接',
+		'14'=>'交易完成',
+		'100' => '其他',
 	);
 	if (isset($flag)) {
 		return $arr[$flag];

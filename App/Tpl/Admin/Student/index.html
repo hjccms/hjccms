@@ -8,30 +8,6 @@
         <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/setting.js"></script>
         <script type="text/javascript">
-            $(document).ready(function () {
-                $(".click").click(function () {
-                    $(".tip").fadeIn(200);
-                    $(".mid").fadeIn(200);
-                });
-                
-                $(".tiptop a").click(function () {
-                    $(".tip").fadeOut(200);
-                    $(".mid").fadeOut(200);
-                });
-
-                $(".sure").click(function () {
-                    $(".tip").fadeOut(100);
-                    $(".mid").fadeOut(200);
-                });
-
-                $(".cancel").click(function () {
-                    $(".tip").fadeOut(100);
-                    $(".mid").fadeOut(200);
-                });
-               
-                
-            });
-            
             function del(id){
                 layer.confirm('您确定要删除么？',function(index){
                     $.ajax({
@@ -39,18 +15,13 @@
                         url: "/Admin/Student/del",
                         data: "id="+id,
                         dataType: "json",
-                        beforeSend:function()
-                        {
+                        beforeSend:function(){
                             layer.load('正在请求...', 3);
                         },
-                        success: function(msg)
-                        {
-                            if(msg.status==1)
-                            {
+                        success: function(msg){
+                            if(msg.status==1){
                                 location.reload() ;
-                            }
-                            else
-                            {
+                            }else{
                                 layer.alert(msg.info, 8);
                             }
                         }

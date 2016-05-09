@@ -32,7 +32,7 @@ class StudentAction  extends BaseAction {
     function edit(){
         $id = $this->_get('id');
         if($id>0){
-            $info = D('Student')->getStudentInfo($id);
+            $info = D('Student')->getStudentInfo('id='.$id);
         }
         $jw_role_type = 2;
         $cc_role_type = 3;
@@ -67,7 +67,7 @@ class StudentAction  extends BaseAction {
                 $this->ajaxReturn('','手机号码已存在',0);
             }
         }
-        if(!$post['password']){
+        if(!$post['id'] && !$post['password']){
             $this->ajaxReturn('','信息错误！',0);
         }
         if($post['email']){
@@ -81,19 +81,27 @@ class StudentAction  extends BaseAction {
                 $this->ajaxReturn('','邮箱已存在',0);
             }
         }
-        $post['password'] = md5($post['password']);
+        
         $post['cc_id'] = $post['cc_id']?$post['cc_id']:$this->adminInfo->id;
         if(!$post['id']){
             $post['site_id'] = $this->adminInfo->site_id;
             $post['username'] = $post['mobile'];
+            $post['password'] = md5($post['password']);
             $post['create_time'] = time();
             $post['add_id'] = $this->adminInfo->id;
             $post['origin'] = '后台注册';
+        }else{
+            if($post['password']){
+                $post['password'] = md5($post['password']);
+            }else{
+                unset($post['password']);
+            }
+            
         }
         $ret = D('Student')->addStudent($post);
         if(intval($ret)>0){
             $post['student_id'] = $ret;
-            $ret2 = D('Student')->addStudentInfo($post);  
+            $ret2 = D('Student_info')->addStudentInfo($post);  
             if(intval($ret2)>0){
                 $this->ajaxReturn ('','Success！',1);
             }else{
@@ -102,6 +110,39 @@ class StudentAction  extends BaseAction {
         }else{
             $this->ajaxReturn('',$ret1,0);
         }
+    }
+    
+    function record(){
+        $sid = $this->_get('sid');
+        $data = D("Student_record")->getRecord("del is null","create_time desc");
+        $this->assign('data',$data);
+        $this->assign('sid',$sid);
+        $this->assign('admin_id',$this->adminInfo->id);
+        load('@.form');
+        $this->display();
+    }
+    
+    function ajaxPostRecord(){
+        if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
+        $post = $this->_post();
+        if(!$post['type']){
+            $this->ajaxReturn ('','数据错误！',0);
+        }
+        $post['student_id'] = $post['sid'];
+        $post['status'] = $post['status'.$post['type']];
+        $post['add_id'] = $this->adminInfo->id;
+        $post['create_time'] = time();
+        $ret = D('Student_record')->addStudentRecord($post);
+        if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
+        else $this->ajaxReturn ('',$ret,0);
+    }
+    
+    
+    function delRecord(){
+        if(!IS_AJAX) $this->ajaxReturn ('','非法请求！',0);
+        $id = $this->_post('id');
+        D('Student_record')->where("id=".$id)->save(array("del"=>1));
+        $this->ajaxReturn ('','删除成功！',1);
     }
     
 }

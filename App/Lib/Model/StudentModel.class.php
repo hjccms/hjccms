@@ -1,15 +1,17 @@
 <?php
 class StudentModel extends Model {
     
+    protected $trueTableName = 'stu_student';    
+    
     //获取单个学生详细信息
     function getStudentInfo($condition,$field=null){
-        $result = $this->field($field)->join("left join sys_student_info on sys_student.id=sys_student_info.student_id")->where($condition)->find();
+        $result = $this->field($field)->join("left join stu_student_info on stu_student.id=stu_student_info.student_id")->where($condition)->find();
         return $result;
     }
     
     //获取多个学生详细信息
     function getStudent($condition,$order=null,$field=null){
-        $result = $this->field($field)->join("left join sys_student_info on sys_student.id=sys_student_info.student_id")->where($condition)->order($order)->select();
+        $result = $this->field($field)->join("left join stu_student_info on stu_student.id=stu_student_info.student_id")->where($condition)->order($order)->select();
         return $result;
     }
     
@@ -28,18 +30,4 @@ class StudentModel extends Model {
         return $id; 
        
     }
-    
-    //添加和更新学生详细信息
-    function addStudentInfo($data){
-        if($data['id']){
-            D("Student_info")->save($data);
-            $id = $data['student_id'];
-        }else{
-            $id = D("Student_info")->add($data);
-        }
-        return $id; 
-       
-    }
-    
-    
 }
