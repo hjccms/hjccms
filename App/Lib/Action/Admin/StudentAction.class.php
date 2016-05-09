@@ -5,7 +5,8 @@ class StudentAction  extends BaseAction {
     function __construct() {
         parent::__construct();
     }
-        
+    
+    //列表
     function index(){
         $this->getContentButton();
         $this->getListButton();
@@ -20,6 +21,7 @@ class StudentAction  extends BaseAction {
         $this->display();
     }
     
+    //添加
     function add(){
         $jw_role_type = 2;
         $cc_role_type = 3;
@@ -29,6 +31,7 @@ class StudentAction  extends BaseAction {
         $this->display();
     }
     
+    //编辑
     function edit(){
         $id = $this->_get('id');
         if($id>0){
@@ -43,6 +46,7 @@ class StudentAction  extends BaseAction {
         $this->display('add');
     }
     
+    //删除
     function del(){
         if(!IS_AJAX) $this->ajaxReturn ('','非法请求！',0);
         $id = $this->_post('id');
@@ -112,9 +116,14 @@ class StudentAction  extends BaseAction {
         }
     }
     
+    
+    //纪录列表
     function record(){
-        $sid = $this->_get('sid');
-        $data = D("Student_record")->getRecord("del is null","create_time desc");
+        $sid = $this->_get('id');
+        if(!$sid){
+            $this->error("学生id错误！");
+        }
+        $data = D("Student_record")->getRecord("student_id={$sid} and del is null","create_time desc");
         $this->assign('data',$data);
         $this->assign('sid',$sid);
         $this->assign('admin_id',$this->adminInfo->id);
@@ -122,6 +131,7 @@ class StudentAction  extends BaseAction {
         $this->display();
     }
     
+    //编辑纪录
     function ajaxPostRecord(){
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
@@ -137,7 +147,7 @@ class StudentAction  extends BaseAction {
         else $this->ajaxReturn ('',$ret,0);
     }
     
-    
+    //删除记录
     function delRecord(){
         if(!IS_AJAX) $this->ajaxReturn ('','非法请求！',0);
         $id = $this->_post('id');

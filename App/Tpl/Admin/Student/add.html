@@ -33,6 +33,7 @@
                 {:select(array('title'=>'注册渠道','inputName'=>'channel','value'=>$info['channel'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_channel()))}
                 {:input(array('title'=>'其他渠道','li_style'=>'display:none','li_class'=>'other_channel','inputName'=>'other_channel','value'=>$info['other_channel']))}
                 {:input(array('title'=>'推荐人','li_style'=>'display:none','li_class'=>'referee','inputName'=>'referee','value'=>$info['referee']))}
+                {:select(array('title'=>'等级','inputName'=>'level','value'=>$info['level'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_level()))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
                 {:input(array('title'=>'固定电话','inputName'=>'phone','value'=>$info['phone'],'addHtml'=>'datatype="phone" ignore="ignore"'))}
                 {:input(array('title'=>'母亲手机号','inputName'=>'mother_mobile','value'=>$info['mother_mobile'],'addHtml'=>'datatype="m" ignore="ignore"'))}

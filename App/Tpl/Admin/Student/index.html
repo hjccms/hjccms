@@ -62,7 +62,15 @@
                             <td>{$val.id}</td>
                             <td>{$val.name}</td>
                             <td>{$val.mobile}</td>
-                            <td>{:get_channel($val['channel'])}</td>
+                            <td>
+                                {:get_channel($val['channel'])}
+                                <if condition="$val['channel'] eq '4' || $val['channel'] eq '5'">
+                                    ({$val['referee']})
+                                </if>
+                                <if condition="$val['channel'] eq '100'">
+                                    ({$val['other_channel']})
+                                </if>
+                            </td>
                             <td>{$val.origin}</td>
                             <td>{:date('Y-m-d',$val['create_time'])}</td>
                             <td>{:get_valid($val['valid'])}</td>

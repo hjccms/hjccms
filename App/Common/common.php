@@ -186,6 +186,22 @@ function get_channel($flag = null) {
 	}
 }
 
+function get_level($flag = null) {
+	$arr = array(
+		'1' => 'Level 1',
+		'2' => 'Level 2',
+        '3' => 'Level 3',
+        '4' => 'Level 4',
+        '5' => 'Level 5',
+        '6' => 'Level 6'
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
 function get_record_type($flag = null) {
 	$arr = array(
 		'1' => '纪录',
