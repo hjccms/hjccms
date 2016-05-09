@@ -19,7 +19,7 @@
             <div class="formtitle"><span>添加</span></div>
             <form class="registerform" action="{:U('/Admin/Student/ajaxPost')}">
             <ul class="forminfo">
-                {:input(array('title'=>'手机号','isMust'=>'1','inputName'=>'mobile','addHtml'=>'datatype="m" errormsg="手机格式不正确" ajaxurl="/Admin/Model/checkFieldOnly/table_name/student/id/'.$info['id'].'" sucmsg="验证通过！"','value'=>$info['mobile']))}
+                {:input(array('title'=>'手机号','isMust'=>'1','inputName'=>'mobile','addHtml'=>'datatype="m" errormsg="手机格式不正确" ajaxurl="/Admin/Model/checkFieldOnly/table_pre/stu/table_name/student/id/'.$info['id'].'" sucmsg="验证通过！"','value'=>$info['mobile']))}
                 <if condition="$info['id'] eq ''">
                     {:inputPassword(array('title'=>'密码','isMust'=>'1','inputName'=>'password','tipMsg'=>'请设置密码','addHtml'=>'datatype="s6-18"   errormsg="格式为6-18位字符"','value'=>$info['password']))}
                 <else/>

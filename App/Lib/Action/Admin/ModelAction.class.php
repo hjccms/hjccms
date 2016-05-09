@@ -418,7 +418,8 @@ class ModelAction  extends BaseAction
         }
         else
         {
-            $tableModel = M(ucfirst($this->_get('table_name')));
+            $table_pre = $this->_get('table_pre')?$this->_get('table_pre')."_":C("DB_PREFIX");
+            $tableModel = M(ucfirst($this->_get('table_name')),$table_pre);
         }
         $condition = array($post['name']=>$post['param'],'site_id'=>$this->adminInfo->site_id);
         if(intval($id)>0) $condition['_string'] = "id!='$id'";
