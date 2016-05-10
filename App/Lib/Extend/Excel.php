@@ -28,6 +28,7 @@ class Excel{
             }
             $row++;
         }
+        $row--;
         
         //设置对齐方式
         $objActSheet->getStyle("A1:{$column}{$row}")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);//水平方向居中
