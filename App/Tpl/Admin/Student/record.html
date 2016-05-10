@@ -44,10 +44,13 @@
                 {:select(array('title'=>'纪录类型','inputName'=>'type','isMust'=>'1','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*"  nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_type()))}
                 {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status1','inputName'=>'status1','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status1()))}
                 {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status2','inputName'=>'status2','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status2()))}
+                {:input(array('title'=>'咨询人','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'record_name','value'=>$info['record_name']))}
+                {:input(array('title'=>'联系方式','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'record_mobile','value'=>$info['record_mobile']))}
                 {:input(array('title'=>'咨询进度','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'speed','value'=>$info['speed']))}
                 {:input(array('title'=>'意向程度','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'intention','value'=>$info['intention']))}
                 {:input(array('title'=>'咨询课程','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'course','value'=>$info['course']))}
                 {:textarea(array('title'=>'内容','inputName'=>'content','value'=>$info['content'],'width'=>345,'height'=>100))}
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 {:hideInput(array('inputName'=>'sid','value'=>$sid))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
             </ul>
@@ -177,12 +180,16 @@ $(function(){
         }
         if(type == 2){
             $(".status1").hide();
-            $(".course").show();
+            $(".status2").show();
         }
         
         var status = $("select[name=status1] option:selected").val();
         if(status == 1 || status == 2 || status == 3 || status ==4){
             $(".zixun").show();
+        }
+        
+        if(type == 2){
+           $(".zixun").hide();
         }
     }
 })

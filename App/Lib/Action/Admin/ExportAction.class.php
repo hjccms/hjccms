@@ -100,7 +100,6 @@ class ExportAction extends BaseAction{
                 }
             }
         }
-        $region_count = count($region);
         
         //开始绘制表格
         $sheet = 0;//用于定位当前sheet
@@ -532,6 +531,109 @@ class ExportAction extends BaseAction{
             //将$objPHPEcel对象转换成html格式的
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');  
             $objWriter->save('php://output');
+        }
+    }
+    
+    //咨询登记汇总表
+    function record(){
+        load("@.form");
+        $post_start_date = $this->_post('start_date');
+        $post_end_date = $this->_post('end_date');
+        $post_site_id = $this->_post('site_id');
+
+        $site_id = $this->site_id == 1?($post_site_id?$post_site_id:$this->site_id):$this->site_id;
+        
+        if($post_start_date && $post_end_date){
+            $startDate = $post_start_date?$post_start_date:date("Y-m-01");
+            $endDate = $post_end_date?$post_end_date:date("Y-m-d");
+        }else{
+            $startDate = date("Y-m-01");
+            $endDate = date("Y-m-d");
+        }
+        
+        //如果开始时间大于结束时间返回false
+        if($startDate>$endDate){
+            return false;
+        }
+        $sites = D('Site')->getSite("valid=1");
+        $this->assign('sites',$sites);
+        $this->assign('site_id',$this->site_id);
+        $this->assign('post_site_id',$site_id);
+        $this->assign('post_start_date',$startDate);
+        $this->assign('post_end_date',$endDate);
+        $this->display();
+              
+        $startTime = strtotime($startDate);
+        $endTime = strtotime($endDate."23:59:59");
+        
+        //如果开始时间结束时间为空返回false
+        if(!$startTime || !$endTime){
+            return false;
+        }
+   
+        //获取数据
+        $record = D('Student_record')->getRecord("type=1 and status in (1,2,3,4) and create_time>='{$startTime}' and create_time<='{$endTime}' and del is null","create_time desc");
+        $student = D("Student")->getStudent("site_id={$site_id} and valid=1 and del is null");
+        $flag = false;
+        foreach($record as $k=>$v){
+            foreach($student as $sk=>$sv){
+                if($sv['id'] == $v['student_id']){
+                    $flag = true;
+                    $record[$k] = array_merge($sv,$v);
+                }
+            } 
+            if(!$flag){
+                unset($record[$k]);
+            }
+        }
+        
+        if(!$record){
+            return false;
+        }
+        
+        $title = array('序号','咨询日期','咨询类型','咨询进度','咨询量创造人','咨询师','意向程度','咨询课程','学员姓名','性别','年龄','就读幼儿园/学校','住址','咨询家长','联系方式','电话沟通记录','当面沟通记录','回访跟进记录');
+        $num = 1;
+        $data = null;
+        foreach($record as $k=>$v){
+            $data[$num]['num'] = $num;
+            $data[$num]['create_date'] = date("Y-m-d H:i",$v['create_time']);
+            $data[$num]['type'] = get_record_type($v['type']);
+            $data[$num]['speed'] = $v['speed'];
+            $data[$num]['add_name'] = $v['add_name'];
+            $data[$num]['add_name2'] = $v['add_name'];
+            $data[$num]['intention'] = $v['intention'];
+            $data[$num]['course'] = $v['course'];
+            $data[$num]['stu_name'] = $v['name']?$v['name']:$v['en_name'];
+            $data[$num]['stu_gender'] = $v['gender']==1?'男':($v['gender']==2?'女':'');
+            $data[$num]['stu_age'] = $v['age'];
+            $data[$num]['stu_school'] = $v['school'];
+            $data[$num]['stu_address'] = $v['address'];
+            $data[$num]['stu_record_name'] = $v['record_name'];
+            $data[$num]['stu_record_mobile'] = $v['record_mobile'];
+            if($v['type']==1&&$v['status']==1){
+                $data[$num]['stu_record_1'] = $v['content'];
+            }else{
+                $data[$num]['stu_record_1'] = '';
+            }
+            if($v['type']==1&&($v['status']==2 || $v['status']==3 || $v['status']==4)){
+                $data[$num]['stu_record_2'] = $v['content'];
+            }else{
+                $data[$num]['stu_record_2'] = '';
+            }
+            if($v['type']==2){
+                $data[$num]['stu_visit'] = $v['content'];
+            }else{
+                $data[$num]['stu_visit'] = '';
+            }
+            $num++;
+        }
+        include './App/Lib/Extend/Excel.php';  
+        $excel = new Excel();
+        $name = '咨询登记汇总表'.date('Ymd',$startTime)."-".date('Ymd',$endTime);
+        if($this->_post("subType") == "导出"){
+            $excel->xls($name, $title, $data);
+        }else{
+            $excel->html($name, $title, $data);
         }
     }
 }

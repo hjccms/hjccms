@@ -147,11 +147,14 @@ class StudentAction  extends BaseAction {
         $post['status'] = $post['status'.$post['type']];
         $post['add_id'] = $this->adminInfo->id;
         $post['create_time'] = time();
-        
-        $data['speed'] = $post['speed']; 
-        $data['intention'] = $post['intention']; 
-        $data['course'] = $post['course']; 
-        $post['other_content'] = json_encode($data,JSON_UNESCAPED_UNICODE);
+        if($post['type'] == '1' && ($post['status']=='1'||$post['status']=='2'||$post['status']=='3'||$post['status']=='4')){
+            $data['speed'] = $post['speed']; 
+            $data['intention'] = $post['intention']; 
+            $data['course'] = $post['course']; 
+            $data['record_name'] = $post['record_name']; 
+            $data['record_mobile'] = $post['record_mobile']; 
+            $post['other_content'] = json_encode($data,JSON_UNESCAPED_UNICODE);
+        }
         $ret = D('Student_record')->addStudentRecord($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
         else $this->ajaxReturn ('',$ret,0);

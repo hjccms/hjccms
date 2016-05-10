@@ -14,6 +14,8 @@ class Student_recordModel extends Model {
                 $result[$k]['speed'] = $other_content['speed']; 
                 $result[$k]['intention'] = $other_content['intention']; 
                 $result[$k]['course'] = $other_content['course']; 
+                $result[$k]['record_name'] = $other_content['record_name']; 
+                $result[$k]['record_mobile'] = $other_content['record_mobile']; 
             }
         }
         return $result;
@@ -26,6 +28,8 @@ class Student_recordModel extends Model {
             $result['speed'] = $other_content['speed']; 
             $result['intention'] = $other_content['intention']; 
             $result['course'] = $other_content['course']; 
+            $result['record_name'] = $other_content['record_name']; 
+            $result['record_mobile'] = $other_content['record_mobile']; 
         }
         return $result;
     }
