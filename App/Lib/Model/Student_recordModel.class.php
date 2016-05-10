@@ -9,12 +9,24 @@ class Student_recordModel extends Model {
             if($v['add_id']){
                 $result[$k]['add_name'] = D("Admin")->where("id=".$v['add_id'])->getField("username");
             }
+            if($v['other_content']){
+                $other_content = json_decode($v['other_content'],true);
+                $result[$k]['speed'] = $other_content['speed']; 
+                $result[$k]['intention'] = $other_content['intention']; 
+                $result[$k]['course'] = $other_content['course']; 
+            }
         }
         return $result;
     }
     
     function getRecordInfo($condition){
         $result = $this->where($condition)->find();
+        if($result['other_content']){
+            $other_content = json_decode($result['other_content'],true);
+            $result['speed'] = $other_content['speed']; 
+            $result['intention'] = $other_content['intention']; 
+            $result['course'] = $other_content['course']; 
+        }
         return $result;
     }
     
