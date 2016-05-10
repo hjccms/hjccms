@@ -126,12 +126,6 @@ class StudentAction  extends BaseAction {
         $rid = $this->_get('rid');
         if($rid){
             $info = D("Student_record")->getRecordInfo("id={$rid}");
-            if($info['other_content']){
-                $other_content = json_decode($info['other_content'],true);
-                $info['speed'] = $other_content['speed']; 
-                $info['intention'] = $other_content['intention']; 
-                $info['course'] = $other_content['course']; 
-            }
             $this->assign('info',$info);
         }
         $data = D("Student_record")->getRecord("student_id={$sid} and del is null","create_time desc");
