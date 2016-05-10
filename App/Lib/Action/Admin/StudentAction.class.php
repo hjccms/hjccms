@@ -119,9 +119,20 @@ class StudentAction  extends BaseAction {
     
     //纪录列表
     function record(){
-        $sid = $this->_get('id');
+        $sid = $this->_get('id')?$this->_get('id'):$this->_get('sid');
         if(!$sid){
             $this->error("学生id错误！");
+        }
+        $rid = $this->_get('rid');
+        if($rid){
+            $info = D("Student_record")->getRecordInfo("id={$rid}");
+            if($info['other_content']){
+                $other_content = json_decode($info['other_content'],true);
+                $info['speed'] = $other_content['speed']; 
+                $info['intention'] = $other_content['intention']; 
+                $info['course'] = $other_content['course']; 
+            }
+            $this->assign('info',$info);
         }
         $data = D("Student_record")->getRecord("student_id={$sid} and del is null","create_time desc");
         $this->assign('data',$data);
@@ -142,6 +153,11 @@ class StudentAction  extends BaseAction {
         $post['status'] = $post['status'.$post['type']];
         $post['add_id'] = $this->adminInfo->id;
         $post['create_time'] = time();
+        
+        $data['speed'] = $post['speed']; 
+        $data['intention'] = $post['intention']; 
+        $data['course'] = $post['course']; 
+        $post['other_content'] = json_encode($data,JSON_UNESCAPED_UNICODE);
         $ret = D('Student_record')->addStudentRecord($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
         else $this->ajaxReturn ('',$ret,0);

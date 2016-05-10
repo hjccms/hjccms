@@ -110,7 +110,11 @@ $(function(){
     //数据初始化
     $(".referee").hide();
     $(".other_channel").hide();
+    change();
     $("select[name=channel]").change(function(){
+        change();
+    })
+    function change(){
         var channel = $("select[name=channel] option:selected").val();
         if(channel == '4' || channel == '5'){
             $(".referee").show();
@@ -120,7 +124,7 @@ $(function(){
             $(".other_channel").show();
             $(".referee").hide();
         }
-    })
+    }
 })
 </script>
 </html>

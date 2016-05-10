@@ -4,9 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>添加数据</title>
         <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
-     
         <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
-     
         <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
         <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
         <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
@@ -46,6 +44,9 @@
                 {:select(array('title'=>'纪录类型','inputName'=>'type','isMust'=>'1','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*"  nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_type()))}
                 {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status1','inputName'=>'status1','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status1()))}
                 {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status2','inputName'=>'status2','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status2()))}
+                {:input(array('title'=>'咨询进度','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'speed','value'=>$info['speed']))}
+                {:input(array('title'=>'意向程度','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'intention','value'=>$info['intention']))}
+                {:input(array('title'=>'咨询课程','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'course','value'=>$info['course']))}
                 {:textarea(array('title'=>'内容','inputName'=>'content','value'=>$info['content'],'width'=>345,'height'=>100))}
                 {:hideInput(array('inputName'=>'sid','value'=>$sid))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
@@ -54,11 +55,6 @@
             </form>
         </div>
         <div class="rightinfo">
-            <div class="tools">
-                <ul class="toolbar">
-                    {:get_content_button($contentButton)}
-                </ul>
-            </div>
             <table class="tablelist">
                 <thead>
                     <tr>
@@ -86,7 +82,10 @@
                             <td>{$val.add_name}</td>
                             <td>{:date('Y-m-d',$val['create_time'])}</td>
                             <if condition="$admin_id eq $val['add_id']">
-                                <td><a class="tablelink" onclick="delRecord({$val['id']})" href="javascript:void(0)">删除</a></td>
+                                <td>
+                                    <a class="tablelink" onclick="" href="/Admin/Student/record/sid/{$sid}/rid/{$val['id']}">修改</a> | 
+                                    <a class="tablelink" onclick="delRecord({$val['id']})" href="javascript:void(0)">删除</a>
+                                </td>
                             </if>
                         </tr>                       
                     </volist>
@@ -160,7 +159,17 @@ $(function(){
         }
 	});
     
+    $(".zixun").hide();
+    change();
     $("select[name=type]").change(function(){
+        change();
+    })
+    $("select[name=status1]").change(function(){
+        change();
+    })
+    
+    function change(){
+        
         var type = $("select[name=type] option:selected").val();
         if(type == 1){
             $(".status2").hide();
@@ -168,9 +177,14 @@ $(function(){
         }
         if(type == 2){
             $(".status1").hide();
-            $(".status2").show();
+            $(".course").show();
         }
-    })
+        
+        var status = $("select[name=status1] option:selected").val();
+        if(status == 1 || status == 2 || status == 3 || status ==4){
+            $(".zixun").show();
+        }
+    }
 })
 </script>
 </html>
