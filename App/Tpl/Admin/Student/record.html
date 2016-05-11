@@ -44,8 +44,9 @@
                 {:select(array('title'=>'纪录类型','inputName'=>'type','isMust'=>'1','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*"  nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_type()))}
                 {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status1','inputName'=>'status1','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status1()))}
                 {:select(array('title'=>'纪录状态','li_style'=>'display:none','li_class'=>'status2','inputName'=>'status2','isMust'=>'1','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_record_status2()))}
-                {:input(array('title'=>'咨询人','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'record_name','value'=>$info['record_name']))}
+                {:input(array('title'=>'联系人','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'record_name','value'=>$info['record_name']))}
                 {:input(array('title'=>'联系方式','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'record_mobile','value'=>$info['record_mobile']))}
+                {:input(array('title'=>'咨询师','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'record_teacher','value'=>$info['record_teacher']))}
                 {:input(array('title'=>'咨询进度','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'speed','value'=>$info['speed']))}
                 {:input(array('title'=>'意向程度','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'intention','value'=>$info['intention']))}
                 {:input(array('title'=>'咨询课程','li_style'=>'display:none','li_class'=>'zixun','inputName'=>'course','value'=>$info['course']))}
@@ -186,6 +187,8 @@ $(function(){
         var status = $("select[name=status1] option:selected").val();
         if(status == 1 || status == 2 || status == 3 || status ==4){
             $(".zixun").show();
+        }else{
+            $(".zixun").hide();
         }
         
         if(type == 2){

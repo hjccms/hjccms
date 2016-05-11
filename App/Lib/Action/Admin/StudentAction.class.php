@@ -153,6 +153,7 @@ class StudentAction  extends BaseAction {
             $data['course'] = $post['course']; 
             $data['record_name'] = $post['record_name']; 
             $data['record_mobile'] = $post['record_mobile']; 
+            $data['record_teacher'] = $post['record_teacher'];
             $post['other_content'] = json_encode($data,JSON_UNESCAPED_UNICODE);
         }
         $ret = D('Student_record')->addStudentRecord($post);
