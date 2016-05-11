@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Laydate/laydate.js"></script>
+    </head>
+    <body>
+        <include file="Index:position"/>
+        <div class="rightinfo">
+            <div class="tools">
+                <form action="" method="post" name="search" id="search" >
+                    <ul class="seachform">
+                        <if condition="$site_id eq '1'">
+                            {:select(array('title'=>'站点','inputName'=>'site_id','value'=>$post_site_id,'tipMsg'=>'','addHtml'=>'nullmsg="所有"','paramArr'=>$sites))}
+                        </if>
+                            {:laydate2(array('title'=>'开始时间','inputName'=>'start_date','addHtml'=>'  sucmsg="验证通过！"','value'=>$post_start_date))}
+                            {:laydate2(array('title'=>'结束时间','inputName'=>'end_date','addHtml'=>'  sucmsg="验证通过！"','value'=>$post_end_date))}
+                            <li>
+                                <label>&nbsp;</label><input name="subType" type="submit" class="scbtn" value="查询"/>
+                                <label>&nbsp;</label><input name="subType" type="submit" class="scbtn" value="导出"/>
+                            </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="mid" style=" display:none;width:100%;  height:100%;  background:#000;  position:absolute;top:0;  left:0;  z-index:10;  opacity:0.4;  filter:alpha(opacity =40);  "></div> 
+        </div>
+       <div id="pages" style="text-align: center" ></div>
+
+    </body>
+
+</html>
+

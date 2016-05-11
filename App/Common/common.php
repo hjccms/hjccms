@@ -258,4 +258,17 @@ function get_record_status2($flag = null) {
 	}
 }
 
+
+function get_student_status($flag = null) {
+	$arr = array(
+		'1' => '报名',
+		'2' => '咨询',
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
 ?>

@@ -20,10 +20,13 @@
             <form class="registerform" action="{:U('/Admin/Student/ajaxPost')}">
             <ul class="forminfo">
                 {:input(array('title'=>'手机号','isMust'=>'1','inputName'=>'mobile','addHtml'=>'datatype="m" errormsg="手机格式不正确" ajaxurl="/Admin/Model/checkFieldOnly/table_pre/stu/table_name/student/id/'.$info['id'].'" sucmsg="验证通过！"','value'=>$info['mobile']))}
+                <if condition="($info['status'] eq '') or ($info['status'] eq '2')">
+                    {:select(array('title'=>'状态','isMust'=>'1','inputName'=>'status','value'=>$info['status'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_student_status()))}
+                </if>
                 <if condition="$info['id'] eq ''">
-                    {:inputPassword(array('title'=>'密码','isMust'=>'1','inputName'=>'password','tipMsg'=>'请设置密码','addHtml'=>'datatype="s6-18"   errormsg="格式为6-18位字符"','value'=>$info['password']))}
+                    {:inputPassword(array('title'=>'密码', 'li_class'=>'password','isMust'=>'1','inputName'=>'password','tipMsg'=>'请设置密码','addHtml'=>'datatype="s6-18" ignore="ignore"  errormsg="格式为6-18位字符"','value'=>$info['password']))}
                 <else/>
-                    {:inputPassword(array('title'=>'密码','inputName'=>'password','tipMsg'=>'如需修改密码请填写','addHtml'=>'datatype="s6-18" ignore="ignore"  errormsg="格式为6-18位字符"','value'=>''))}
+                    {:inputPassword(array('title'=>'密码','li_class'=>'password','inputName'=>'password','tipMsg'=>'如需修改密码请填写','addHtml'=>'datatype="s6-18" ignore="ignore"  errormsg="格式为6-18位字符"','value'=>''))}
                 </if>
                 {:input(array('title'=>'中文名','inputName'=>'name','value'=>$info['name']))}
                 {:input(array('title'=>'英文名','inputName'=>'en_name','value'=>$info['en_name']))}
@@ -114,15 +117,29 @@ $(function(){
     $("select[name=channel]").change(function(){
         change();
     })
+    
+    $("select[name=status]").change(function(){
+        change();
+    })
+    
     function change(){
         var channel = $("select[name=channel] option:selected").val();
         if(channel == '4' || channel == '5'){
             $(".referee").show();
             $(".other_channel").hide();
-        }
-        if(channel == '100'){
+        }else if(channel == '100'){
             $(".other_channel").show();
             $(".referee").hide();
+        }else{
+            $(".other_channel").hide();
+            $(".referee").hide();
+        }
+        
+        var status = $("select[name=status] option:selected").val();
+        if(status == '2'){
+            $(".password").hide();
+        }else{
+            $(".password").show();
         }
     }
 })

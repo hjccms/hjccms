@@ -11,13 +11,54 @@ class StudentAction  extends BaseAction {
         $this->getContentButton();
         $this->getListButton();
         $sites = D('Site')->getSite("valid=1");
-        $condition['site_id'] = $this->adminInfo->site_id;
+        if($this->adminInfo->site_id>1){ 
+            $condition['site_id'] = $this->adminInfo->site_id;
+            $condition['_string'] = "type>2";
+        }else{
+            $site_id = ($this->_get('site_id') !== null)?$this->_get('site_id'):$this->adminInfo->site_id;
+            $condition['valid'] = 1;
+            if($site_id>0){ 
+                $condition['site_id'] = $site_id;
+            }
+        }
         $condition['valid'] = 1;
         $condition['del'] = array('exp','is null');
-        $data = D("Student")->getStudent($condition,"create_time desc");
+        
+        if($this->_get('id')){
+            $condition['id'] = $this->_get('id');
+        }
+        
+        if($this->_get('mobile')){
+            $condition['mobile'] = $this->_get('mobile');
+        }
+        
+        if($this->_get('name')){
+            $condition['name'] = $this->_get('name');
+        }
+        
+        if($this->_get('status')){
+            $condition['status'] = $this->_get('status');
+        }
+        
+        //分页部分
+        $listNum = 15;
+        $page = $this->_get('page');
+        $page = $page?intval($page):1; //当前页
+        $this->assign('page',$page);
+        $listCount =  D('Student')->where($condition)->count();
+        $startNum = $listNum*($page-1);
+        $pageNum = ($listCount%$listNum==0)?($listCount/$listNum):($listCount/$listNum+1);
+        $this->assign('page',$page?$page:'');
+        $this->assign('pageNum',$pageNum?$pageNum:'');
+        $this->assign('listCount',$listCount);
+        
+        $data = D("Student")->join("left join stu_student_info on stu_student.id=stu_student_info.student_id")->where($condition)->order("create_time desc")->limit($startNum,$listNum)->select();;
+        
         $this->assign('sites',$sites);
         $this->assign('data',$data);
         $this->assign('site_id',$this->adminInfo->site_id);
+        $this->assign('info',$condition);
+        load('@.form');
         $this->display();
     }
     
@@ -58,6 +99,9 @@ class StudentAction  extends BaseAction {
     function ajaxPost(){
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
+        if($post['id']){
+            $info = D("Student")->getStudentInfo("id=".$post['id']);
+        }
         if(!$post['mobile']){
             $this->ajaxReturn('','信息错误！',0);
         }else{
@@ -71,9 +115,20 @@ class StudentAction  extends BaseAction {
                 $this->ajaxReturn('','手机号码已存在',0);
             }
         }
-        if(!$post['id'] && !$post['password']){
-            $this->ajaxReturn('','信息错误！',0);
+        if($post['status'] == 2){
+            $post['password'] = null;
         }
+        if($post['id']){
+            if($info['status']==2 && $post['status']==1 && !$post['password']){
+                $this->ajaxReturn('','请输入密码！',0);
+            }
+        }else{
+            if($post['status']==1 && !$post['password']){
+                $this->ajaxReturn('','请输入密码！',0);
+            }
+        }
+        
+        
         if($post['email']){
             //验证邮箱是否存在
             if($post['id']){
@@ -90,7 +145,7 @@ class StudentAction  extends BaseAction {
         if(!$post['id']){
             $post['site_id'] = $this->adminInfo->site_id;
             $post['username'] = $post['mobile'];
-            $post['password'] = md5($post['password']);
+            $post['password'] = $post['password']?md5($post['password']):'';
             $post['create_time'] = time();
             $post['add_id'] = $this->adminInfo->id;
             $post['origin'] = '后台注册';
