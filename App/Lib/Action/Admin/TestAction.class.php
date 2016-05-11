@@ -44,8 +44,8 @@ class TestAction extends Action {
         $objActSheet->setCellValue('L1', ''); 
         
         //设置宽width
-        //$objActSheet->getColumnDimension('A1')->setAutoSize(true);
-        //$objActSheet->getColumnDimension('A1')->setWidth(12);
+        //$objActSheet->getColumnDimension('A')->setAutoSize(true);
+        //$objActSheet->getColumnDimension('A')->setWidth(12);
         
         //设置高height
         $objActSheet->getRowDimension('1')->setRowHeight(38);
