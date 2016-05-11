@@ -21,11 +21,11 @@ class ExportAction extends BaseAction{
         $site_id = $this->site_id == 1?($post_site_id?$post_site_id:$this->site_id):$this->site_id;
         
         if($post_start_date && $post_end_date){
-            $startDate = $post_start_date?$post_start_date:date("Y-m-01");
-            $endDate = $post_end_date?$post_end_date:date("Y-m-d");
+            $startDate = $post_start_date?$post_start_date:date("Y-m-01 00:00:00");
+            $endDate = $post_end_date?$post_end_date:date("Y-m-d 23:59:59");
         }else{
-            $startDate = date("Y-m-01");
-            $endDate = date("Y-m-d");
+            $startDate = date("Y-m-01 00:00:00");
+            $endDate = date("Y-m-d 23:59:59");
         }
         
         //如果开始时间大于结束时间返回false
@@ -132,7 +132,7 @@ class ExportAction extends BaseAction{
 //            $objDrawing->setCoordinates('A1');
 //            $objDrawing->setWorksheet($objActSheet);
 //            $objActSheet->getRowDimension('1')->setRowHeight(38);//设置第一行高height
-//            $objActSheet->getColumnDimension('D')->setWidth(20);//设置宽width
+            $objActSheet->getColumnDimension('D')->setWidth(20);//设置宽width
             
             $row++;
             $objActSheet->setCellValue('A'.$row, '市场活动计划监测表')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');
@@ -171,6 +171,12 @@ class ExportAction extends BaseAction{
                 $day_number = null;//每日实际派单总计
                 $day_plan_number = null;//每日计划派单总计
                 foreach($region as $k=>$v){
+                    if($parent_name == $v['parent_name']){
+                        $objActSheet->mergeCells("C".$num.":C{$handle_row}");
+                    }else{
+                        $parent_name = $v['parent_name'];
+                        $num = $handle_row;
+                    }
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
                             $day_number = $day_number+$dv['number'];
@@ -241,6 +247,12 @@ class ExportAction extends BaseAction{
                 $day_number = null;//每日实际调卷总计
                 $day_plan_number = null;//每日计划调卷总计
                 foreach($region as $k=>$v){
+                    if($parent_name == $v['parent_name']){
+                        $objActSheet->mergeCells("C".$num.":C{$handle_row}");
+                    }else{
+                        $parent_name = $v['parent_name'];
+                        $num = $handle_row;
+                    }
                     foreach($v['questionnaire'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
                             $day_number = $day_number+$dv['number'];
@@ -358,6 +370,12 @@ class ExportAction extends BaseAction{
                 $handle_row = $row;
                 $day_parttimer_time = null;//每日派单兼职小时总计
                 foreach($region as $k=>$v){
+                    if($parent_name == $v['parent_name']){
+                        $objActSheet->mergeCells("C".$num.":C{$handle_row}");
+                    }else{
+                        $parent_name = $v['parent_name'];
+                        $num = $handle_row;
+                    }
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
                             $day_parttimer_time = $day_parttimer_time+$dv['parttimer_time'];
@@ -520,7 +538,8 @@ class ExportAction extends BaseAction{
         
         if($this->_post("subType") == "导出"){
             //输出xls
-            $outputFileName = "北外少儿教育市场活动计划监测表"; 
+            $outputFileName = "北外少儿教育市场活动计划监测表".date('Ymd',$startTime)."-".date('Ymd',$endTime);
+
             ob_end_clean() ;
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename='.$outputFileName.'.xls');
@@ -544,11 +563,11 @@ class ExportAction extends BaseAction{
         $site_id = $this->site_id == 1?($post_site_id?$post_site_id:$this->site_id):$this->site_id;
         
         if($post_start_date && $post_end_date){
-            $startDate = $post_start_date?$post_start_date:date("Y-m-01");
-            $endDate = $post_end_date?$post_end_date:date("Y-m-d");
+            $startDate = $post_start_date?$post_start_date:date("Y-m-01 00:00:00");
+            $endDate = $post_end_date?$post_end_date:date("Y-m-d 23:59:59");
         }else{
-            $startDate = date("Y-m-01");
-            $endDate = date("Y-m-d");
+            $startDate = date("Y-m-01 00:00:00");
+            $endDate = date("Y-m-d 23:59:59");
         }
         
         //如果开始时间大于结束时间返回false
@@ -564,7 +583,7 @@ class ExportAction extends BaseAction{
         $this->display();
               
         $startTime = strtotime($startDate);
-        $endTime = strtotime($endDate."23:59:59");
+        $endTime = strtotime($endDate);
         
         //如果开始时间结束时间为空返回false
         if(!$startTime || !$endTime){
@@ -597,7 +616,8 @@ class ExportAction extends BaseAction{
         foreach($record as $k=>$v){
             $data[$num]['num'] = $num;
             $data[$num]['create_date'] = date("Y-m-d H:i",$v['create_time']);
-            $data[$num]['type'] = get_record_type($v['type']);
+            $fun = get_record_status.$v['type'];
+            $data[$num]['status'] = $fun($v['status']);
             $data[$num]['speed'] = $v['speed'];
             $data[$num]['add_name'] = $v['add_name'];
             $data[$num]['add_name2'] = $v['add_name'];
@@ -634,6 +654,826 @@ class ExportAction extends BaseAction{
             $excel->xls($name, $title, $data);
         }else{
             $excel->html($name, $title, $data);
+        }
+    }
+    
+    //咨询登记统计表
+    function recordCount(){
+        load("@.form");
+        
+        $post_start_date = $this->_post('start_date');
+        $post_end_date = $this->_post('end_date');
+        $post_site_id = $this->_post('site_id');
+
+        $site_id = $this->site_id == 1?($post_site_id?$post_site_id:$this->site_id):$this->site_id;
+        
+        if($post_start_date && $post_end_date){
+            $startDate = $post_start_date?$post_start_date:date("Y-m-01 00:00:00");
+            $endDate = $post_end_date?$post_end_date:date("Y-m-d 23:59:59");
+        }else{
+            $startDate = date("Y-m-01 00:00:00");
+            $endDate = date("Y-m-d 23:59:59");
+        }
+        
+        //如果开始时间大于结束时间返回false
+        if($startDate>$endDate){
+            return false;
+        }
+        $sites = D('Site')->getSite("valid=1");
+        $this->assign('sites',$sites);
+        $this->assign('site_id',$this->site_id);
+        $this->assign('post_site_id',$site_id);
+        $this->assign('post_start_date',$startDate);
+        $this->assign('post_end_date',$endDate);
+        $this->display();
+              
+        $startTime = strtotime($startDate);
+        $endTime = strtotime($endDate);
+        
+        //如果开始时间结束时间为空返回false
+        if(!$startTime || !$endTime){
+            return false;
+        }
+        
+        //获取年月日
+        $startYear = date("Y",$startTime);
+        $endYear = date("Y",$endTime);
+        $startMonth = date("m",$startTime);
+        $endMonth = date("m",$endTime);
+        $startDay = date("d",$startTime);
+        $endDay = date("d",$endTime);
+        
+        //如果不是同一年返回false
+        if($startYear != $endYear){
+            return false;
+        }
+        
+        include './App/Lib/Extend/PHPExcel.php';    
+        $objPHPExcel = new PHPExcel(); 
+        
+        //有几个月创建几个sheet
+        for($i=$startMonth;$i<$endMonth;$i++){
+            $objPHPExcel->createSheet(); 
+        }
+        
+       //获取数据
+        $record = D('Student_record')->getRecord("type=1 and status in (1,2,3,4) and create_time>='{$startTime}' and create_time<='{$endTime}' and del is null","create_time desc");
+        $student = D("Student")->getStudent("site_id={$site_id} and valid=1 and del is null");
+        $questionnaire = D('Questionnaire')->getQuestionnaire("site_id={$site_id} and start_time>='{$startDate}' and end_time<='{$endDate}' and valid=1 and del is null");
+
+        $flag = false;
+        foreach($record as $k=>$v){
+            foreach($student as $sk=>$sv){
+                if($sv['id'] == $v['student_id']){
+                    $flag = true;
+                    $record[$k] = array_merge($sv,$v);
+                }
+            } 
+            if(!$flag){
+                unset($record[$k]);
+            }
+        }
+        
+        
+        
+        $channel = array(
+            1=>'单页',
+            2=>'有效调卷外呼',
+            3=>'LED/招牌',
+            4=>'推荐'
+        );
+        
+        //开始绘制表格
+        $sheet = 0;//用于定位当前sheet
+        for($i=$startMonth;$i<=$endMonth;$i++){
+            
+            //选择操作脚本
+            $objPHPExcel->setActiveSheetIndex($sheet);
+            $objActSheet = $objPHPExcel->getActiveSheet();
+            
+            //设置当前活动sheet的名称
+            $objActSheet->setTitle($i.'月'); 
+            
+            //设置边框颜色 
+            $objBorderA5 =  $objActSheet->getStyle('A1')->getBorders(); 
+            $objBorderA5->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN); 
+            $objBorderA5->getTop()->getColor()->setRGB('000000') ; // 边框color 
+            $objBorderA5->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN); 
+            $objBorderA5->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN); 
+            $objBorderA5->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN); 
+            
+            //设置宽width
+            $objActSheet->getColumnDimension('A')->setWidth(10); 
+            $objActSheet->getColumnDimension('B')->setWidth(17); 
+            $objActSheet->getColumnDimension('C')->setWidth(17); 
+            $objActSheet->getColumnDimension('D')->setWidth(8); 
+            
+            if($i == $startMonth){
+                $start_day = $startDay;
+            }else{
+                $start_day = 1;//获取当月有多少天
+            }
+            if($i == $endMonth){
+                $end_day = $endDay;
+            }else{
+                $end_day = date("t",  strtotime($startYear.'-'.$i.'-01'));//获取当月有多少天
+            }
+
+            //设置单元格--表格头start
+            $row = 1;
+            $objActSheet->setCellValue('A'.$row, $startYear.'年'.$i.'月')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');           
+            
+            $row++;
+            $objActSheet->setCellValue('A'.$row, '日咨询报名情况汇总表')->setCellValue('B'.$row, '')->setCellValue('C'.$row, '')->setCellValue('D'.$row, '')->setCellValue('E'.$row, '');
+            
+            $row++;
+            $objActSheet->setCellValue('D'.$row, '合计');
+            $objActSheet->mergeCells('A'.$row.':C'.$row);
+             //设置单元格--表格头end
+            
+            //设置单元格--电话咨询start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_dhzx_zj = $row;
+            $objActSheet->setCellValue('C'.$row, '总计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $objActSheet->setCellValue("{$column}3", $j);
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_dhzx_{$ck} = $handle_row;
+                    $day_number = null;
+                    foreach($record as $rk=>$rv){
+                        if($rv['type']==1 && $rv['status']==1 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
+                            if($ck==1 && $rv['channel']==1){
+                                $day_number++;
+                            }
+                            if($ck==2 && $rv['channel']==6){
+                                $day_number++;
+                            }
+                            if($ck==3 && $rv['channel']==3){
+                                $day_number++;
+                            }
+                            if($ck==4 && ($rv['channel']==4 || $rv['channel'] == 5)){
+                                $day_number++;
+                            }
+                        }
+                    }
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$row}:{$column}{$handle_row})");//电话咨询－总计行
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($channel as $k=>$v){
+                $objActSheet->setCellValue("D{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//电话咨询－合计列
+                $tmp_row ++;
+            }
+            
+            $objActSheet->setCellValue('D'.$tmp_row_1, "=SUM({$start_column}{$tmp_row_1}:{$column}{$tmp_row_1})");//电话咨询－总计－合计
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A4", '电话咨询');
+                $objActSheet->mergeCells("A4:B{$handle_row}");
+            }
+            
+            $objActSheet->mergeCells('A1:'.$column.'1')->mergeCells('A2:'.$column.'2');//合并单元格 
+            
+            $row = $handle_row;
+            //设置单元格--电话咨询end
+            
+            
+            //设置单元格--首次上门start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_scsm = $row;
+            $objActSheet->setCellValue('B'.$row, '总计');
+            $objActSheet->mergeCells("B{$row}:C{$row}");
+            
+            $row++;
+            $tmp_row_2 = $row;
+            $sign_row_dhsmzx_hj = $row;
+            $objActSheet->setCellValue('C'.$row, '合计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_dhsmzx_{$ck} = $handle_row;
+                    $day_number = null;
+                    foreach($record as $rk=>$rv){
+                        if($rv['type']==1 && $rv['status']==2 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
+                            if($ck==1 && $rv['channel']==1){
+                                $day_number++;
+                            }
+                            if($ck==2 && $rv['channel']==6){
+                                $day_number++;
+                            }
+                            if($ck==3 && $rv['channel']==3){
+                                $day_number++;
+                            }
+                            if($ck==4 && ($rv['channel']==4 || $rv['channel'] == 5)){
+                                $day_number++;
+                            }
+                        }
+                    }
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                $objActSheet->setCellValue("{$column}{$tmp_row_2}", "=SUM({$column}{$row}:{$column}{$handle_row})");//电话上门咨询－合计行
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($channel as $k=>$v){
+                $objActSheet->setCellValue("D{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//电话上门咨询－合计列
+                $tmp_row ++;
+            }
+            
+            $objActSheet->setCellValue('D'.$tmp_row_2, "=SUM({$start_column}{$tmp_row_2}:{$column}{$tmp_row_2})");//电话上门咨询－合计行－合计列
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("B{$tmp_row_2}", '电话上门咨询');
+                $objActSheet->mergeCells("B{$tmp_row_2}:B{$handle_row}");
+            }
+            
+            $row = $handle_row;
+            
+            $row++;
+            $tmp_row_3 = $row;
+            $sign_row_zjsmzx_hj = $row;
+            $objActSheet->setCellValue('C'.$row, '合计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_zjsmzx_{$ck} = $handle_row;
+                    $day_number = null;
+                    foreach($record as $rk=>$rv){
+                        if($rv['type']==1 && $rv['status']==3 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
+                            if($ck==1 && $rv['channel']==1){
+                                $day_number++;
+                            }
+                            if($ck==2 && $rv['channel']==6){
+                                $day_number++;
+                            }
+                            if($ck==3 && $rv['channel']==3){
+                                $day_number++;
+                            }
+                            if($ck==4 && ($rv['channel']==4 || $rv['channel'] == 5)){
+                                $day_number++;
+                            }
+                        }
+                    }
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                
+                $objActSheet->setCellValue("{$column}{$tmp_row_3}", "=SUM({$column}{$row}:{$column}{$handle_row})");//直接上门咨询－合计行
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($channel as $k=>$v){
+                $objActSheet->setCellValue("D{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//直接上门咨询－合计列
+                $tmp_row ++;
+            }
+            
+            
+            $objActSheet->setCellValue('D'.$tmp_row_3, "=SUM({$start_column}{$tmp_row_3}:{$column}{$tmp_row_3})");//直接上门咨询－合计行－合计列
+            
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("B{$tmp_row_3}", '直接上门咨询');
+                $objActSheet->mergeCells("B{$tmp_row_3}:B{$handle_row}");
+            }
+            
+            $objActSheet->setCellValue("A{$tmp_row_1}", '首次上门');
+            $objActSheet->mergeCells("A{$tmp_row_1}:A{$handle_row}");
+            
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$tmp_row_2}:{$column}{$tmp_row_3})");//首次上门－总计行
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2}+D{$tmp_row_3})");//首次上门－总计行
+            
+            $row = $handle_row;
+            
+            //设置单元格--首次上门end
+            
+            //设置单元格--再次上门start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_zcsm = $row;
+            $objActSheet->setCellValue('C'.$row, '总计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $day_number = null;
+                    foreach($record as $rk=>$rv){
+                        if($rv['type']==1 && $rv['status']==4 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
+                            if($ck==1 && $rv['channel']==1){
+                                $day_number++;
+                            }
+                            if($ck==2 && $rv['channel']==6){
+                                $day_number++;
+                            }
+                            if($ck==3 && $rv['channel']==3){
+                                $day_number++;
+                            }
+                            if($ck==4 && ($rv['channel']==4 || $rv['channel'] == 5)){
+                                $day_number++;
+                            }
+                        }
+                    }
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$row}:{$column}{$handle_row})");//再次上门－合计行
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($channel as $k=>$v){
+                $objActSheet->setCellValue("D{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//再次上门－合计列
+                $tmp_row ++;
+            }
+            
+            $objActSheet->setCellValue('D'.$tmp_row_1, "=SUM({$start_column}{$tmp_row_1}:{$column}{$tmp_row_1})");//再次上门－合计行－合计列
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A{$tmp_row_1}", '再次上门');
+                $objActSheet->mergeCells("A{$tmp_row_1}:B{$handle_row}");
+            }
+                        
+            $row = $handle_row;
+            //设置单元格--再次上门end
+            
+            
+            //设置单元格--报名人数start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_bmrs_zj = $row;
+            $objActSheet->setCellValue('B'.$row, '总计');
+            $objActSheet->mergeCells("B{$row}:C{$row}");
+            
+            $row++;
+            $tmp_row_2 = $row;
+            $sign_row_scsmbm = $row;
+            $objActSheet->setCellValue('C'.$row, '合计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_scsmbm_{$ck} = $handle_row;
+                    $day_number = null;
+                    foreach($record as $rk=>$rv){
+                        if($rv['type']==1 && $rv['status']==5 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
+                            if($ck==1 && $rv['channel']==1){
+                                $day_number++;
+                            }
+                            if($ck==2 && $rv['channel']==6){
+                                $day_number++;
+                            }
+                            if($ck==3 && $rv['channel']==3){
+                                $day_number++;
+                            }
+                            if($ck==4 && ($rv['channel']==4 || $rv['channel'] == 5)){
+                                $day_number++;
+                            }
+                        }
+                    }
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                $objActSheet->setCellValue("{$column}{$tmp_row_2}", "=SUM({$column}{$row}:{$column}{$handle_row})");//首次上门报名－合计行
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($channel as $k=>$v){
+                $objActSheet->setCellValue("D{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//首次上门报名－合计列
+                $tmp_row ++;
+            }
+            
+            $objActSheet->setCellValue('D'.$tmp_row_2, "=SUM({$start_column}{$tmp_row_2}:{$column}{$tmp_row_2})");//首次上门报名－合计行－合计列
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("B{$tmp_row_2}", '首次上门报名');
+                $objActSheet->mergeCells("B{$tmp_row_2}:B{$handle_row}");
+            }
+            
+            $row = $handle_row;
+            
+            $row++;
+            $tmp_row_3 = $row;
+            $sign_row_zcsmbm = $row;
+            $objActSheet->setCellValue('C'.$row, '合计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_zcsmbm_{$ck} = $handle_row;
+                    $day_number = null;
+                    foreach($record as $rk=>$rv){
+                        if($rv['type']==1 && $rv['status']==6 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
+                            if($ck==1 && $rv['channel']==1){
+                                $day_number++;
+                            }
+                            if($ck==2 && $rv['channel']==6){
+                                $day_number++;
+                            }
+                            if($ck==3 && $rv['channel']==3){
+                                $day_number++;
+                            }
+                            if($ck==4 && ($rv['channel']==4 || $rv['channel'] == 5)){
+                                $day_number++;
+                            }
+                        }
+                    }
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                
+                $objActSheet->setCellValue("{$column}{$tmp_row_3}", "=SUM({$column}{$row}:{$column}{$handle_row})");//再次上门报名－合计行
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            $tmp_row = $row;
+            foreach($channel as $k=>$v){
+                $objActSheet->setCellValue("D{$tmp_row}", "=SUM({$start_column}{$tmp_row}:{$column}{$tmp_row})");//再次上门报名－合计列
+                $tmp_row ++;
+            }
+            
+            
+            $objActSheet->setCellValue('D'.$tmp_row_3, "=SUM({$start_column}{$tmp_row_3}:{$column}{$tmp_row_3})");//再次上门报名－合计行－合计列
+            
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("B{$tmp_row_3}", '再次上门报名');
+                $objActSheet->mergeCells("B{$tmp_row_3}:B{$handle_row}");
+            }
+            
+            $objActSheet->setCellValue("A{$tmp_row_1}", '报名人数');
+            $objActSheet->mergeCells("A{$tmp_row_1}:A{$handle_row}");
+            
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$tmp_row_2}:{$column}{$tmp_row_3})");//首次上门－总计行
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2}+D{$tmp_row_3})");//首次上门－总计行
+            
+            $row = $handle_row;
+            //设置单元格--首次上门end
+            
+            //设置单元格--当日获取调卷量start
+            $row++;
+            $objActSheet->setCellValue("A{$row}","当日获取调卷量");
+            $objActSheet->mergeCells("A{$row}:C{$row}");
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $start = strtotime($startYear.'-'.$i.'-'.$j.' 00:00:00');//当天开始时间
+                $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
+                $day_number = null;//每日实际调卷总计
+                foreach($questionnaire as $qk=>$qv){
+                        if($start<=strtotime($qv['start_time']) && $end>=strtotime($qv['end_time'])){
+                            $day_number = $day_number+$qv['number'];
+                        }
+                    }
+                $objActSheet->setCellValue("{$column}{$row}", $day_number);
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue("D{$row}", "=SUM({$start_column}{$row}:{$column}{$row})");//当日获取调卷量－合计行
+            //设置单元格--当日获取调卷量end
+            
+            //设置单元格--调卷有效率start
+            $row++;
+            $sign_row_dj = $row;
+            $objActSheet->setCellValue("A{$row}","调卷有效率");
+            $objActSheet->mergeCells("A{$row}:C{$row}");
+            //设置单元格--调卷有效率end
+            
+            
+            //设置单元格--咨询总数start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_zxzs_zj = $row;
+            $objActSheet->setCellValue('C'.$row, '总计');
+            
+            $row++;
+            $column = "D";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day+1;$j++){
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_zxzs_{$ck} = $handle_row;
+                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_dhzx_{$ck}.",{$column}".$sign_row_zjsmzx_{$ck}.")");
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$sign_row_dhzx_zj},{$column}{$sign_row_zjsmzx_hj})");//咨询总数－总计行
+                
+                if($j!=$end_day+1){
+                    $column++;
+                }
+            }
+                
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A{$tmp_row_1}", '咨询总数');
+                $objActSheet->mergeCells("A{$tmp_row_1}:B{$handle_row}");
+            }                        
+            $row = $handle_row;
+            //设置单元格--咨询总数end
+            
+            //设置单元格--报名人数start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_bmrs_zj_2 = $row;
+            $objActSheet->setCellValue('C'.$row, '总计');
+            
+            $row++;
+            $column = "D";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day+1;$j++){
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $sign_row_bmrs2_{$ck} = $handle_row;
+                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_scsmbm_{$ck}."+{$column}".$sign_row_zcsmbm_{$ck}.")");
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "={$column}$sign_row_bmrs_zj");//报名人数－总计行
+                
+                if($j!=$end_day+1){
+                    $column++;
+                }
+            }
+                
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A{$tmp_row_1}", '报名人数');
+                $objActSheet->mergeCells("A{$tmp_row_1}:B{$handle_row}");
+            }
+            
+            $row = $handle_row;
+            //设置单元格--报名人数end
+            
+            //设置单元格--示范课start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_cjst = $row;
+            $objActSheet->setCellValue('C'.$row, '参加试听人数');
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $objActSheet->setCellValue("{$column}{$row}", "");//参加试听人数－行
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue("D{$row}", "=SUM({$start_column}{$row}:{$column}{$row})");//参加试听人数－总计
+            
+            $row++;
+            $tmp_row_2 = $row;
+            $sign_row_stbm = $row;
+            $objActSheet->setCellValue('C'.$row, '试听报名人数');
+            $column = "E";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day;$j++){
+                $objActSheet->setCellValue("{$column}{$row}", "");//试听报名人数－行
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            $objActSheet->setCellValue("D{$row}", "=SUM({$start_column}{$row}:{$column}{$row})");//试听报名人数－总计
+            
+            
+            $objActSheet->setCellValue('A'.$tmp_row_1, '示范课');
+            $objActSheet->mergeCells("A{$tmp_row_1}:B{$tmp_row_2}");
+            //设置单元格--示范课end
+            
+            //设置单元格--转化率start
+            $row++;
+            $tmp_row_1 = $row;
+            $sign_row_zhl = $row;
+            $objActSheet->setCellValue('D'.$row, '电话/上门转化率')->setCellValue('E'.$row, '')->setCellValue('F'.$row, '');
+            $objActSheet->setCellValue('G'.$row, '当面/报名转化率')->setCellValue('H'.$row, '')->setCellValue('I'.$row, '');
+            $objActSheet->setCellValue('J'.$row, '总转化率')->setCellValue('K'.$row, '')->setCellValue('L'.$row, '');
+            $objActSheet->setCellValue('M'.$row, '示范课转化率')->setCellValue('N'.$row, '');
+            
+            $row++;
+            $tmp_row_2 = $row;
+            $objActSheet->setCellValue('C'.$row, '总计');
+            
+            $row++;
+            $column = "E";//开始操作列
+            $start_column = $column;
+            $tmp = false;
+            for($j=$start_day;$j<=$end_day;$j++){
+                if($column == 'N'){
+                    $tmp = true;
+                }
+                $handle_row = $row;//开始操作行
+                foreach($channel as $ck=>$cv){
+                    $objActSheet->setCellValue("C{$handle_row}", $cv);
+                    $handle_row++;
+                }
+                if($handle_row>$row){
+                    $handle_row--;
+                }
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            
+            //转化率
+            $objActSheet->setCellValue("D{$tmp_row_2}", "=D{$sign_row_dhsmzx_hj}/D{$sign_row_dhzx_zj}");//电话/上门转化率
+            $objActSheet->setCellValue("G{$tmp_row_2}", "=D{$sign_row_bmrs_zj_2}/SUM(D{$sign_row_dhsmzx_hj},D{$sign_row_zjsmzx_hj})");//当面/报名转化率
+            $objActSheet->setCellValue("J{$tmp_row_2}", "=D{$sign_row_bmrs_zj}/D{$sign_row_zxzs_zj}");//总转化率
+            $objActSheet->setCellValue("M{$tmp_row_2}", "=D{$sign_row_stbm}/D{$sign_row_cjst}");//示范课转化率
+            $tmp_row = $row;
+            foreach($channel as $ck=>$cv){
+                $objActSheet->mergeCells("D{$tmp_row}:F{$tmp_row}");
+                $objActSheet->mergeCells("G{$tmp_row}:I{$tmp_row}");
+                $objActSheet->mergeCells("J{$tmp_row}:L{$tmp_row}");
+                $objActSheet->setCellValue("D{$tmp_row}", "=D".$sign_row_dhsmzx_{$ck}."/D".$sign_row_dhzx_{$ck});//电话/上门转化率
+                $objActSheet->setCellValue("G{$tmp_row}", "=D".$sign_row_bmrs2_{$ck}."/SUM(D".$sign_row_dhsmzx_{$ck}.",D".$sign_row_zjsmzx_{$ck}.")");//当面/报名转化率
+                $objActSheet->setCellValue("J{$tmp_row}", "=(SUM(D". $sign_row_scsmbm_{$ck} .",D".$sign_row_zcsmbm_{$ck} ."))/".$sign_row_zxzs_{$ck});//总转化率
+                $tmp_row ++;
+            }            
+            
+            if($handle_row>$row){
+                $objActSheet->setCellValue("A{$tmp_row_1}", '转化率');
+                $objActSheet->mergeCells("A{$tmp_row_1}:B{$handle_row}");
+            }
+            
+            $objActSheet->mergeCells("D{$tmp_row_1}:F{$tmp_row_1}");
+            $objActSheet->mergeCells("D{$tmp_row_2}:F{$tmp_row_2}");
+            $objActSheet->mergeCells("G{$tmp_row_1}:I{$tmp_row_1}");
+            $objActSheet->mergeCells("G{$tmp_row_2}:I{$tmp_row_2}");
+            $objActSheet->mergeCells("J{$tmp_row_1}:L{$tmp_row_1}");
+            $objActSheet->mergeCells("J{$tmp_row_2}:L{$tmp_row_2}");
+            $objActSheet->mergeCells("M{$tmp_row_1}:N{$tmp_row_1}");
+            $objActSheet->mergeCells("M{$tmp_row_2}:N{$handle_row}");
+            
+            $row = $handle_row;
+            //设置单元格--转化率end
+            
+            
+            $column = $tmp?$column:'N';//这个表比较特殊
+            //从指定的单元格复制样式信息. 
+            $objActSheet->duplicateStyle($objActSheet->getStyle('A1'), 'A1:'.$column.$row); 
+            
+            //设置填充的样式和背景色
+            $objActSheet->getStyle("A1:{$column}{$row}")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+            $flag = false;
+            $column = "F";
+            for($j=$start_day;$j<=$end_day;$j++){
+                if($column == 'N'){
+                    $flag = true;
+                }
+                if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '6'){
+                    $objActSheet->getStyle("{$column}3:{$column}{$sign_row_dj}")->getFill()->getStartColor()->setRGB('89bfff');
+                }
+                if(date("w",strtotime($startYear.'-'.$i.'-'.$j)) == '0'){
+                    $objActSheet->getStyle("{$column}3:{$column}{$sign_row_dj}")->getFill()->getStartColor()->setRGB('c2ffff');
+                }
+                
+                if($j!=$end_day){
+                    $column++;
+                }
+            }
+            $column = $flag?$column:'N';
+            $objActSheet->getStyle("A{$sign_row_dhzx_zj}:C{$sign_row_dj}")->getFill()->getStartColor()->setRGB('ffff88');
+            $objActSheet->getStyle("D{$sign_row_dhzx_zj}:D{$sign_row_dj}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_dhsmzx_hj}:{$column}{$sign_row_dhsmzx_hj}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_zjsmzx_hj}:{$column}{$sign_row_zjsmzx_hj}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_zcsm}:{$column}{$sign_row_zcsm}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_scsmbm}:{$column}{$sign_row_scsmbm}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_zcsmbm}:{$column}{$sign_row_zcsmbm}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            
+            $objActSheet->getStyle("D{$sign_row_dhzx_zj}:{$column}{$sign_row_dhzx_zj}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("D{$sign_row_scsm}:{$column}{$sign_row_scsm}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("D{$sign_row_bmrs_zj}:{$column}{$sign_row_bmrs_zj}")->getFill()->getStartColor()->setRGB('535187');
+            
+            $objActSheet->getStyle("D{$sign_row_dj}:{$column}{$sign_row_dj}")->getFill()->getStartColor()->setRGB('ec0071');
+            
+            $objActSheet->getStyle("A{$sign_row_zxzs_zj}:{$column}".($sign_row_cjst-1))->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("A{$sign_row_cjst}:D{$sign_row_stbm}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("A{$sign_row_zhl}:C{$row}")->getFill()->getStartColor()->setRGB('535187');
+            $objActSheet->getStyle("D{$sign_row_zhl}:N{$sign_row_zhl}")->getFill()->getStartColor()->setRGB('18c1fe');
+            
+            //设置对齐方式
+            $objActSheet->getStyle("A1:{$column}{$row}")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);//水平方向居中
+            $objActSheet->getStyle("A1:{$column}{$row}")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER); //垂直方向居中
+            
+            $sheet++;
+        }
+        
+        if($this->_post("subType") == "导出"){
+            //输出xls
+            $outputFileName = "北外少儿教育市场活动计划监测表"; 
+            ob_end_clean() ;
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename='.$outputFileName.'.xls');
+            header('Cache-Control: No-cache');
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }else{
+            //将$objPHPEcel对象转换成html格式的
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');  
+            $objWriter->save('php://output');
         }
     }
 }
