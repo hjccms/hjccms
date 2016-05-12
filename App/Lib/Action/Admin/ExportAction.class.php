@@ -620,7 +620,7 @@ class ExportAction extends BaseAction{
             $data[$num]['status'] = $fun($v['status']);
             $data[$num]['speed'] = $v['speed'];
             $data[$num]['add_name'] = $v['add_name'];
-            $data[$num]['add_name2'] = $v['add_name'];
+            $data[$num]['add_name2'] = $v['record_name'];
             $data[$num]['intention'] = $v['intention'];
             $data[$num]['course'] = $v['course'];
             $data[$num]['stu_name'] = $v['name']?$v['name']:$v['en_name'];
@@ -996,7 +996,7 @@ class ExportAction extends BaseAction{
                     $column++;
                 }
             }
-            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2}+D{$tmp_row_3})");//首次上门－总计行
+            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2},D{$tmp_row_3})");//首次上门－总计行
             
             $row = $handle_row;
             
@@ -1203,7 +1203,7 @@ class ExportAction extends BaseAction{
                     $column++;
                 }
             }
-            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2}+D{$tmp_row_3})");//首次上门－总计行
+            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2},D{$tmp_row_3})");//首次上门－总计行
             
             $row = $handle_row;
             //设置单元格--首次上门end
@@ -1299,7 +1299,7 @@ class ExportAction extends BaseAction{
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
                     $sign_row_bmrs2[$ck] = $handle_row;
-                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_scsmbm[$ck]."+{$column}".$sign_row_zcsmbm[$ck].")");
+                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_scsmbm[$ck].",{$column}".$sign_row_zcsmbm[$ck].")");
                     $objActSheet->setCellValue("C{$handle_row}", $cv);
                     $handle_row++;
                 }
