@@ -577,7 +577,7 @@ class ExportAction extends BaseAction{
             $objActSheet->getStyle("A{$color_row_7}:{$column}{$color_row_7}")->getFill()->getStartColor()->setRGB('535187');
             $objActSheet->getStyle("A{$color_row_8}:{$column}{$color_row_8}")->getFill()->getStartColor()->setRGB('c080ff');
             $objActSheet->getStyle("A{$color_row_9}:{$column}{$color_row_9}")->getFill()->getStartColor()->setRGB('c080ff');
-            $objActSheet->getStyle("A{$color_row_10}:{$column}{$color_row_10}")->getFill()->getStartColor()->setRGB('c080ff');
+            $objActSheet->getStyle("A{$color_row_10}:E{$color_row_10}")->getFill()->getStartColor()->setRGB('c080ff');
             $objActSheet->getStyle("A{$color_row_11}:{$column}{$color_row_11}")->getFill()->getStartColor()->setRGB('fd82c0');
             $objActSheet->getStyle("A{$color_row_12_start}:D{$color_row_12_end}")->getFill()->getStartColor()->setRGB('ffff88');
             $objActSheet->getStyle("A{$color_row_13_start}:D{$color_row_13_end}")->getFill()->getStartColor()->setRGB('ffff88');
