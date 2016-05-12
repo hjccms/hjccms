@@ -171,12 +171,21 @@ class ExportAction extends BaseAction{
                 $day_number = null;//每日实际派单总计
                 $day_plan_number = null;//每日计划派单总计
                 foreach($region as $k=>$v){
+                    
+                    //一级地区相同的合并start
                     if($parent_name == $v['parent_name']){
-                        $objActSheet->mergeCells("C".$num.":C{$handle_row}");
+                        $end_num = $handle_row;
                     }else{
                         $parent_name = $v['parent_name'];
                         $num = $handle_row;
+                        $end_num = null;
                     }
+                    if($end_num){
+                        $merage_arr[$num] = $end_num;
+                        
+                    }
+                    //一级地区相同的合并end
+                    
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
                             $day_number = $day_number+$dv['number'];
@@ -191,6 +200,15 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("{$column}{$handle_row}", $day_number);
                     $handle_row++;
                 }
+                
+                //一级地区相同的合并start
+                if($merage_arr){
+                    foreach($merage_arr as $mk=>$mv){
+                        $objActSheet->mergeCells("C{$mk}:C{$mv}");
+                    }
+                }
+                //一级地区相同的合并end
+                
                 if($handle_row>$row){
                     $handle_row--;
                 }
@@ -247,12 +265,21 @@ class ExportAction extends BaseAction{
                 $day_number = null;//每日实际调卷总计
                 $day_plan_number = null;//每日计划调卷总计
                 foreach($region as $k=>$v){
+                    
+                    //一级地区相同的合并start
                     if($parent_name == $v['parent_name']){
-                        $objActSheet->mergeCells("C".$num.":C{$handle_row}");
+                        $end_num = $handle_row;
                     }else{
                         $parent_name = $v['parent_name'];
                         $num = $handle_row;
+                        $end_num = null;
                     }
+                    if($end_num){
+                        $merage_arr[$num] = $end_num;
+                        
+                    }
+                    //一级地区相同的合并end
+                    
                     foreach($v['questionnaire'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
                             $day_number = $day_number+$dv['number'];
@@ -270,6 +297,15 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("{$column}{$tmp_row_2}", "=SUM({$column}{$row}:{$column}{$handle_row})");//当日实际获取调卷数量
                     $handle_row++;
                 }
+                
+                //一级地区相同的合并start
+                if($merage_arr){
+                    foreach($merage_arr as $mk=>$mv){
+                        $objActSheet->mergeCells("C{$mk}:C{$mv}");
+                    }
+                }
+                //一级地区相同的合并end
+                
                 if($handle_row>$row){
                     $handle_row--;
                 }
@@ -370,12 +406,21 @@ class ExportAction extends BaseAction{
                 $handle_row = $row;
                 $day_parttimer_time = null;//每日派单兼职小时总计
                 foreach($region as $k=>$v){
+                    
+                    //一级地区相同的合并start
                     if($parent_name == $v['parent_name']){
-                        $objActSheet->mergeCells("C".$num.":C{$handle_row}");
+                        $end_num = $handle_row;
                     }else{
                         $parent_name = $v['parent_name'];
                         $num = $handle_row;
+                        $end_num = null;
                     }
+                    if($end_num){
+                        $merage_arr[$num] = $end_num;
+                        
+                    }
+                    //一级地区相同的合并end
+                    
                     foreach($v['dispatch'] as $dk=>$dv){
                         if($start<=strtotime($dv['start_time']) && $end>=strtotime($dv['end_time'])){
                             $day_parttimer_time = $day_parttimer_time+$dv['parttimer_time'];
@@ -390,6 +435,15 @@ class ExportAction extends BaseAction{
                     $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$row}:{$column}{$handle_row})");
                     $handle_row++;
                 }
+                
+                //一级地区相同的合并start
+                if($merage_arr){
+                    foreach($merage_arr as $mk=>$mv){
+                        $objActSheet->mergeCells("C{$mk}:C{$mv}");
+                    }
+                }
+                //一级地区相同的合并end
+                
                 if($handle_row>$row){
                     $handle_row--;
                 }
