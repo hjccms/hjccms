@@ -806,7 +806,7 @@ class ExportAction extends BaseAction{
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_dhzx_{$ck} = $handle_row;
+                    $sign_row_dhzx[$ck] = $handle_row;
                     $day_number = null;
                     foreach($record as $rk=>$rv){
                         if($rv['type']==1 && $rv['status']==1 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
@@ -877,7 +877,7 @@ class ExportAction extends BaseAction{
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_dhsmzx_{$ck} = $handle_row;
+                    $sign_row_dhsmzx[$ck] = $handle_row;
                     $day_number = null;
                     foreach($record as $rk=>$rv){
                         if($rv['type']==1 && $rv['status']==2 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
@@ -937,7 +937,7 @@ class ExportAction extends BaseAction{
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_zjsmzx_{$ck} = $handle_row;
+                    $sign_row_zjsmzx[$ck] = $handle_row;
                     $day_number = null;
                     foreach($record as $rk=>$rv){
                         if($rv['type']==1 && $rv['status']==3 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
@@ -1084,7 +1084,7 @@ class ExportAction extends BaseAction{
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_scsmbm_{$ck} = $handle_row;
+                    $sign_row_scsmbm[$ck] = $handle_row;
                     $day_number = null;
                     foreach($record as $rk=>$rv){
                         if($rv['type']==1 && $rv['status']==5 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
@@ -1144,7 +1144,7 @@ class ExportAction extends BaseAction{
                 $end = strtotime($startYear.'-'.$i.'-'.$j.' 23:59:59');//当天结束时间
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_zcsmbm_{$ck} = $handle_row;
+                    $sign_row_zcsmbm[$ck] = $handle_row;
                     $day_number = null;
                     foreach($record as $rk=>$rv){
                         if($rv['type']==1 && $rv['status']==6 && $start<=$rv['create_time'] && $end>=$rv['create_time']){
@@ -1210,6 +1210,7 @@ class ExportAction extends BaseAction{
             
             //设置单元格--当日获取调卷量start
             $row++;
+            $sign_row_drdjsl = $row;
             $objActSheet->setCellValue("A{$row}","当日获取调卷量");
             $objActSheet->mergeCells("A{$row}:C{$row}");
             $column = "E";//开始操作列
@@ -1251,8 +1252,8 @@ class ExportAction extends BaseAction{
             for($j=$start_day;$j<=$end_day+1;$j++){
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_zxzs_{$ck} = $handle_row;
-                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_dhzx_{$ck}.",{$column}".$sign_row_zjsmzx_{$ck}.")");
+                    $sign_row_zxzs[$ck] = $handle_row;
+                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_dhzx[$ck].",{$column}".$sign_row_zjsmzx[$ck].")");
                     $objActSheet->setCellValue("C{$handle_row}", $cv);
                     $handle_row++;
                 }
@@ -1273,6 +1274,18 @@ class ExportAction extends BaseAction{
             $row = $handle_row;
             //设置单元格--咨询总数end
             
+            
+            //设置单元格--调卷有效率start
+            $column = "D";//开始操作列
+            $start_column = $column;
+            for($j=$start_day;$j<=$end_day+1;$j++){
+                $objActSheet->setCellValue("{$column}{$sign_row_dj}", "={$column}{$sign_row_zxzs[2]}/{$column}{$sign_row_drdjsl}");//参加试听人数－行
+                if($j!=$end_day+1){
+                    $column++;
+                }
+            }
+            //设置单元格--调卷有效率end
+            
             //设置单元格--报名人数start
             $row++;
             $tmp_row_1 = $row;
@@ -1285,8 +1298,8 @@ class ExportAction extends BaseAction{
             for($j=$start_day;$j<=$end_day+1;$j++){
                 $handle_row = $row;//开始操作行
                 foreach($channel as $ck=>$cv){
-                    $sign_row_bmrs2_{$ck} = $handle_row;
-                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_scsmbm_{$ck}."+{$column}".$sign_row_zcsmbm_{$ck}.")");
+                    $sign_row_bmrs2[$ck] = $handle_row;
+                    $objActSheet->setCellValue("{$column}{$handle_row}", "=SUM({$column}".$sign_row_scsmbm[$ck]."+{$column}".$sign_row_zcsmbm[$ck].")");
                     $objActSheet->setCellValue("C{$handle_row}", $cv);
                     $handle_row++;
                 }
@@ -1307,6 +1320,7 @@ class ExportAction extends BaseAction{
             
             $row = $handle_row;
             //设置单元格--报名人数end
+
             
             //设置单元格--示范课start
             $row++;
@@ -1387,9 +1401,9 @@ class ExportAction extends BaseAction{
                 $objActSheet->mergeCells("D{$tmp_row}:F{$tmp_row}");
                 $objActSheet->mergeCells("G{$tmp_row}:I{$tmp_row}");
                 $objActSheet->mergeCells("J{$tmp_row}:L{$tmp_row}");
-                $objActSheet->setCellValue("D{$tmp_row}", "=D".$sign_row_dhsmzx_{$ck}."/D".$sign_row_dhzx_{$ck});//电话/上门转化率
-                $objActSheet->setCellValue("G{$tmp_row}", "=D".$sign_row_bmrs2_{$ck}."/SUM(D".$sign_row_dhsmzx_{$ck}.",D".$sign_row_zjsmzx_{$ck}.")");//当面/报名转化率
-                $objActSheet->setCellValue("J{$tmp_row}", "=(SUM(D". $sign_row_scsmbm_{$ck} .",D".$sign_row_zcsmbm_{$ck} ."))/".$sign_row_zxzs_{$ck});//总转化率
+                $objActSheet->setCellValue("D{$tmp_row}", "=D".$sign_row_dhsmzx[$ck]."/D".$sign_row_dhzx[$ck]);//电话/上门转化率
+                $objActSheet->setCellValue("G{$tmp_row}", "=D".$sign_row_bmrs2[$ck]."/SUM(D".$sign_row_dhsmzx[$ck].",D".$sign_row_zjsmzx[$ck].")");//当面/报名转化率
+                $objActSheet->setCellValue("J{$tmp_row}", "=(SUM(D". $sign_row_scsmbm[$ck] .",D".$sign_row_zcsmbm[$ck] ."))/".$sign_row_zxzs[$ck]);//总转化率
                 $tmp_row ++;
             }            
             
