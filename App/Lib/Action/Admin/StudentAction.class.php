@@ -195,10 +195,12 @@ class StudentAction  extends BaseAction {
     function ajaxPostRecord(){
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
-        if(!$post['type']){
+        if(!$post['type'] || !$post['sid']){
             $this->ajaxReturn ('','数据错误！',0);
         }
+        $stduent = D("Student")->getStudentInfo("id=".$post['sid']);
         $post['student_id'] = $post['sid'];
+        $post['site_id'] = $stduent['site_id'];
         $post['status'] = $post['status'.$post['type']];
         $post['add_id'] = $this->adminInfo->id;
         $post['create_time'] = time();
