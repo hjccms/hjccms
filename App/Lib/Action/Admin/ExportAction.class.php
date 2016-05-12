@@ -1073,7 +1073,7 @@ class ExportAction extends BaseAction{
             
             $row++;
             $tmp_row_2 = $row;
-            $sign_row_scsmbm = $row;
+            $sign_row_scsmbm_hj = $row;
             $objActSheet->setCellValue('C'.$row, '合计');
             
             $row++;
@@ -1133,7 +1133,7 @@ class ExportAction extends BaseAction{
             
             $row++;
             $tmp_row_3 = $row;
-            $sign_row_zcsmbm = $row;
+            $sign_row_zcsmbm_hj = $row;
             $objActSheet->setCellValue('C'.$row, '合计');
             
             $row++;
@@ -1454,8 +1454,8 @@ class ExportAction extends BaseAction{
             $objActSheet->getStyle("D{$sign_row_dhsmzx_hj}:{$column}{$sign_row_dhsmzx_hj}")->getFill()->getStartColor()->setRGB('b3b3b3');
             $objActSheet->getStyle("D{$sign_row_zjsmzx_hj}:{$column}{$sign_row_zjsmzx_hj}")->getFill()->getStartColor()->setRGB('b3b3b3');
             $objActSheet->getStyle("D{$sign_row_zcsm}:{$column}{$sign_row_zcsm}")->getFill()->getStartColor()->setRGB('b3b3b3');
-            $objActSheet->getStyle("D{$sign_row_scsmbm}:{$column}{$sign_row_scsmbm}")->getFill()->getStartColor()->setRGB('b3b3b3');
-            $objActSheet->getStyle("D{$sign_row_zcsmbm}:{$column}{$sign_row_zcsmbm}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_scsmbm_hj}:{$column}{$sign_row_scsmbm_hj}")->getFill()->getStartColor()->setRGB('b3b3b3');
+            $objActSheet->getStyle("D{$sign_row_zcsmbm_hj}:{$column}{$sign_row_zcsmbm_hj}")->getFill()->getStartColor()->setRGB('b3b3b3');
             
             $objActSheet->getStyle("D{$sign_row_dhzx_zj}:{$column}{$sign_row_dhzx_zj}")->getFill()->getStartColor()->setRGB('535187');
             $objActSheet->getStyle("D{$sign_row_scsm}:{$column}{$sign_row_scsm}")->getFill()->getStartColor()->setRGB('535187');
