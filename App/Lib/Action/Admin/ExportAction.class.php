@@ -927,7 +927,7 @@ class ExportAction extends BaseAction{
             $row++;
             $tmp_row_3 = $row;
             $sign_row_zjsmzx_hj = $row;
-            $objActSheet->setCellValue('C'.$row, '合计');
+            $objActSheet->setCellValue('C'.$row, '总计');
             
             $row++;
             $column = "E";//开始操作列
@@ -1198,7 +1198,7 @@ class ExportAction extends BaseAction{
             $column = "E";//开始操作列
             $start_column = $column;
             for($j=$start_day;$j<=$end_day;$j++){
-                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$tmp_row_2}:{$column}{$tmp_row_3})");//首次上门－总计行
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$tmp_row_2},{$column}{$tmp_row_3})");//首次上门－总计行
                 if($j!=$end_day){
                     $column++;
                 }
