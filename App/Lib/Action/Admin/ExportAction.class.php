@@ -991,12 +991,12 @@ class ExportAction extends BaseAction{
             $column = "E";//开始操作列
             $start_column = $column;
             for($j=$start_day;$j<=$end_day;$j++){
-                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$tmp_row_2}:{$column}{$tmp_row_3})");//首次上门－总计行
+                $objActSheet->setCellValue("{$column}{$tmp_row_1}", "=SUM({$column}{$tmp_row_2},{$column}{$tmp_row_3})");//首次上门－总计行
                 if($j!=$end_day){
                     $column++;
                 }
             }
-            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2},D{$tmp_row_3})");//首次上门－总计行
+            $objActSheet->setCellValue("D{$tmp_row_1}", "=SUM(D{$tmp_row_2},D{$tmp_row_3})");//首次上门－总计行-总计列
             
             $row = $handle_row;
             
