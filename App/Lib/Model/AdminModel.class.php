@@ -47,7 +47,7 @@ class AdminModel extends Model
         {
             $allParents[$k] = $v['parent_id'];
         }
-        
+       
         if(!in_array($parentId,$allParents)) return ''; 
         foreach ($dataArr as $k=>$v)
         {
@@ -89,6 +89,22 @@ class AdminModel extends Model
             }
         }
         return $adminStr;
+    }
+    
+    
+    function getParentByChild($arr,$child,$parentArr=''){
+        if(!$arr || !$child) return false;
+        $parentArr = $parentArr?$parentArr:array();
+        foreach($arr as $k=>$v){
+            if($v['id'] == $child["parent_id"]){
+               $parentArr[$k]['id'] = $v['id'];
+               $parentArr[$k]['name'] = $v['name'];
+               $parentArr[$k]['parent_id'] = $v['parent_id'];
+               $parentArr = $this->getParentByChild($arr,$v,$parentArr);
+            }
+        }
+        sort($parentArr);
+        return $parentArr;
     }
     
 }

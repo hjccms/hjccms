@@ -172,11 +172,9 @@ class AdminAction  extends BaseAction
         }
         $info = D('Admin')->getAdminInfo("id='$id'");
         $this->assign('info',$info);
-        $admins = D('Admin')->getSiteAdmins($info['site_id'],'1');
-        
-        $allAdmins = D('Admin')->sortChilds($admins,0);
-        
-        $this->assign('allAdmins',$allAdmins);
+        $adminArr = D("Admin")->getAdmin("site_id=".$info['site_id']." and valid=1 and del is null");
+        $admin = D('Admin')->getParentByChild($adminArr,$info); 
+        $this->assign('admin',$admin);
         $this->display();
     }
     function ajaxAdminDel($post)

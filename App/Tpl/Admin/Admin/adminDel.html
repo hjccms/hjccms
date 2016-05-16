@@ -29,7 +29,7 @@
                 {:hideInput(array('inputName'=>'importFun','value'=>'ajaxAdminDel'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 {:hideInput(array('inputName'=>'del','value'=>1))}
-                {:select(array('title'=>'数据移动','tipMsg'=>'将此管理员下数据移动给另外一个管理员','inputName'=>'to_admin_id','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择" id="juese" ','value'=>$info['parent_id'],'paramArr'=>$allAdmins))}
+                {:select(array('title'=>'数据移动','tipMsg'=>'将此管理员下数据移动给另外一个管理员','inputName'=>'to_admin_id','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择" id="juese" ','value'=>$info['parent_id'],'paramArr'=>$admin))}
                
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认删除"/></li>
             </ul>
