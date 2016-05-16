@@ -22,8 +22,17 @@ class AdminAction  extends BaseAction
             $condition['id'] = $condition['admin_id'];
             unset($condition['admin_id']);
         }
+        
         $condition["_string"] = " del is null ";
-        if($getInfo['site_id']) $condition['site_id'] = $getInfo['site_id'];
+        if($this->adminInfo->site_id>1){ 
+            $condition['site_id'] = $this->adminInfo->site_id;
+        }else{
+            $site_id = ($this->_get('site_id') !== null)?$this->_get('site_id'):$this->adminInfo->site_id;
+            if($site_id>0){ 
+                $condition['site_id'] = $site_id;
+            }
+        }
+        $getInfo['site_id'] = $condition['site_id'];
         if($getInfo['username']) $condition['_string'] .= " and username like '%".$getInfo['username']."%' ";
         if($getInfo['name']) $condition['_string'] .= " and name like '%".$getInfo['name']."%' ";
         $this->assign('info',$getInfo);
@@ -39,6 +48,11 @@ class AdminAction  extends BaseAction
         $this->assign('page',$page?$page:'');
         $this->assign('pageNum',$pageNum?$pageNum:'');
         $admins = D('Admin')->where($condition)->order("id asc")->limit($startNum,$listNum)->select();
+        foreach($admins as $k=>$v){
+            if($v['parent_id']){
+                $admins[$k]['parent_name'] = D('Admin')->where('id='.$v['parent_id'])->getField("name");
+            }
+        }
         //获取所有站点
         $sites = D('Site')->getSite();
         foreach($sites as $k=>$v)

@@ -72,6 +72,7 @@
                         <th>用户名</th>
                         <th>姓名</th>
                         <th>电话</th>
+                        <th>上级</th>
                         <th>站点</th>
                         <th>状态</th>
                         <th>操作</th>
@@ -84,6 +85,7 @@
                         <td>{$val.username}</td>
                         <td>{$val.name}</td>
                         <td>{$val.mobile}</td>
+                        <td>{$val.parent_name}</td>
                         <td>{$site[$val[site_id]]}</td>
                         <td><if condition="$val['valid'] eq 0"><font color="red">已禁用</font><else/>正常</if></td>
                         <td>{:get_list_button($listButton,array('id'=>$val[id]))}</td>
