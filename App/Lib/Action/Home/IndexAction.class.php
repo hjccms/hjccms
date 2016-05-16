@@ -11,4 +11,14 @@ class IndexAction extends Action {
         C('SHOW_PAGE_TRACE',false);
         $this->display();
     }
+    function testLogin()
+    {
+        C('SHOW_PAGE_TRACE',false);
+        $this->display();
+    }
+    function testResult()
+    {
+        C('SHOW_PAGE_TRACE',false);
+        $this->display();
+    }
 }

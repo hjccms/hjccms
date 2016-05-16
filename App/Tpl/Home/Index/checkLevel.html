@@ -1,85 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/Style/Home/js/checkLevel.js"></script>        
+        
+<div class="checklevel" >
 
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="天津奥尼少儿英语" />
-        <meta name="copyright" content="天津奥尼少儿英语" />
-        <title>天津奥尼少儿英语</title>
-
-        <link href="/Public/Style/Home/css/style.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
-
-        <script type="text/javascript" src="__PUBLIC__/Plugins/Flexslider/jquery.flexslider-min.js"></script>
-        <link href="__PUBLIC__/Plugins/Flexslider/flexslider.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript">
-            $(function () {
-                $(".banner").flexslider({
-                    slideshowSpeed: 4000, //展示时间间隔ms
-                    animationSpeed: 400, //滚动时间ms
-                    //touch: true //是否支持触屏滑动
-                    directionNav: false,
-                });
-            });
-        </script>
-    </head>
-    <body>
-        <div class="header">
-            <div class="center">
-                <div class="phone"><em class="icon"></em>400-686-9850</div>
-                <div class="login"><a href="">登录</a>｜<a href="">注册</a></div>
-            </div>
+    <div class="center top">
+        <div class="title num">1</div>
+        <div class="title testname">听下面的声音,从图中选取相对应的图片</div>
+        <div class="icon children" >
+            <div class="icon bofang"></div>
         </div>
-        <div class="center menu">
-            <div class="icon logo"></div>
-            <div class="menus">
-                <div class="childs"><a href="index.html" >首页</a></div>
-                <div class="childs"><a href="index.html" >课程体系</a></div>
-                <div class="childs"><a href="/Index/checkLevel.html" >在线评测</a></div>
-                <div class="childs"><a href="index.html" >课程体系</a></div>
-                <div class="childs"><a href="index.html" >授权合作</a></div>
-                <div class="childs"><a href="index.html" >师资力量</a></div>
-
-            </div>
+        <div class="center daan">
+            <input type="hidden" name="answer" class="answer" value="0" />
+            <div class="picslist  testpics" num="1" style="background-position:0px 0px; "></div>
+            <div class="picslist zj testpics2 testpics " num="2"  style="background-position:-200px 0px; "></div>
+            <div class="picslist  testpics" num="3"  style="background-position:-400px 0px; "></div>
         </div>
-        
-        
-        <div class="checklevel" >
-            <div class="center title">英语水平测试</div>
-            <div class="center smalltitle">English proficiency test</div>
-            <div class="center top">
-                <div class="title num">1</div>
-                <div class="title testname">听下面的声音,从图中选取相对应的图片,评测出孩子的英语水平</div>
-                <div class="icon children" >
-                    <div class="icon bofang"></div>
-                </div>
-                <div class="center daan">
-                    <div class="picslist  testpics" style="background-position:0px 0px; "></div>
-                    <div class="picslist zj testpics2"  style="background-position:-200px 0px; "></div>
-                    <div class="picslist  testpics"  style="background-position:-400px 0px; "></div>
-                </div>
-            </div>
-            <div class="center bottom">
-                <div class="prenext">
-                    <div class="icon pre">上一题</div>
-                    <div class="icon next">下一题</div>
-                </div>
-            </div>
+    </div>
+    <div class="center bottom">
+        <div class="prenext">
+            <div class="icon changetext pre " ch="pre">上一题</div>
+            <div class="icon changetext next" ch="next">下一题</div>
         </div>
+    </div>
+</div>
         
         
-        
-        <div class="footer">
-            <div class="footermenu">
-                <a href="">关于我们</a>
-                <a href="">招贤纳士</a>
-                <a href="">Teacher Recruitment</a>
-                <a href="">商务合作</a>
-                <a href="">服务协议</a>
-            </div>
-            <div class="call">
-                <img src="/Public/Style/Home/images/erweima.jpg"></img>
-                <img src="/Public/Style/Home/images/dianhua.png"></img>
-            </div>
-        </div>
-    </body>
+<include file="Public:footer" />

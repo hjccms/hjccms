@@ -78,11 +78,11 @@ h2{font-weight:normal;}
 .jishuzhuanjia .zhuanjia .floortitle { text-align: left;}
 .jishuzhuanjia .zhuanjia .floortitledesc { text-align: left; font-size: 16px; color: #b4b3b3; font-family: "fzxyjt"; line-height: 25px;}
 .jishuzhuanjia .zhuanjia .jieshao { width: 493px; height: 173px; background-color: #feffff; margin-top: 25px; padding-top: 21px; border-radius: 5px;}
-.jishuzhuanjia .zhuanjia .jieshao .face { margin-left: 17px; display: inline; width: 77px; height: 77px; float:  left;}
-.jishuzhuanjia .zhuanjia .jieshao .miaoshu { width: 335px; height: auto; margin-right:40px; display: inline; }
-.jishuzhuanjia .zhuanjia .jieshao .miaoshu .name { font-size: 20px; color: #333333; height: 20px; line-height: 20px; }
+.jishuzhuanjia .zhuanjia .jieshao .face { margin-left: 17px; display: inline; width: 210px; height: 145px; float:  left;}
+.jishuzhuanjia .zhuanjia .jieshao .miaoshu { width: 205px; height: auto; margin-right:40px; display: inline; }
+.jishuzhuanjia .zhuanjia .jieshao .miaoshu .name { font-size: 18px; color: #333333; height: 40px; line-height: 20px; }
 .jishuzhuanjia .zhuanjia .jieshao .miaoshu .jianjie{ font-size: 14px; color: #333333; height: 40px; line-height: 30px;}
-.jishuzhuanjia .zhuanjia .jieshao .miaoshu .con{ font-size: 12px; color: #999999;  line-height: 20px;}
+.jishuzhuanjia .zhuanjia .jieshao .miaoshu .con{ font-size: 12px; color: #999999; margin-top: 20px;  line-height: 20px;}
 .jishuzhuanjia .zhuanjia .fl2 { margin-top: 16px;}
 .hezuo .floortitle { text-align: left;}
 .hezuo .floortitledesc { text-align: left; line-height: 25px; font-size: 16px; color: #b4b3b3;}
@@ -100,15 +100,15 @@ h2{font-weight:normal;}
 
 
 
-.checklevel { width: 100%; background-color: #ebf3f5; height: 900px; padding-top: 100px;}
+.checklevel { width: 100%; background-color: #ebf3f5; height: 900px; padding-top: 100px; font-family: "fzxyjt"; }
 
-.checklevel .top { background-color: #60e1f4; height: 550px; margin-top: 30px; border: 1px #a5aaab solid;}
-.checklevel .title { text-align: center;  height:55px; font-size: 53px; color: #000; line-height: 55px;  }
-.checklevel .smalltitle { text-align: center;  height:25px; font-size: 24px; color: #000; line-height: 25px;  }
+.checklevel .top { background-color: #60e1f4; height: 550px; margin-top: 5px; border: 1px #a5aaab solid;}
+.checklevel .title { text-align: center;  height:55px; font-size: 53px; color: #000; line-height: 55px; font-family: "fzxyjt";  }
+.checklevel .smalltitle { text-align: center;  height:25px; font-size: 24px; color: #000; line-height: 25px; font-family: "fzxyjt";  }
+.checklevel .shuoming { text-align: left; font-size: 12px; color: #222;}
+.checklevel .top .num { color: #fff; font-size: 80px; height: 100px; line-height: 120px; font-weight: 900;}
 
-.checklevel .top .num { color: #fff; font-size: 65px; height: 95px; line-height: 120px;}
-
-.checklevel .top .testname { font-size: 20px; color: #000; height: 20px; line-height: 20px; margin-bottom: 20px;}
+.checklevel .top .testname { font-size: 16px; color: #fff; height: 25px; line-height: 20px; margin-bottom: 20px;}
 .checklevel .top .children { width: 145px; height:160px; background-position: 0 -200px;  margin-left: auto; margin-right: auto; padding-top:20px;  }
 .checklevel .top .children .bofang { width: 25px; height: 30px; background-position: -320px 0px; margin-left:60px; margin-top: 75px; cursor: pointer;  }
 
@@ -125,3 +125,34 @@ h2{font-weight:normal;}
 .checklevel .bottom .prenext .pre:hover { background-position: -893px 0px; width: 267px; height: 53px; text-align: center; line-height: 53px; color: #fff; font-size: 24px; cursor: pointer; float: left;}
 .checklevel .bottom .prenext .pre {background-position: -893px -60px; color: #e96d1f;  width: 267px; height: 53px; text-align: center; line-height: 55px;  font-size: 24px; cursor: pointer; float: left;}
 .checklevel .bottom .prenext .next { background-position: -893px -60px; color: #e96d1f; margin-left: 60px; width: 267px; height: 53px; text-align: center; line-height: 55px;  font-size: 24px; cursor: pointer; float: left;}
+
+
+.checklevel .testlogin { background-image:url("../images/pclogin.jpg"); height: 610px; position: relative;  }
+.checklevel .testbot { height: 80px;} 
+.checklevel .testlogin .loginshuoming { position: absolute; font-family: "fzxyjt"; font-size: 18px; color: #666; left: 180px; top: 160px; letter-spacing: 2px;  }
+.checklevel .testlogin .loginform { font-family: "fzxyjt"; position: absolute; left: 197px; top: 310px; width: 320px; height: 200px; }
+.checklevel .testlogin .loginform input { float: left; text-align: center; width:315px; height:40px; background-color: #d3d3d3; border-radius: 5px; font-size: 16px; line-height: 40px; color: #333;  }
+
+.checklevel .testlogin .loginform .mobile { margin-top: 15px;}
+.checklevel .testlogin .loginform .button { width: 320px; margin-top: 20px; height: 49px; background-position: -840px -130px; text-align: center; line-height: 49px; color: #fff; font-size: 20px; cursor: pointer;  }
+
+
+
+.checklevel .testresult { background-image:url("../images/pcjg.jpg"); height: 610px; position: relative;  }
+.checklevel .testbot { height: 80px;} 
+.checklevel .testresult .resultshuoming { position: absolute; font-family: "黑体"; font-weight: bolder;  font-size: 34px; color: #fff; left: 85px; top: 85px; letter-spacing: 2px;  }
+.checklevel .testresult .resultshuoming font { color: #e96d1c}
+
+.checklevel .testresult .defen { position: absolute;font-family: "黑体"; top: 205px; letter-spacing: 1.5px; color: #333; left: 240px; width: 400px; height: 30px; font-size: 24px; }
+.checklevel .testresult .defen .fenshu { color: #e96d1c;  font-size: 34px ; letter-spacing: 1.5px;}
+.checklevel .testresult .defen .js { color: #999; font-family: "微软雅黑"; }
+
+.checklevel .testresult .dengji { top: 255px;}
+
+
+.checklevel .testresult .zongjie { position: absolute; top:345px; left: 120px; width: 560px; height: 50px; font-family: "fzxyjt"; color: #333; font-size: 14px; line-height: 20px; letter-spacing: 1.5px; }
+
+.checklevel .testresult .jianyi { position: absolute; top:400px; left: 120px; width: 560px; height: 50px; font-family: "fzxyjt"; color: #333; font-size: 14px; line-height: 20px;letter-spacing: 1.5px; }
+
+.checklevel .testresult .button { position: absolute;  width: 380px;top:465px; left: 220px; height: 49px; background-position: -780px -204px; text-align: center; line-height: 49px; color: #fff; font-size: 20px; cursor: pointer;  }
+
