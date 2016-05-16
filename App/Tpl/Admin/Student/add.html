@@ -31,8 +31,6 @@
                 {:input(array('title'=>'中文名','inputName'=>'name','value'=>$info['name']))}
                 {:input(array('title'=>'英文名','inputName'=>'en_name','value'=>$info['en_name']))}
                 {:input(array('title'=>'邮箱','inputName'=>'email','value'=>$info['email'],'addHtml'=>'datatype="e" ignore="ignore"'))}
-                {:select(array('title'=>'分配教务','inputName'=>'jw_id','value'=>$info['jw_id'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>$jw))}
-                {:select(array('title'=>'分配CC','inputName'=>'cc_id','value'=>$info['cc_id'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>$cc))}
                 {:select(array('title'=>'注册渠道','inputName'=>'channel','value'=>$info['channel'],'tipMsg'=>'','addHtml'=>'datatype="*" ignore="ignore" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_channel()))}
                 {:input(array('title'=>'其他渠道','li_style'=>'display:none','li_class'=>'other_channel','inputName'=>'other_channel','value'=>$info['other_channel']))}
                 {:input(array('title'=>'推荐人','li_style'=>'display:none','li_class'=>'referee','inputName'=>'referee','value'=>$info['referee']))}

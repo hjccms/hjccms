@@ -11,16 +11,19 @@ class StudentAction  extends BaseAction {
         $this->getContentButton();
         $this->getListButton();
         $sites = D('Site')->getSite("valid=1");
-        if($this->adminInfo->site_id>1){ 
-            $condition['site_id'] = $this->adminInfo->site_id;
-            $condition['_string'] = "type>2";
-        }else{
+        if($this->adminInfo->site_id==1){ 
             $site_id = ($this->_get('site_id') !== null)?$this->_get('site_id'):$this->adminInfo->site_id;
-            $condition['valid'] = 1;
             if($site_id>0){ 
                 $condition['site_id'] = $site_id;
             }
+        }else{
+            $condition['site_id'] = $this->adminInfo->site_id;
+            if($this->adminInfo->role_type == 3){
+                $admin = D("Admin")->getSiteCondition($condition['site_id'],$this->adminInfo->id,1);
+                $condition['_string'] = "add_id in (".$admin['admin_id'][1].")";
+            }
         }
+        
         $condition['valid'] = 1;
         $condition['del'] = array('exp','is null');
         
@@ -141,7 +144,6 @@ class StudentAction  extends BaseAction {
             }
         }
         
-        $post['cc_id'] = $post['cc_id']?$post['cc_id']:$this->adminInfo->id;
         if(!$post['id']){
             $post['site_id'] = $this->adminInfo->site_id;
             $post['username'] = $post['mobile'];
