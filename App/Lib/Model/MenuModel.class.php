@@ -126,17 +126,21 @@ class MenuModel extends Model
         $listButton = D('Menu')->getMenu($id,true,false,3);
         foreach($menu as $v){
             $listButtonTree = D('Menu')->getListButton($listButton,array('id'=>$v['id']));
-            if($v['valid'] == 0){
-                $style = 'style="color:#ADADAD"';
+            if($v['level'] == 3){
+                $style = "style='display:none'";
+                $htmlflag = "flag='none'";
             }
-            $tree .= '<tr '.$style.'>';
-            $tree .= '<td>'.$v['id'].'</td>';
-            $tree .= '<td>'.$str.$v['name'].'</td>';
-            $tree .= '<td>'.get_menu_type($v['type']).'</td>';
+            if($v['level'] == 2){
+                $htmlflag = "flag='none'";
+            }
+            $tree .= '<tr '.$style.''.$htmlflag.' id="'.$v['id'].'" level="'.$v['level'].'" class="'.$v['parent_id'].'">';
+            $tree .= '<td class="change">'.$v['id'].'</td>';
+            $tree .= '<td class="change">'.$str.$v['name'].'</td>';
+            $tree .= '<td class="change">'.get_menu_type($v['type']).'</td>';
             $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$v['param']):'';
-            $tree .= '<td>'.$url.'</td>';
-            $tree .= '<td>'.$v['func'].'</td>';
-            $tree .= '<td>'.get_valid($v['valid']).'</td>';
+            $tree .= '<td class="change">'.$url.'</td>';
+            $tree .= '<td class="change">'.$v['func'].'</td>';
+            $tree .= '<td class="change">'.get_valid($v['valid']).'</td>';
             $tree .= '<td>'.$listButtonTree.'</td>';
             $tree .= '</tr>';
             if(isset($v['childs'])){
