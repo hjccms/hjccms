@@ -56,4 +56,11 @@ class SiteAction  extends BaseAction
         }
         return $post;
     }
+    
+    //网站设置
+    function setup()
+    {
+        load('@.form');
+        $this->display();
+    }
 }

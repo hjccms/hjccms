@@ -34,7 +34,7 @@ h2{font-weight:normal;}
 .header .login a { color: #fff; }
 
 .menu { height:100px; line-height: 100px; }
-.menu .logo { float: left; background-position: 0 -100px; margin-top: 2px; width: 260px; height: 95px; }
+.menu .logo { float: left; margin-top: 2px; width: 260px; height: 95px; background-image: url("../images/logo.png"); }
 .menu .menus { float:  right; line-height: 120px; }
 .menu .menus .childs { width: 100px; text-align: right; float: left; }
 .menu .menus .childs a { font-size: 14px; color: #333; font-family: "fzxyjt";}
@@ -52,8 +52,9 @@ h2{font-weight:normal;}
 .imgs { height: 452px; margin-top: 10px;}
 .imgs .img {  float: left; margin-top: 30px; border-radius: 5px; -moz-box-shadow: inset 0 0 5px #dbdbdd;-webkit-box-shadow: inset 0 0 5px #dbdbdd;box-shadow: inset 0 0 5px #dbdbdd; }
 .imgs .img img { border-radius: 5px;}
-.youshi .imgs .img {width: 309px; height: 208px; position: relative; }
-.youshi .imgs .img .tit { position: absolute; bottom: 15px; z-index: 99; left: 15px; font-size: 18px; color: #333333;  }
+.youshi .imgs .img {width: 309px; height: 208px; position: relative; cursor: pointer; }
+.youshi .imgs .img .tit { position: absolute; bottom: 15px; z-index: 99; left: 15px; font-size: 16px; color: #666666;  }
+.youshi .imgs .img .bjfont {position: absolute; display: none; top: 60px; line-height: 25px; z-index: 100; left: 15px; font-size: 14px; color: #fff;  }
 .youshi .imgs .img .tit:hover { color: #ed6d00;} 
 .imgs .juzhong { margin-left: 35px; margin-right: 35px; display: inline;}
 .imgs .juzhong1 { margin-left: 16px;  display: inline;}

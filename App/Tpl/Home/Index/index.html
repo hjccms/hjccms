@@ -9,6 +9,18 @@ $(function() {
 		//touch: true //是否支持触屏滑动
                 directionNav:false,
 	});
+    $(".youshi .imgs .img").mouseover(function(){
+        var tid = $(this).attr('tid');
+        $(this).children("img").attr("src","/Public/Style/Home/images/ys_"+tid+".jpg");
+        $(this).children(".tit").attr("style","color:#ed6d00");
+        $(this).children(".bjfont").show();
+    });
+    $(".youshi .imgs .img").mouseout(function(){
+        var tid = $(this).attr('tid');
+        $(this).children("img").attr("src","/Public/Style/Home/images/ys"+tid+".jpg");
+        $(this).children(".tit").attr("style","color:#666666");
+        $(this).children(".bjfont").hide();
+    });
 });	
 </script>
 <div class="banner">
@@ -27,15 +39,16 @@ $(function() {
         <div class="clear"></div>
     </div>
     <div class="center imgs">
-        <div class="img">
-            <img src="/Public/Style/Home/images/ys1.jpg" />
-            <div class="tit">背靠北外教研实力雄厚</div>
+        <div class="img" tid="1">
+            <img class="img1" src="/Public/Style/Home/images/ys1.jpg" />
+            <div class="tit">背靠北外,教研实力雄厚</div>
+            <div class="bjfont"><p>经典教材专家把控课程开发</p><p>专业化教师培训体系</p><p>系统教学资源支持一线教学</p></div>
         </div>
-        <div class="img juzhong"><img src="/Public/Style/Home/images/ys2.jpg" /><div class="tit">完善的课程教材体系</div></div>
-        <div class="img"><img src="/Public/Style/Home/images/ys3.jpg" /><div class="tit">免费测评服务</div></div>
-        <div class="img"><img src="/Public/Style/Home/images/ys4.jpg" /><div class="tit">线上外教随时约课</div></div>
-        <div class="img juzhong"><img src="/Public/Style/Home/images/ys5.jpg" /><div class="tit">全美国外教，品质保证</div></div>
-        <div class="img"><img src="/Public/Style/Home/images/ys6.jpg" /><div class="tit">线上线下结合教学，活动丰富</div></div>
+        <div class="img juzhong"  tid="2"><img class="img2" src="/Public/Style/Home/images/ys2.jpg" /><div class="tit">完善的课程教材体系</div><div class="bjfont"><p>幼儿到少儿 四个级别目标明确</p><p>级间单项短期训练 科学过渡</p><p>大语境教学 立体英语学习环境</p></div></div>
+        <div class="img"  tid="3"><img class="img3" src="/Public/Style/Home/images/ys3.jpg" /><div class="tit">免费测评服务</div><div class="bjfont"><p>10分钟专业测评</p><p>多维度反馈学员英文水平</p><p>为学员提供学习建议</p></div></div>
+        <div class="img"  tid="4"><img class="img4" src="/Public/Style/Home/images/ys4.jpg" /><div class="tit">线上外教随时约课</div><div class="bjfont"><p>自由选择时间地点 无需担忧时差</p><p>网站、微信、人工客服 多渠道预约</p><p>随时随地轻松访问个人课表</p></div></div>
+        <div class="img juzhong"  tid="5"><img class="img5" src="/Public/Style/Home/images/ys5.jpg" /><div class="tit">全北美外教，品质保证</div><div class="bjfont"><p>外教全部以英语为母语</p><p>100%拥有tesol教师资格认证</p><p>教师严格把控 录取率低于3%</p></div></div>
+        <div class="img"  tid="6"><img class="img6" src="/Public/Style/Home/images/ys6.jpg" /><div class="tit">线上线下结合教学，活动丰富</div><div class="bjfont"><p>线下中教情景化教学</p><p>线上外教实时互动操练</p><p>多样化活动促进学生潜能开发</p></div></div>
     </div>
 </div>
 
@@ -98,14 +111,14 @@ $(function() {
                 <div class="face"><img src="/Public/Style/Home/images/jcan1.jpg" width="210" height="145" ></img></div>
                 <div class="miaoshu rl">
                     <div class="name">奥尼少儿英语天津校区职业体验活动——"小牙医"</div>
-                    <div class="con">六一，小朋友们在职业体验活动中当了一天“小牙医”，不仅学习了跟牙齿相关的的英文表达，还学习了关于牙齿的小知识，懂得了保护牙齿的重要性。</div>
+                    <div class="con">六一，小朋友们在职业体验活动中当了一天“小牙医”，不仅学习了跟牙齿相关的英文表达，还学习了关于牙齿的小知识，懂得了保护牙齿的重要性。</div>
                 </div>
             </div>
             <div class="jieshao fl2">
                 <div class="face"><img src="/Public/Style/Home/images/jcan2.jpg" width="210" height="145" ></img></div>
                 <div class="miaoshu rl">
-                    <div class="name">奥尼少儿英语天津校区职业体验活动——"小牛仔"</div>
-                    <div class="con">六一，小朋友们通过扮演小牛仔，用英文讲述小牛仔的故事，学习到了牛仔身上勇敢、坚毅、不畏艰险的精神。</div>
+                    <div class="name">奥尼少儿英语上海校区职业体验活动——"小牛仔"</div>
+                    <div class="con">上海校区的职业体验活动中，小朋友们通过扮演小牛仔，用英文讲述小牛仔的故事，学习到了牛仔身上勇敢、坚毅、不畏艰险的精神。</div>
                 </div>
             </div>
         </div>
