@@ -31,6 +31,11 @@ class SiteAction  extends BaseAction
         load('@.form');
         $this->display();
     }
+    //获取前台站点模板
+    function getSiteTem()
+    {
+        
+    }
     function ajaxPost()
     {
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);

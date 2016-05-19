@@ -70,7 +70,7 @@
                         <td>{$val.name}</td>
                         <td>{$val.domain}</td>
                         <td><if condition="$val['valid'] eq '1'">正常<else/><font color="red">已禁用</font></if></td>
-                        <td><if condition="$val['id'] eq 1"><else/>{:get_list_button($listButton,array('id'=>$val[id]))}</if></td>
+                        <td>{:get_list_button($listButton,array('id'=>$val[id]))}</td>
                     </tr> 
                         
                     </volist>

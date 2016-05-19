@@ -49,9 +49,19 @@ KindEditor.ready(function(K) {
             afterBlur: function(){this.sync();}
     });
     </volist>
+    <if condition="!$editorPlugins">
+    var editor = K.create({
+            allowFileManager : true,
+            uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager',
+            afterBlur: function(){this.sync();}
+    });   
     
+    </if>
     <volist name="uploadPlugins" id="val">
+     
     K('#{$val.inputName}but').click(function() {
+            
             editor.loadPlugin('image', function() {
                     editor.plugin.imageDialog({
                             showLocal : true,
@@ -64,6 +74,7 @@ KindEditor.ready(function(K) {
             });
     });
     </volist>
+    
 });
 </script>
 </if>
