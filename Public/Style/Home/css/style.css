@@ -157,3 +157,88 @@ h2{font-weight:normal;}
 
 .checklevel .testresult .button { position: absolute;  width: 380px;top:465px; left: 220px; height: 49px; background-position: -780px -204px; text-align: center; line-height: 49px; color: #fff; font-size: 20px; cursor: pointer;  }
 
+
+/*课程体系start*/
+.co_course { width: 100%; height: 673px; font-family: "fzxyjt"; }
+.co_title{font-size: 26px; color: #333333; margin: 0 auto; width: 100%; text-align: center; padding-top: 60px;}
+.co_title2{display: inline;color:#f36b00}
+.co_titleen { width: 625px; height:25px; line-height: 25px;  }
+.co_titleen .co_xian { width: 150px; height: 1px; background-color: #d3d4d5; margin-top: 11px;}
+.co_titleen .co_texten { width: 325px; text-align: center; height: 25px; line-height: 25px; font-size: 16px; color: #b4b3b3; }
+.co_imgs { height: 452px; margin-top: 10px;}
+.co_imgs .co_img {  float: left; margin-top: 30px; }
+
+.co_teach_way { width: 100%; height: 684px; background: url("/Public/Style/Home/images/course_16.jpg") no-repeat 50% 0px; font-family: "fzxyjt"; }
+.tw_title{font-size: 26px; color: #333333; margin: 0 auto; width: 100%; text-align: center; padding-top: 60px;}
+.tw_title2{display: inline;color:#f36b00}
+.tw_titleen { width: 795px; height:25px; line-height: 25px;  }
+.tw_titleen .tw_xian { width: 150px; height: 1px; background-color: #d3d4d5; margin-top: 11px;}
+.tw_titleen .tw_texten { width: 495px; text-align: center; height: 25px; line-height: 25px; font-size: 16px; color: #b4b3b3; }
+.tw_imgs { height: 452px; margin-top: 10px;}
+.tw_imgs .tw_img {  float: left; margin-top: 30px; }
+
+.co_teach_content { width: 100%; height: 843px; font-family: "fzxyjt"; }
+.tc_title{font-size: 26px; color: #333333; margin: 0 auto; width: 100%; text-align: center; padding-top: 60px;}
+.tc_title2{display: inline;color:#f36b00}
+.tc_titleen { width: 815px; height:25px; line-height: 25px;  }
+.tc_titleen .tc_xian { width: 150px; height: 1px; background-color: #d3d4d5; margin-top: 11px;}
+.tc_titleen .tc_texten { width: 515px; text-align: center; height: 25px; line-height: 25px; font-size: 16px; color: #b4b3b3; }
+.tc_imgs { height: 452px; margin-top: 49px;}
+.tc_imgs .tc_li { float: left;height: 124px;width: 282px; border: 1px solid #d7d6d6;border-radius: 8px;line-height: 124px;font-size: 20px;color: #666666;text-align: center}
+.tc_imgs .tc_sel{height: 146px;width: 282px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll 0px -122px;float: left;line-height: 124px;font-size: 20px;color: #666666;text-align: center}
+.tc_imgs .tc_img {  float: left; margin-top: 30px; }
+
+.co_courseware { width: 100%; height: 501px; background-color: #f5f4f4; font-family: "fzxyjt"; }
+.cw_title{font-size: 26px; color: #333333; margin: 0 auto; width: 100%; text-align: center; padding-top: 60px;}
+.cw_title2{display: inline;color:#f36b00}
+.cw_titleen { width: 665px; height:25px; line-height: 25px;  }
+.cw_titleen .cw_xian { width: 150px; height: 1px; background-color: #d3d4d5; margin-top: 11px;}
+.cw_titleen .cw_texten { width: 365px; text-align: center; height: 25px; line-height: 25px; font-size: 16px; color: #b4b3b3; }
+.cw_imgs { height: 452px; margin-top: 40px;}
+.cw_imgs .cw_li { float: left;height: 219px;width: 175px;}
+.cw_li_img {  float: left;width: 175px;padding-left: 25px;}
+.cw_li_img1 { width: 121px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll 0px 0px; }
+.cw_li_img2 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -121px 0px; }
+.cw_li_img3 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -243px 0px; }
+.cw_li_img4 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -365px 0px; }
+.cw_li_title {  float: left;width: 175px;color: #333333;font-size: 18px;text-align: center;margin-top: 34px;}
+.cw_li_con {  float: left; width: 175px;color:#999999;font-size: 12px;text-align: center;margin-top: 14px;line-height: 20px;}
+
+
+.co_teacher { width: 100%; height: 899px; background: url("/Public/Style/Home/images/course_15.jpg") no-repeat 50% 0px; font-family: "fzxyjt"; }
+.tr_title{font-size: 26px; color: #ffffff; margin: 0 auto; width: 100%; text-align: center; padding-top: 60px;}
+.tr_titleen { width: 478px; height:25px; line-height: 25px;  }
+.tr_titleen .tr_xian { width: 150px; height: 1px; background-color: #ffffff; margin-top: 11px;}
+.tr_titleen .tr_texten { width: 178px; text-align: center; height: 25px; line-height: 25px; font-size: 16px; color: #ffffff; }
+.tr_imgs { height: 452px; margin-top: 40px;}
+.tr_imgs .tr_li { float: left;height: 131px;width: 431px;padding-left: 30px;padding-right: 30px;padding-top: 26px;padding-bottom: 26px;background-color: #feffff;border-radius: 5px;}
+.tr_li_img {  float: left;margin-right: 23px;}
+.tr_name { font-size: 20px;color: #636363;margin-bottom: 5px;}
+.tr_des { font-size: 12px;color: #999999;line-height: 21px; }
+
+.co_order { width: 100%; height: 159px; background-color: #ed6d00; font-family: "fzxyjt";position:fixed;right:0px;bottom:0px;}
+.co_order .or_brg {  height: 159px; background-color: #ed6d00; position: relative; }
+.co_order .or_brg .or_img{width: 993px;height: 209px; background: url("/Public/Style/Home/images/course_14.png") no-repeat 50% 0px;position: absolute;top:-50px;left:10px}
+.or_img ul{padding-top: 140px;}
+.or_img li{float: left;margin-right: 11px;}
+.or_text{width: 167px;height: 34px;font-size: 12px;color: #333333;padding-left: 16px;}
+.or_button{width: 164px;height: 38px;color: #333333;font-size: 16px;background-color: #fff000;border-radius: 5px;}
+
+.co_blank { width: 100%; height: 159px; }
+
+/*课程体系end*/
+
+
+/*关于我们start*/
+.aboutus{margin-top: 53px;margin-bottom: 53px;}
+.aboutus ul{padding-top: 55px;padding-bottom: 55px;background-color: #e3e1e1;width: 240px;}
+.aboutus li{line-height: 54px;color:#333333;font-size: 16px;padding-left: 45px;}
+.aboutus .au_sel{color:#ffffff;width: 252px;background: url("/Public/Style/Home/images/aboutus_1.png") no-repeat;}
+.aboutus .au_li{float: left;}
+.aboutus .au_con{width: 573px;float: left;padding-left: 83px;padding-right: 83px;padding-top: 40px;padding-bottom: 60px;border: 1px solid #eaecee;border-left: none;color:#969697}
+.au_con_title{color: #ed6d00;font-size: 37px;border-bottom: 1px dashed #969697;line-height: 60px;}
+.au_con_part{margin-top: 58px;font-size: 20px;}
+.au_con_con1{margin-top: 30px;font-size: 16px;line-height: 24px;}
+.au_con_con2{font-size: 12px;line-height: 20px;}
+.au_indent{margin-left: 15px;}
+/*关于我们end*/
