@@ -27,8 +27,8 @@
                 {:radio(array('title'=>'类型','inputName'=>'type','value'=>isset($info['type'])?$info['type']:1,'paramArr'=>get_menu_type()))}
                 {:input(array('title'=>'模块','inputName'=>'module','tipMsg'=>'英文字符串','addHtml'=>'datatype="y3-10" ignore="ignore" errormsg="只能输入英文"','value'=>$info['module']))}
                 {:input(array('title'=>'控制器','inputName'=>'action','tipMsg'=>'英文字符串','addHtml'=>'datatype="y3-10" ignore="ignore" errormsg="只能输入英文"','value'=>$info['action']))}
-                {:input(array('title'=>'其它参数','inputName'=>'param','value'=>$info['param']))}
-                {:input(array('title'=>'方法','inputName'=>'func','value'=>$info['func']))}
+                {:input(array('title'=>'其它参数','inputName'=>'param','value'=>$info['param'],'tipMsg'=>"格式：modelId=14&id=2"))}
+                {:input(array('title'=>'方法','inputName'=>'func','value'=>$info['func'],'tipMsg'=>'格式：dataDel(2)'))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
                 {:input(array('title'=>'排序','inputName'=>'sort','value'=>$info['sort'],'addHtml'=>'datatype="n" ignore="ignore" errormsg="只能输入整数"'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
