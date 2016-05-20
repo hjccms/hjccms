@@ -29,7 +29,7 @@ class IndexAction extends BaseAction {
     {
         C('SHOW_PAGE_TRACE',false);
         $id = $this->_get("id");
-        $site_id = 1;
+        $site_id = $this->siteInfo->id;
         $info  = D("Article")->where("site_id={$site_id} and valid=1")->order("sort asc")->select();
         $this->assign('id',$id);
         $this->assign('info',$info);
