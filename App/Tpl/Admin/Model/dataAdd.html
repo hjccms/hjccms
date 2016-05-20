@@ -49,26 +49,25 @@ KindEditor.ready(function(K) {
             afterBlur: function(){this.sync();}
     });
     </volist>
-    <if condition="!$editorPlugins">
-    var editor = K.create({
+    <if condition="$uploadPlugins">
+    
+    var uploadPlugins = K.editor({
             allowFileManager : true,
             uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
-            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager',
-            afterBlur: function(){this.sync();}
-    });   
-    
+            fileManagerJson : '/index.php?g=Admin&m=Upload&a=fileManager'
+    }); 
     </if>
     <volist name="uploadPlugins" id="val">
-     
+    
     K('#{$val.inputName}but').click(function() {
             
-            editor.loadPlugin('image', function() {
-                    editor.plugin.imageDialog({
+            uploadPlugins.loadPlugin('image', function() {
+                    uploadPlugins.plugin.imageDialog({
                             showLocal : true,
                             imageUrl : K('input[name="{$val.inputName}"]').val(),
                             clickFn : function(url) {
                                     K('input[name="{$val.inputName}"]').val(url);
-                                    editor.hideDialog();
+                                    uploadPlugins.hideDialog();
                             }
                     });
             });

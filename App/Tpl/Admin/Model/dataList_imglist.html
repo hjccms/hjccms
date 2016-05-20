@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Laypage/laypage.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/model.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".click").click(function () {
+                    $(".tip").fadeIn(200);
+                    $(".mid").fadeIn(200);
+                });
+                
+                $(".tiptop a").click(function () {
+                    $(".tip").fadeOut(200);
+                    $(".mid").fadeOut(200);
+                });
+
+                $(".sure").click(function () {
+                    $(".tip").fadeOut(100);
+                    $(".mid").fadeOut(200);
+                });
+
+                $(".cancel").click(function () {
+                    $(".tip").fadeOut(100);
+                    $(".mid").fadeOut(200);
+                });
+               
+                
+            });
+        </script>
+
+
+    </head>
+
+
+    <body>
+
+        <include file="Index:position"/>
+
+        <div class="rightinfo">
+
+            <div class="tools">
+                
+                 <ul class="toolbar">
+                     {:get_content_button($contentButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}
+                </ul>
+                <form action="" method="get" name="search" id="search" >
+                <ul class="seachform">
+                    <volist name="formInput" id="val">
+                        {:$val['inputType']($val)}
+                    </volist>
+                   
+                <li><label>&nbsp;</label><input name="" type="submit" class="scbtn" value="查询"/></li>
+
+                </ul>
+                </form>
+            </div>
+            
+            
+            <ul class="imglist">
+
+               
+
+                
+                <volist name='dataList' id='val' >
+                <li class="selected">
+                    <span><img src="{$val.thumb}" width="168" height="126" /></span>
+                    <h2><a href="#">{$val.name}</a></h2>
+                    <p>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</p>
+                </li>
+                </volist>
+            </ul>
+            
+            
+          
+           
+        </div>
+        <div id="pages" style="text-align: center" ></div>
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+            laypage({
+                cont: 'pages',
+                skip: true, 
+                pages: '{$pageNum}', //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18
+                curr: '{$page}', 
+                jump: function(e, first){ //触发分页后的回调
+                    if(!first){ //一定要加此判断，否则初始时会无限刷新
+                        location.href = '?page='+e.curr;
+                    }
+                }
+            });
+        </script>
+
+    </body>
+
+</html>
+

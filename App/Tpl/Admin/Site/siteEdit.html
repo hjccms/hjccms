@@ -27,7 +27,8 @@
                 {:input(array('title'=>'站点标题','inputName'=>'site_title','tipMsg'=>'网站title','value'=>$info['site_title']))}
                 {:input(array('title'=>'关键字设置','inputName'=>'site_keywords','tipMsg'=>'网站关键字用,分割','value'=>$info['site_keywords']))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>$info['valid'],'paramArr'=>get_valid()))}
-        
+                 {:select(array('title'=>'选择模板','inputName'=>'template','isMust'=>'1','addHtml'=>'datatype="*" errormsg="请选择"','value'=>$info['template'],'paramArr'=>$tem))}
+                
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 {:hideInput(array('inputName'=>'importAction','value'=>'siteAction'))}
                 {:hideInput(array('inputName'=>'importFun','value'=>'handlePost'))}

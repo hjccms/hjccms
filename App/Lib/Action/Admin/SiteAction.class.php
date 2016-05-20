@@ -18,6 +18,8 @@ class SiteAction  extends BaseAction
     {
         
         load('@.form');
+        $tems = $this->getSiteTem();
+        $this->assign('tem',$tems);
         $this->display();
     }
     //添加菜单
@@ -27,14 +29,22 @@ class SiteAction  extends BaseAction
         $info = D('Site')->getInfo($id);
         $this->assign('info',$info);
         $this->assign('id', $id);
-      
+        $tems = $this->getSiteTem();
+        $this->assign('tem',$tems);
         load('@.form');
         $this->display();
     }
     //获取前台站点模板
     function getSiteTem()
     {
-        
+        $tems = D('Templates')->getAllTems();
+        if(!$tems) return '';
+        foreach($tems as $k=>$v)
+        {
+            $result[$k]['id'] = $v['dir'];
+            $result[$k]['name'] = $v['name'];
+        }
+        return $result;
     }
     function ajaxPost()
     {

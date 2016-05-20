@@ -9,6 +9,7 @@ class SiteModel extends Model
     //站点信息  支持全部和单个
     function getSite($condition)
     {
+        
         $result = $this->where($condition)->order('id asc')->select();
         return $result;
     }
