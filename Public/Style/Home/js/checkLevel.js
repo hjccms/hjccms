@@ -11,6 +11,7 @@ $(function(){
         $(".answer").val(num);
     })
     $(".changetext").click(function(){
+        $(".picslist").removeClass("testpics2");
         var num = $(".num").html();
         var ch = $(this).attr("ch");
         var answer = $(".answer").val();
