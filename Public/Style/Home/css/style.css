@@ -197,10 +197,10 @@ h2{font-weight:normal;}
 .cw_imgs { height: 452px; margin-top: 40px;}
 .cw_imgs .cw_li { float: left;height: 219px;width: 175px;}
 .cw_li_img {  float: left;width: 175px;padding-left: 25px;}
-.cw_li_img1 { width: 121px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll 0px 0px; }
-.cw_li_img2 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -121px 0px; }
-.cw_li_img3 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -243px 0px; }
-.cw_li_img4 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -365px 0px; }
+.cw_li_img1 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll 0px 0px; }
+.cw_li_img2 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -122px 0px; }
+.cw_li_img3 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -244px 0px; }
+.cw_li_img4 { width: 122px; height: 122px; background: url("/Public/Style/Home/images/course_4.png") no-repeat scroll -366px 0px; }
 .cw_li_title {  float: left;width: 175px;color: #333333;font-size: 18px;text-align: center;margin-top: 34px;}
 .cw_li_con {  float: left; width: 175px;color:#999999;font-size: 12px;text-align: center;margin-top: 14px;line-height: 20px;}
 
