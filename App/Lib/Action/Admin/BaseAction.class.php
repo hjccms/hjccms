@@ -5,6 +5,7 @@
 class BaseAction  extends Action 
 {
     var $adminInfo;
+    var $adminSiteInfo;
     var $menuId;
     function __construct() 
     {
@@ -26,6 +27,18 @@ class BaseAction  extends Action
                 }
                 cookie('adminInfo',$adminInfo,3600*24*7);//保存时间足够一次不间断的操作
                 $this->adminInfo = cookie('adminInfo');
+            }
+            
+            if(cookie('adminSiteInfo'))
+            {
+                $this->adminSiteInfo = cookie('adminSiteInfo');
+            }
+            else
+            {
+                $adminSiteInfo = D('Site')->getInfo($this->adminInfo->site_id);
+                
+                cookie('adminSiteInfo',$adminSiteInfo,3600*24*7);//保存时间足够一次不间断的操作
+                $this->adminSiteInfo = cookie('adminSiteInfo');
             }
             $this->assign('adminInfo',$this->adminInfo);
             $this->menuId = $this->getMenuId();

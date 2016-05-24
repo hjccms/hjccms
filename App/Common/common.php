@@ -194,7 +194,7 @@ function get_role_type($flag = null,$str=false,$type=null) {
 	}
 }
 
-//浏览文件夹
+//浏览文件夹里所有的文件
 function readFiles($dir)
 {
     $handler = opendir($dir);  

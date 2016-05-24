@@ -521,4 +521,5 @@ class ModelAction  extends BaseAction
         $result = D('Model')->getModel('',$condition);
         return $result;
     }
+    
 }
