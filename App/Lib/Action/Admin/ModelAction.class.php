@@ -183,18 +183,28 @@ class ModelAction  extends BaseAction
                 }
             }
         }
+       
         //导入外部处理机制
         $importAction = $this->_get('importAction');
         $importFun = $this->_get('importFun');
         if($importAction&&$importFun)
         {
             $importAction = ucfirst($importAction);
-            import("@.Action.Admin.".$importAction);
-            $model = new $importAction();
-            $dataList = $model->$importFun($dataList);
+            if($importAction=='ModelAction')
+            {
+                $dataList = $this->$importFun($dataList,$modelInfo['table_name']);
+            }
+            else
+            {
+                
+                import("@.Action.Admin.".$importAction);
+                $model = new $importAction();
+
+                $dataList = $model->$importFun($dataList,$modelInfo['table_name']);
+            }
+            
         }
-        
-        
+         
         $this->getContentButton();
         $this->getListButton();
         if(!empty($_GET['fromUrl'])) $this->assign('fromUrl',$_GET['fromUrl']);
@@ -204,9 +214,26 @@ class ModelAction  extends BaseAction
         $this->assign('dataList',$dataList);
         if($modelInfo['template']) $template = explode('.',$modelInfo['template']);
         else $template['0'] = 'dataList';
+       
         $this->display($template['0']);
     }
-    
+    function parentTochild($dataList,$tableName)
+    {
+        if(empty($dataList)) return '';
+        foreach($dataList as $k=>$v)
+        {
+            $ids .= $v['id'].',';
+        }
+        $ids = trim($ids,',');
+        $parents = M(ucfirst($tableName))->where("id in (".$ids.")")->getField('id,parent_id');
+        foreach($dataList as $k=>$v)
+        {
+            $dataList[$k]['parent_id'] = $parents[$v['id']];
+        }
+        $dataList = sortChilds($dataList, 0);
+        
+        return $dataList;
+    }
     //数据添加
     function dataAdd()
     {
@@ -483,5 +510,15 @@ class ModelAction  extends BaseAction
         $this->assign('dataPlugins',$dataPlugins);
         $this->assign('uploadPlugins',$uploadPlugins);
         $this->assign('editorPlugins',$editorPlugins);
+    }
+    
+    //获取模型的类别
+    function getModelList($type)
+    {
+        
+        $condition = " type=".$type;
+        
+        $result = D('Model')->getModel('',$condition);
+        return $result;
     }
 }

@@ -333,6 +333,31 @@ function getRadioValue($fieldValue,$value='')
         }
         return $result;
     }
+    
+    //模型的方法
+    if(strpos($fieldValue,'action__')===0)
+    {
+        
+        $fun = substr($fieldValue,8);
+        $arr = explode('_',$fun);
+       
+        if(empty($arr['1'])) //如果不存在 视为ModelModel里面的方法  这个以后可能还得再加强灵活性
+        {
+            
+            $modelFun = explode('-', $arr['0']);
+            import("@.Action.ModelAction");
+            $action = new ModelAction();
+            
+            $result = $action->$modelFun['0']($modelFun['1']);
+           
+        }
+        else
+        {
+            //$result = D(ucfirst($arr['0']))->$arr['1'];
+        }
+        return $result;
+    }
+    
     $i = 0;
     
     $arr = explode(',', $fieldValue);

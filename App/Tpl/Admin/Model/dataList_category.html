@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Laypage/laypage.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/model.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".click").click(function () {
+                    $(".tip").fadeIn(200);
+                    $(".mid").fadeIn(200);
+                });
+                
+                $(".tiptop a").click(function () {
+                    $(".tip").fadeOut(200);
+                    $(".mid").fadeOut(200);
+                });
+
+                $(".sure").click(function () {
+                    $(".tip").fadeOut(100);
+                    $(".mid").fadeOut(200);
+                });
+
+                $(".cancel").click(function () {
+                    $(".tip").fadeOut(100);
+                    $(".mid").fadeOut(200);
+                });
+               
+                
+            });
+        </script>
+
+
+    </head>
+
+
+    <body>
+
+        <include file="Index:position"/>
+
+        <div class="rightinfo">
+
+            <div class="tools">
+                
+                 <ul class="toolbar">
+                     {:get_content_button($contentButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}
+                </ul>
+                <form action="" method="get" name="search" id="search" >
+                <ul class="seachform">
+                    <volist name="formInput" id="val">
+                        {:$val['inputType']($val)}
+                    </volist>
+                   
+                <li><label>&nbsp;</label><input name="" type="submit" class="scbtn" value="查询"/></li>
+
+                </ul>
+                </form>
+            </div>
+
+
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th>排序<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
+                        
+                        <volist name="fieldInfo" id="val" >
+                        <th>{$val.name}</th>
+                        </volist>
+                        
+                      
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <volist name='dataList' id='val' >
+                    
+                    <if condition="$val['childs'] neq ''">
+                    
+                    <tr>
+                        <td><input name="sort__{$val.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$val['sort']}" id="sort" />({$val.id})</td>
+                        
+                        <volist name="fieldInfo" id="field" >
+                            <td>{$val[$field['field_name']]}</td>
+                        </volist>
+                       
+                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                    </tr> 
+                        
+                        <volist name='val[childs]' id='va' >
+                        <tr>
+                            <td><input name="sort__{$va.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$va['sort']}" id="sort" />({$va.id})</td>
+
+                            <volist name="fieldInfo" id="field" >
+                         
+                            <if condition="$field['field_name'] eq 'name'">
+                                
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;├─ {$va['name']}</td>
+                            <else/> 
+                                <td>{$va[$field['field_name']]}</td>
+                            </if>
+
+                            </volist>
+
+                            <td>{:get_list_button($listButton,array('id'=>$va[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                        </tr> 
+                            <volist name='va[childs]' id='v' >
+                            <tr>
+                                <td><input name="sort__{$v.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$v['sort']}" id="sort" />({$v.id})</td>
+                                
+                                <volist name="fieldInfo" id="field" >
+                            
+                                <if condition="$field['field_name'] eq 'name'">
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ {$v['name']}</td>
+                                <else/> 
+                                    <td>{$v[$field['field_name']]}</td>
+                                </if>
+
+                                <td>{:get_list_button($listButton,array('id'=>$v[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                            </tr> 
+
+                            </volist>
+                        </volist>  
+                        
+                    
+                        
+                    <else/>
+                   
+                    <tr>
+                        <td><input name="sort__{$val.id}" class="dfinput idsort" style='width:40px; height: 18px; text-indent:0px; text-align: center;' type='text' value="{$val['sort']}" id="sort" />({$val.id})</td>
+                        
+                        <volist name="fieldInfo" id="field" >
+                            
+                            <td>{$val[$field['field_name']]}</td>
+                            
+                        </volist>
+                       
+                      
+                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                    </tr>
+                    
+                    </if>
+                        
+                    </volist>
+                            
+                            
+                            
+                            
+                            
+                    
+                    
+                </tbody>
+            </table>
+           
+        </div>
+        <div id="pages" style="text-align: center" ></div>
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+            laypage({
+                cont: 'pages',
+                skip: true, 
+                pages: '{$pageNum}', //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18
+                curr: '{$page}', 
+                jump: function(e, first){ //触发分页后的回调
+                    if(!first){ //一定要加此判断，否则初始时会无限刷新
+                        location.href = '?page='+e.curr;
+                    }
+                }
+            });
+        </script>
+
+    </body>
+
+</html>
+
