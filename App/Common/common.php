@@ -312,4 +312,56 @@ function get_student_status($flag = null) {
 	}
 }
 
+function getListeningAnswer($flag = null){
+    $arr = array(
+        1=>2,
+        2=>2,
+        3=>2,
+        4=>2,
+        5=>2,
+        6=>2,
+        7=>2,
+        8=>2,
+        9=>2,
+        10=>2,
+        11=>2,
+        12=>2,
+        13=>2,
+        14=>2,
+        15=>2,
+        16=>2,
+        17=>2,
+        18=>2,
+        19=>2,
+        20=>2,
+        21=>2,
+        22=>2,
+        23=>2,
+        24=>2,
+        25=>2,
+    );
+    if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
+function getListeningLevel($total) {
+	if ($total = 50)
+		$result = '6';
+	if ($total >= 40 && $total < 50)
+		$result = '5';
+	if ($total >= 30 && $total < 40)
+		$result = '4';
+	if ($total >= 20 && $total < 30)
+		$result = '3';
+	if ($total >= 10 && $total < 20)
+		$result = '2';
+	if ($total < 10)
+		$result = '1';
+	return $result;
+}
+
+
 ?>

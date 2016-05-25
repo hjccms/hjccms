@@ -1,9 +1,34 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 $(function(){
+    if(typeof(end_key) != "undefined"){
+        change(end_key,end_value,'next');
+    }
+    var media = $('#media')[0]; 
+    var timer = null; 
+    $('.stop').hide();
+    $('.bofang').click(function() {  
+        media.play(); 
+        $('.bofang').hide(); 
+        $('.stop').show();
+        time();
+    });   
+    
+    $('.stop').click(function() {  
+        media.pause();
+        $('.stop').hide(); 
+        $('.bofang').show(); 
+        clearInterval(timer);
+    });
+    
+    function time(){
+        timer = setInterval(function(){
+            if(media.paused){
+                $('.stop').hide(); 
+                $('.bofang').show();
+                clearInterval(timer);
+            }
+        },1);
+    }
+    
     $(".picslist").click(function(){
         var num = $(this).attr('num');
         $(".picslist").removeClass("testpics2");
@@ -14,8 +39,27 @@ $(function(){
         $(".picslist").removeClass("testpics2");
         var num = $(".num").html();
         var ch = $(this).attr("ch");
-        var answer = $(".answer").val();
-        
+        var answer = $("input[name=answer]").val();
+        var all_answer = $("input[name=all_answer]").val();
+        if(answer!=0){
+            $.ajax({
+                type: "POST",
+                url: "/LevelTest/addAnswer",
+                data: 'num='+num+'&answer='+answer+'&all_answer='+all_answer,
+                async: false,
+                dataType: "json",
+                success: function(e){
+                    if(e.status == '1'){
+                        $("input[name=all_answer]").val(e.data);
+                    }
+                }
+            });
+        }
+        change(num,answer,ch)
+    })
+    
+    
+    function change(num,answer,ch){
         if(ch=='pre')
         {
             num = parseInt(num)-1;
@@ -36,7 +80,7 @@ $(function(){
         }
         if(num>25)
         {
-            alert('这是最后一道题~_~！');
+            localtion.href = '/Index/testResult';
             return false;
         }
         
@@ -76,6 +120,9 @@ $(function(){
         }
         $(".num").html(num);
         $(".answer").val('0');
-    })
+        $('.stop').hide(); 
+        $('.bofang').show();
+        $("#media").attr("src","/Public/Style/Home/audio/level_test/"+num+".m4a");
+    }
 })
 

@@ -112,6 +112,7 @@ h2{font-weight:normal;}
 .checklevel .top .testname { font-size: 16px; color: #fff; height: 25px; line-height: 20px; margin-bottom: 20px;}
 .checklevel .top .children { width: 145px; height:160px; background-position: 0 -200px;  margin-left: auto; margin-right: auto; padding-top:20px;  }
 .checklevel .top .children .bofang { width: 25px; height: 30px; background-position: -320px 0px; margin-left:60px; margin-top: 75px; cursor: pointer;  }
+.checklevel .top .children .stop { width: 19px; height: 30px; background-position: -353px 0px; margin-left:60px; margin-top: 75px; cursor: pointer;  }
 
 .checklevel .top .daan { height:140px; margin-top: 40px; text-align: center; width: 600px; }
 .checklevel .top .daan .picslist { float:  left; width:140px; height: 140px; cursor: pointer; }

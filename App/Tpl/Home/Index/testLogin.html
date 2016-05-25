@@ -1,20 +1,58 @@
 <include file="Public:header" />
 <script type="text/javascript" src="__PUBLIC__/Style/Home/js/checkLevel.js"></script>        
-        
+<script type="text/javascript" src="__PUBLIC__/Style/Home/js/common.js"></script>           
 <div class="checklevel" >
 
     <div class="center top testlogin">
         <div class="loginshuoming">本次测评针对3-12岁少儿  满分50分</div>
         <div class="loginform" >
-            <input name="username" type="text" value="" placeholder="请输入你的英文名字" class="username" >
-            <input name="mobile" type="text" value="" placeholder="爸爸或者妈妈的手机号" class="mobile" >
-            <div class="icon button fl">开始测试</div>
+            <form class="myform">
+                <input name="name" type="text" value="" placeholder="请输入你的英文名字" class="name">
+                <input name="mobile" type="text" value="" placeholder="爸爸或者妈妈的手机号" class="mobile">
+                <div class="icon button fl sub">开始测试</div>
+            </form>
         </div>
     </div>
     <div class="center bottom testbot">
         
     </div>
 </div>
-        
+<script type="text/javascript">
+$(function(){
+    $(".sub").click(function(){
+        var name = $.trim($("input[name=name]").val());
+        var mobile = $.trim($("input[name=mobile]").val());
+        if(!name){
+            alert('英文名不能为空哦！');
+            return false;
+        }else{
+            if(!checkEnName(name)){
+                alert('英文名格式不对哦！');
+                return false;
+            }
+        }
+        if(!mobile){
+            alert('手机号不能为空哦！');
+            return false;
+        }else{
+            if(!checkMobile(mobile)){
+                alert('手机号码格式不对！');
+                return false;
+            }
+        }
+        $.ajax({
+            type:'post',
+            url:'/LevelTest/testLogin',
+            data:'name='+name+'&mobile='+mobile,
+            dataType:'json',
+            success:function(e){
+                if(e.status == '1'){
+                    location.href = '/Index/checkLevel';
+                }
+            }
+        });
+    });
+});
+</script>        
         
 <include file="Public:footer" />
