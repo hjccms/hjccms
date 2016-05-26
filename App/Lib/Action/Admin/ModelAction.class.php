@@ -217,6 +217,7 @@ class ModelAction  extends BaseAction
        
         $this->display($template['0']);
     }
+    //分类型list调用的通用方法
     function parentTochild($dataList,$tableName)
     {
         if(empty($dataList)) return '';
@@ -229,6 +230,7 @@ class ModelAction  extends BaseAction
         foreach($dataList as $k=>$v)
         {
             $dataList[$k]['parent_id'] = $parents[$v['id']];
+            
         }
         $dataList = sortChilds($dataList, 0);
         

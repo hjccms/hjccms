@@ -4,6 +4,25 @@
  */
 class CategoryAction  extends BaseAction 
 {
+    function index($dataList,$tableName)
+    {
+        if(empty($dataList)) return '';
+        foreach($dataList as $k=>$v)
+        {
+            $ids .= $v['id'].',';
+        }
+        $ids = trim($ids,',');
+        $parents = M(ucfirst($tableName))->where("id in (".$ids.")")->getField('id,content_type,parent_id');
+        foreach($dataList as $k=>$v)
+        {
+            $dataList[$k]['parent_id'] = $parents[$v['id']]['parent_id'];
+            $dataList[$k]['content_type'] = $parents[$v['id']]['content_type'];
+        }
+       
+        $dataList = sortChilds($dataList, 0);
+        
+        return $dataList;
+    }
     function selTems()
     {
         $modelId = $this->_post('modelId');

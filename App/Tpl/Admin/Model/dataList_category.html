@@ -91,7 +91,7 @@
                 <tbody>
                     
                     <volist name='dataList' id='val' >
-                    
+                   
                     <if condition="$val['childs'] neq ''">
                     
                     <tr>
@@ -101,7 +101,7 @@
                             <td>{$val[$field['field_name']]}</td>
                         </volist>
                        
-                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                        <td>{:get_list_button($listButton,,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl,'content_type'=>$val['content_type']))}</td>
                     </tr> 
                         
                         <volist name='val[childs]' id='va' >
@@ -119,7 +119,7 @@
 
                             </volist>
 
-                            <td>{:get_list_button($listButton,array('id'=>$va[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                            <td>{:get_list_button($listButton,,array('id'=>$va[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl,'content_type'=>$va['content_type']))}</td>
                         </tr> 
                             <volist name='va[childs]' id='v' >
                             <tr>
@@ -133,7 +133,7 @@
                                     <td>{$v[$field['field_name']]}</td>
                                 </if>
 
-                                <td>{:get_list_button($listButton,array('id'=>$v[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                                <td>{:get_list_button($listButton,,array('id'=>$v[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl,'content_type'=>$v['content_type']))}</td>
                             </tr> 
 
                             </volist>
@@ -153,7 +153,7 @@
                         </volist>
                        
                       
-                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl))}</td>
+                        <td>{:get_list_button($listButton,array('id'=>$val[id],'modelId'=>$modelId,'fromUrl'=>$fromUrl,'content_type'=>$val['content_type']))}</td>
                     </tr>
                     
                     </if>
