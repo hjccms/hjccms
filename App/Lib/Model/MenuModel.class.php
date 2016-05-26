@@ -369,9 +369,11 @@ class MenuModel extends Model
     
     //链接参数替换
     function replaceParam($arr){
-        $menuParam = C('MENUPARAM');
-        
-        foreach($menuParam as $v){
+        if(!$arr['param']){
+            return false;
+        }
+        preg_match_all("/\{(.+?)\}/", $arr['param'], $re);
+        foreach($re[1] as $v){
             $arr['param']  = $arr['param']?str_replace('{'.$v.'}', $arr[$v], $arr['param']):'';
         }
         return $arr['param'];
@@ -379,8 +381,11 @@ class MenuModel extends Model
     
     //函数参数替换
     function replaceFuncParam($arr){
-        $menuParam = C('MENUFUNCPARAM');
-        foreach($menuParam as $v){
+        if(!$arr['func']){
+            return false;
+        }
+        preg_match_all("/\{(.+?)\}/", $arr['func'], $re);
+        foreach($re[1] as $v){
             $arr['func']  = $arr['func']?str_replace('{'.$v.'}', $arr[$v], $arr['func']):'';
         }
         return $arr['func'];
