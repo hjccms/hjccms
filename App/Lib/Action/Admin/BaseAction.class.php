@@ -40,6 +40,11 @@ class BaseAction  extends Action
                 cookie('adminSiteInfo',$adminSiteInfo,3600*24*7);//保存时间足够一次不间断的操作
                 $this->adminSiteInfo = cookie('adminSiteInfo');
             }
+            if($this->adminInfo->site_id=='1')
+            {
+                $allSites = D('Site')->getSite();
+                $this->assign('allSites',$allSites);
+            }
             $this->assign('adminInfo',$this->adminInfo);
             $this->menuId = $this->getMenuId();
             $this->getPosition();

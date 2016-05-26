@@ -78,4 +78,15 @@ class SiteAction  extends BaseAction
         load('@.form');
         $this->display();
     }
+    
+    function getSite(){
+        $siteArr = null;
+        $sites = D("Site")->getSite("valid=1");
+        foreach ($sites as $k=>$v){
+            $siteArr[$k+1] = $v;
+        }
+        $siteArr[0] = array('id'=>0,'name'=>'全部');
+        sort($siteArr);
+        return $siteArr;
+    }
 }

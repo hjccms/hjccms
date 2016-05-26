@@ -104,7 +104,7 @@ class ModelAction  extends BaseAction
         load('@.form');
         //搜索显示
         $searchFiled = D('Fieldinfo')->getFields($modelId,array('search_show'=>1));
-      
+        
         foreach($searchFiled as $k=>$v)
         {
             if($this->_get($v['field_name']))
@@ -113,7 +113,7 @@ class ModelAction  extends BaseAction
                 $searchCon[$v['field_name']] = array('like','%'.$get.'%');
             }
         }
-        
+        if($this->_get('site_id')) $searchCon['site_id'] = $this->_get('site_id');
      
         $formInput = formField($searchFiled,$this->_get());
         $this->assign('formInput',$formInput);

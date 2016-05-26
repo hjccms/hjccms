@@ -51,6 +51,19 @@
                 </ul>
                 <form action="" method="get" name="search" id="search" >
                 <ul class="seachform">
+                    <if condition="$adminInfo:site_id eq '1'">
+                    <li style="" class=""><label>站点选择</label>
+                        <div class="vocation Validform_error">
+                            <select class="select1" name="site_id"    dataType="*"  >
+                                <option value=""  >请选择</option>
+                                <volist name='allSites' id='val'>
+                                    <option value="{$val.id}" <if condition="$Think.get.site_id eq $val['id']">selected="selected"</if>  >{$val.name}</option>
+                                </volist>
+                               
+                            </select>
+                        </div>
+                    </li>
+                    </if>
                     <volist name="formInput" id="val">
                         {:$val['inputType']($val)}
                     </volist>
