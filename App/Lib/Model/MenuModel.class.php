@@ -225,7 +225,6 @@ class MenuModel extends Model
             }
             $paramArr['param'] = $v['param'];
             $param = $this->replaceParam($paramArr);
-            //$url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'';
             $url = $v['func']?'javascript:void(0)':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
             $funcArr['func'] = $v['func'];
             $func = $this->replaceFuncParam($funcArr);
@@ -257,7 +256,6 @@ class MenuModel extends Model
             $str = $k!=0?' | ':'';
             $paramArr['param'] = $v['param'];
             $param = $this->replaceParam($paramArr);
-           // $url = $v['module']?U('Admin/'.$v['module'].'/'.$v['action'],$param):'#';
             $url = $v['func']?'javascript:void(0)':U('Admin/'.$v['module'].'/'.$v['action'],$param); //如果有函数的话  函数优先
             $funcArr['func'] = $v['func'];
             $func = $this->replaceFuncParam($funcArr);
