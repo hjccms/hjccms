@@ -268,17 +268,45 @@ function formField($fieldInfo,$value=array())
         $formInput[$k]['addHtml'] .= $v['form_html'];
         $formInput[$k]['addClass'] = $v['form_class'];
         $formInput[$k]['addId'] = $v['form_id'];
-        if(empty($value)) $formInput[$k]['value'] = $v['form_value'];
-           else  $formInput[$k]['value'] = $value[$v['field_name']];
+        
+        if(empty($value)) //如果是添加操作 首先看url参数 然后再看表单参数
+        {
+            if(trim($_GET[$v['field_name']])) $formInput[$k]['value'] = trim($_GET[$v['field_name']]);
+            else $formInput[$k]['value'] = $v['form_value'];
+        }
+        else
+        {
+            $formInput[$k]['value'] = $value[$v['field_name']];
+        }
+        
         if($v['type']=='radio'||$v['type']=='select')
         {
-
+            
             if(!empty($v['form_value']))
             {
-                $formInput[$k]['paramArr'] = getRadioValue($v['form_value']);
+                $exp = explode('}{', $v['form_value']);
+                $fromValue = $exp['1'];
+                $formInput[$k]['paramArr'] = getRadioValue($exp['0']);
             }
-            if(empty($value)) $formInput[$k]['value'] = '';
-            else  $formInput[$k]['value'] = $value[$v['field_name']];
+            if(empty($value))  //一般为添加数据
+            {
+                if(!empty($fromValue)) $formInput[$k]['value'] = $fromValue;  //如果表单有初始值 即为表单设置初始值
+                else $formInput[$k]['value'] = '';
+                if(trim($_GET[$v['field_name']]))
+                {
+                    $formInput[$k]['value'] = trim($_GET[$v['field_name']]);
+                }
+                else
+                {
+                    if(!empty($fromValue)) $formInput[$k]['value'] = $fromValue;  //如果表单有初始值 即为表单设置初始值
+                    else $formInput[$k]['value'] = '';
+                }
+            }
+            else
+            {
+                $formInput[$k]['value'] = $value[$v['field_name']];
+               
+            }
             if($v['type']=='radio')
             {
                 foreach($formInput[$k]['paramArr'] as $ke=>$va)
@@ -353,6 +381,14 @@ function getRadioValue($fieldValue,$value='')
         }
         else
         {
+            $modelFun = explode('-', $arr['1']);
+            
+            $actionAction = $arr['0'].'Action';
+            import("@.Action.".$actionAction);
+            $action = new $actionAction();
+            
+            $result = $action->$modelFun['0']($modelFun['1']);
+            
             //$result = D(ucfirst($arr['0']))->$arr['1'];
         }
         return $result;

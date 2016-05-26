@@ -370,6 +370,7 @@ class MenuModel extends Model
     //链接参数替换
     function replaceParam($arr){
         $menuParam = C('MENUPARAM');
+        
         foreach($menuParam as $v){
             $arr['param']  = $arr['param']?str_replace('{'.$v.'}', $arr[$v], $arr['param']):'';
         }
