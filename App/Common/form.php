@@ -98,6 +98,8 @@ function upload($data)
 function select($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
+    if($data['paramArr']['noStartStr']==1) $startOption = ''; else $startOption = '<option value=""  >请选择</option>';  
+    unset($data['paramArr']['noStartStr']);
     foreach($data['paramArr'] as $k=>$v){
         if(count($v) == 1){
             $param[$k]['id']=$k;
@@ -111,11 +113,13 @@ function select($data)
     foreach($data['paramArr'] as $k=>$v)
     {
         $selected = ($v['id']==$data['value'])?"selected":"";
-        $optionStr .= '<option value="'.$v['id'].'" '.$selected.' >'.$v['name'].'</option>';
+        if(!$data['value']&&$v['selected'])  $selected = "selected";
+        $disabled = $v['disabled']?" disabled=disabled":"";
+        $optionStr .= '<option value="'.$v['id'].'" '.$selected.$disabled.' >'.$v['name'].'</option>';
         if(is_array($v['childs'])||!empty($v['childs'])) $optionStr .=   selectChild($v['childs'],$data['value']);
         unset($selected);
     }
-    $startOption = '<option value=""  >请选择</option>';
+    
     $str =  '<li style="'.$data['li_style'].'" class="'.$data['li_class'].'"><label>'.$data['title'].$data['isMustStr'].'</label>
                 <div class="vocation Validform_error">
                     <select class="select1 '.$data['addClass'].'" name="'.$data['inputName'].'"   '.$data['addHtml'].' >
