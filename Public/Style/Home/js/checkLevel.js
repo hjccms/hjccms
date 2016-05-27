@@ -1,4 +1,39 @@
 $(function(){
+    
+    $(".sub").click(function(){
+        var name = $.trim($("input[name=name]").val());
+        var mobile = $.trim($("input[name=mobile]").val());
+        if(!name){
+            alert('英文名不能为空哦！');
+            return false;
+        }else{
+            if(!checkEnName(name)){
+                alert('英文名格式不对哦！');
+                return false;
+            }
+        }
+        if(!mobile){
+            alert('手机号不能为空哦！');
+            return false;
+        }else{
+            if(!checkMobile(mobile)){
+                alert('手机号码格式不对！');
+                return false;
+            }
+        }
+        $.ajax({
+            type:'post',
+            url:'/LevelTest/testLogin',
+            data:'name='+name+'&mobile='+mobile,
+            dataType:'json',
+            success:function(e){
+                if(e.status == '1'){
+                    location.href = '/Index/checkLevel';
+                }
+            }
+        });
+    });
+    
     if(typeof(end_key) != "undefined"){
         if(end_key>0){
             change(end_key,'next');
