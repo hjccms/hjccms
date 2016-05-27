@@ -11,7 +11,7 @@ class BaseAction  extends Action
         $this->siteInfo = cookie('siteInfo');
         $url = get_hosturl();
         $url = atrim($url,array('http://','https://'),'1','1');
-        if(empty($this->siteInfo->id)||$this->siteInfo->domain!=$url)
+        if(!empty($this->siteInfo->id)||$this->siteInfo->domain!=$url)
         {
             $siteInfo = $this->getSiteInfo($url);
             if(empty($siteInfo))    $this->error('您访问的站点不存在或已经被关闭，请联系管理员！');
@@ -19,7 +19,29 @@ class BaseAction  extends Action
             cookie('siteInfo',$siteInfo,3600*4);
             $this->siteInfo = (object)$siteInfo; 
         }
+        //处理导航菜单链接
+        $this->getNav();
         $this->assign('siteInfo',  get_object_vars($this->siteInfo));
+    }
+    function getNav()
+    {
+        $result = D('Category')->getAllCate('2',$this->siteInfo->id);
+        foreach($result as $k=>$v)
+        {
+            $navs[$k]['name'] = $v['name'];
+            $navs[$k]['id'] = $v['id'];
+            $navs[$k]['parent_id'] = $v['parent_id'];
+            if($v['outlink']==1) 
+            {
+                $navs[$k]['linkurl'] = $v['linkurl'];                continue;
+            }
+            $navs[$k]['linkurl'] = U('/Index/index/category/'.$v['id']);
+        }
+        load("@.form");
+        $navs = sortChilds($navs, 0);
+       
+        $this->assign('navs',$navs);
+       
     }
     function display($templateFile='',$charset='',$contentType='',$content='',$prefix='')
     {
@@ -29,7 +51,8 @@ class BaseAction  extends Action
             parent::display($templateFile,$charset,$contentType,$content,$prefix);
             die();
         }
-        parent::display($Xp.':'.MODULE_NAME.':'.ACTION_NAME);
+        echo $Xp.':'.MODULE_NAME.':'.ACTION_NAME;
+        parent::display($templateFile);
     }
     //获取站点信息
     function getSiteInfo($url)

@@ -3,7 +3,16 @@
 class IndexAction extends BaseAction {
     public function index()
     {
-        $this->display();
+        $cateId = $this->_get('category');
+        if(!$cateId)
+        {
+            $this->display();
+        }
+        $cateInfo = D('Category')->getInfo($cateId);
+      
+        //if($cateInfo['site_id']!=$this->siteInfo->id)     $this->error('出错啦！');
+        //print_r($cateInfo);
+        $this->display('page_index_teacher');
     }
     
     function checkLevel()
