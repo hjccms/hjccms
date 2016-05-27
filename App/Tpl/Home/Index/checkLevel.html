@@ -12,7 +12,6 @@
         </div>
         <div class="center daan">
             <input type="hidden" name="answer" class="answer" value="" />
-            <input type="hidden" name="all_answer" value='{$info.schedule}' />
             <div class="picslist  testpics" num="1" style="background-position:0px 0px; "></div>
             <div class="picslist zj  testpics " num="2"  style="background-position:-200px 0px; "></div>
             <div class="picslist  testpics" num="3"  style="background-position:-400px 0px; "></div>
@@ -26,6 +25,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    var end_key = {$info.end_key};
+    <?php if($info['end_key']){ ?>
+        var end_key = {$info.end_key};
+    <?php } ?>
 </script>   
 <include file="Public:footer" />

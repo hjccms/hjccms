@@ -156,7 +156,8 @@ h2{font-weight:normal;}
 
 .checklevel .testresult .jianyi { position: absolute; top:400px; left: 120px; width: 560px; height: 50px; font-family: "fzxyjt"; color: #333; font-size: 14px; line-height: 20px;letter-spacing: 1.5px; }
 
-.checklevel .testresult .button { position: absolute;  width: 380px;top:465px; left: 220px; height: 49px; background-position: -780px -204px; text-align: center; line-height: 49px; color: #fff; font-size: 20px; cursor: pointer;  }
+.checklevel .testresult  .button { position: absolute;  width: 206px;top:465px; left: 423px; height: 49px; background-position: 0px -588px; text-align: center; line-height: 49px; color: #fff; font-size: 20px; cursor: pointer;  }
+.checklevel .testresult  .againbutton { position: absolute;  width: 206px;top:465px; left: 183px; height: 49px; background-position: 0px -588px; text-align: center; line-height: 49px; color: #fff; font-size: 20px; cursor: pointer;  }
 
 
 /*课程体系start*/

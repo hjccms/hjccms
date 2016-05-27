@@ -13,18 +13,17 @@ class IndexAction extends BaseAction {
         }
         $obj = json_decode(session('levelTest'));
         $info = D("Listening_test")->getInfoBySession($this->siteInfo->id);
+        $type = $this->_get('type');
         if($info){
-            if($info['level'] != '0'){
+            if($info['level'] != '0' && $type != 'again'){
                 redirect(U('/Index/testResult'));
             }
-            if($info['level'] == '0' && $info['schedule'] != ''){
+            if($info['schedule'] != ''){
                 $schedule = json_decode($info['schedule'],true);
                 $info['end_key'] = end(array_keys($schedule));
-                $info['end_value'] = end(array_values($schedule));
             }
         }else{
             $info['end_key'] = 0;
-            $info['end_value'] = 0;
         }
         $this->assign('info',$info);
         $this->display();

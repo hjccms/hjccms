@@ -31,6 +31,16 @@ $(function(){
         },1);
     }
     
+    var num = $(".num").text();
+    if(num == '1'){
+        answer(num);
+    }
+    $(".againbutton").click(function(){
+        if(confirm("之前测试的成绩会被覆盖哦，确定要重新测试吗？")){
+            location.href = '/Index/checkLevel/type/again';
+        }
+    })
+    
     $(".picslist").click(function(){
         var num = $(this).attr('num');
         $(".picslist").removeClass("testpics2");
@@ -41,7 +51,6 @@ $(function(){
         var num = $(".num").html();
         var ch = $(this).attr("ch");
         var answer = $("input[name=answer]").val();
-        var all_answer = $("input[name=all_answer]").val();
         if(ch=='next' && (answer==0 || answer=='' || answer=='underfind')){
             alert('请先选择一个答案！');
             return false;
@@ -50,12 +59,12 @@ $(function(){
             $.ajax({
                 type: "POST",
                 url: "/LevelTest/addAnswer",
-                data: 'num='+num+'&answer='+answer+'&all_answer='+all_answer,
+                data: 'num='+num+'&answer='+answer,
                 async: false,
                 dataType: "json",
                 success: function(e){
-                    if(e.status == '1'){
-                        $("input[name=all_answer]").val(e.data);
+                    if(e.status == '0'){
+                        location.href = '/Index/checkLevel';
                     }
                 }
             });
@@ -66,21 +75,7 @@ $(function(){
     
     function change(num,ch){
         num = ch=='pre'?parseInt(num)-1:parseInt(num)+1;
-        var answer = null;
-        if(num>0){
-            $.ajax({
-                type: "POST",
-                url: "/LevelTest/getAnswer",
-                data: 'num='+num,
-                async: false,
-                dataType: "json",
-                success: function(e){
-                    if(e.status == '1'){
-                        answer = e.data;
-                    }
-                }
-            });
-        } 
+        answer(num);
         if(num<1)
         {
             alert('这是第一道题~_~！');
@@ -127,6 +122,28 @@ $(function(){
             });
         }
         $(".num").html(num);
+        $('.stop').hide(); 
+        $('.bofang').show();
+        $("#media").attr("src","/Public/Style/Home/audio/level_test/"+num+".m4a");
+    }
+    
+    function answer(num){
+        if(!num){
+            return false;
+        }
+        var answer = null;
+        $.ajax({
+            type: "POST",
+            url: "/LevelTest/getAnswer",
+            data: 'num='+num,
+            async: false,
+            dataType: "json",
+            success: function(e){
+                if(e.status == '1'){
+                    answer = e.data;
+                }
+            }
+        });
         $(".picslist").removeClass("testpics2");
         if(answer){
             $(".picslist").eq(answer-1).addClass("testpics2");
@@ -134,9 +151,6 @@ $(function(){
         }else{
             $(".answer").val('');
         }
-        $('.stop').hide(); 
-        $('.bofang').show();
-        $("#media").attr("src","/Public/Style/Home/audio/level_test/"+num+".m4a");
     }
 })
 

@@ -20,6 +20,9 @@ class LevelTestAction extends BaseAction {
         $answer = $this->_post('answer');
         $obj = json_decode(session('levelTest')); 
         $info = D("Listening_test")->getInfoBySession($this->siteInfo->id);
+        if(!$info && !$obj){
+            $this->ajaxReturn('','操作失败',0);
+        }
         $all_answer = $info['schedule'];
         if($all_answer){
             $arr = json_decode(htmlspecialchars_decode($all_answer),true);
@@ -34,8 +37,8 @@ class LevelTestAction extends BaseAction {
         }else{
             $all_answer = json_encode(array($num=>$answer));
         }
+        
         if($all_answer){
-            $data['site_id'] = $this->siteInfo->id;
             if($num == '25'){
                 $right_answer = get_listening_answer();
                 $my_answer = json_decode(htmlspecialchars_decode($all_answer),true);
@@ -50,18 +53,21 @@ class LevelTestAction extends BaseAction {
                 $data['score'] = $score;
                 $data['level'] = get_listening_level($score);
                 $data['answer'] = $all_answer;
+                $data['schedule'] = '';
+            }else{
+                $data['schedule'] = $all_answer;
             }
-            $data['name'] = $obj->name;
-            $data['mobile'] = $obj->mobile;
-            $data['schedule'] = $all_answer;
-            $data['create_time'] = time();
             if($info){
                 $re = D("Listening_test")->where("`name`='{$obj->name}' and mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save($data);
             }else{
+                $data['site_id'] = $this->siteInfo->id;
+                $data['name'] = $obj->name;
+                $data['mobile'] = $obj->mobile;
+                $data['create_time'] = time();
                 $re = D("Listening_test")->add($data);
             }
             if($re){
-                $this->ajaxReturn($all_answer,'操作成功',1);
+                $this->ajaxReturn('','操作成功',1);
             }else{
                 $this->ajaxReturn('','操作失败',0);
             }
@@ -76,11 +82,19 @@ class LevelTestAction extends BaseAction {
         $num = $this->_post('num');
         $answer = null;
         $info = D("Listening_test")->getInfoBySession($this->siteInfo->id);
-        if($info['schedule']){
+        if($info['schedule'] || $info['answer']){
             $schedule = json_decode($info['schedule'],true);
+            $answers = json_decode($info['answer'],true); 
             foreach($schedule as $k=>$v){
                 if($num == $k){
                     $answer = $v;
+                }
+            }
+            if(!$answer){
+                foreach($answers as $k=>$v){
+                    if($num == $k){
+                        $answer = $v;
+                    }
                 }
             }
         }
