@@ -4,12 +4,12 @@
 <div class="checklevel" >
 
     <div class="center top testresult">
-        <div class="resultshuoming"><font>{$info.name}</font>小朋友，你的英文水平非常棒哦！</div>
+        <div class="resultshuoming"><font>{$info.name}</font>小朋友，{$info.level_text.title}</div>
         <div class="defen">得分：<font class="fenshu">{$info.score}分</font> <font class="js"> (满分50分)</font></div>
-        <div class="defen dengji">等级：<font class="fenshu">高级</font> <font class="js"> ({$info.level}级)</font></div>
+        <div class="defen dengji">等级：<font class="fenshu">{$info.level_text.rank}</font> <font class="js"> ({$info.level_text.level})</font></div>
         
-        <div class="zongjie" >你有一定的英语基础，能够就日常生活展开简单对话、需要更多口语练习建立英文思维，流畅使用不同句型完整表达自己的想法，相信你会越来越棒的！</div>
-        <div class="jianyi">学习建议：你需要更多的模仿外教老师关于不同话题的表达方式，学习地道的英语表达，多张口练习，提高英语表达的流畅度。</div>
+        <div class="zongjie" >{$info.level_text.text}</div>
+        <div class="jianyi">{$info.level_text.advise}</div>
         <div class="icon button" >预约免费试听课程</div>
     </div>
     <div class="center bottom testbot">

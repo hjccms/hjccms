@@ -312,33 +312,33 @@ function get_student_status($flag = null) {
 	}
 }
 
-function getListeningAnswer($flag = null){
+function get_listening_answer($flag = null){
     $arr = array(
-        1=>2,
-        2=>3,
-        3=>1,
-        4=>3,
-        5=>3,
-        6=>3,
-        7=>2,
-        8=>2,
-        9=>1,
-        10=>3,
-        11=>1,
-        12=>1,
-        13=>2,
-        14=>2,
-        15=>2,
-        16=>3,
-        17=>2,
-        18=>3,
-        19=>3,
-        20=>2,
-        21=>1,
-        22=>2,
-        23=>1,
-        24=>1,
-        25=>3,
+        1=>array('answer'=>2,'score'=>1),
+        2=>array('answer'=>3,'score'=>1),
+        3=>array('answer'=>1,'score'=>1),
+        4=>array('answer'=>3,'score'=>1),
+        5=>array('answer'=>3,'score'=>1),
+        6=>array('answer'=>3,'score'=>1),
+        7=>array('answer'=>2,'score'=>1),
+        8=>array('answer'=>2,'score'=>1),
+        9=>array('answer'=>1,'score'=>1),
+        10=>array('answer'=>3,'score'=>1),
+        11=>array('answer'=>1,'score'=>2),
+        12=>array('answer'=>1,'score'=>2),
+        13=>array('answer'=>2,'score'=>2),
+        14=>array('answer'=>2,'score'=>2),
+        15=>array('answer'=>2,'score'=>2),
+        16=>array('answer'=>3,'score'=>2),
+        17=>array('answer'=>2,'score'=>2),
+        18=>array('answer'=>3,'score'=>2),
+        19=>array('answer'=>3,'score'=>2,),
+        20=>array('answer'=>2,'score'=>2),
+        21=>array('answer'=>1,'score'=>4),
+        22=>array('answer'=>2,'score'=>4),
+        23=>array('answer'=>1,'score'=>4),
+        24=>array('answer'=>1,'score'=>4),
+        25=>array('answer'=>3,'score'=>4)
     );
     if (isset($flag)) {
 		return $arr[$flag];
@@ -347,21 +347,51 @@ function getListeningAnswer($flag = null){
 	}
 }
 
-function getListeningLevel($total) {
-	if ($total = 50)
-		$result = '6';
-	if ($total >= 40 && $total < 50)
-		$result = '5';
-	if ($total >= 30 && $total < 40)
-		$result = '4';
-	if ($total >= 20 && $total < 30)
-		$result = '3';
-	if ($total >= 10 && $total < 20)
-		$result = '2';
-	if ($total < 10)
-		$result = '1';
-	return $result;
+function get_listening_level($total) {
+	if ($total >= 0 && $total <= 20){
+		$re = 1;
+    }elseif ($total >= 21 && $total <= 35){
+		$re = 2;
+    }elseif ($total >= 36 && $total <= 50){
+		$re = 3;
+    }else{
+        $re = 0;
+    }
+	return $re;
 }
+
+function get_listening_level_text($flag = null) {
+	$arr = array(
+		'1' => array(
+            'level'=>'1-2级',
+            'rank'=>'初级',
+            'title'=>'你的英文水平还不错哦！',
+            'text'=>'你能听懂、认读入门级单词和短语，但是词汇量有限。从基础课程开始，现在就和奥尼少儿英语的老师们一起说英语吧！',
+            'advise'=>'学习建议：你需要积累更多的单词量和简单句型，多和外教老师进行听说练习，模仿外教发音，从基础开始努力。',
+        ),
+		'2' => array(
+            'level'=>'3-4级',
+            'rank'=>'中级',
+            'title'=>'你的英文水平相当不错！',
+            'text'=>'你有简单的日常单词量基础和英语听力能力，能够和外教老师进行基础英语对话，想要发音正宗、练习更多口语主题对话，还要继续努力学习哦！',
+            'advise'=>'学习建议：你需要学习不同话题的表达，不仅积累更多的单词，更要练习多用句子进行问答，并纠正发音。',
+        ),
+        '3' => array(
+            'level'=>'5-6级',
+            'rank'=>'高级',
+            'title'=>'你的英文水平非常棒哦！',
+            'text'=>'你有一定的英语基础，能够就日常生活展开简单对话、需要更多口语练习建立英文思维，流畅使用不同句型完整表达自己的想法，相信你会越来越棒哒！',
+            'advise'=>'学习建议：你需要更多地模仿外教老师关于不同话题的表达方式，学习地道的英语表达，多张口练习，提高英语表达的流畅度。',
+        ),
+	);
+	if (isset($flag)) {
+		return $arr[$flag];
+	} else {
+		return $arr;
+	}
+}
+
+
 
 
 ?>

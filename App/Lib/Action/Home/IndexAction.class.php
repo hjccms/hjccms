@@ -43,6 +43,7 @@ class IndexAction extends BaseAction {
         if($info['level'] == 0){
             redirect(U('/Index/checkLevel'));
         }
+        $info['level_text'] = get_listening_level_text($info['level']);
         $this->assign('info',$info);
         $this->display();
     }

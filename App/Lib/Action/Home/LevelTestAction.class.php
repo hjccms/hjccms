@@ -37,16 +37,18 @@ class LevelTestAction extends BaseAction {
         if($all_answer){
             $data['site_id'] = $this->siteInfo->id;
             if($num == '25'){
-                $right_answer = getListeningAnswer();
+                $right_answer = get_listening_answer();
                 $my_answer = json_decode(htmlspecialchars_decode($all_answer),true);
                 $score = 0;
                 foreach($my_answer as $k=>$v){
-                    if($my_answer[$k] == $right_answer[$k]){
-                        $score = $score+2;
+                    if($my_answer[$k] == $right_answer[$k]['answer']){
+                        if($right_answer[$k]['score']){
+                            $score = $score+$right_answer[$k]['score'];
+                        }
                     }
                 }
                 $data['score'] = $score;
-                $data['level'] = getListeningLevel($score);
+                $data['level'] = get_listening_level($score);
                 $data['answer'] = $all_answer;
             }
             $data['name'] = $obj->name;
