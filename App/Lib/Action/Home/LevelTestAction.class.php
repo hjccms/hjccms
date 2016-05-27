@@ -90,13 +90,13 @@ class LevelTestAction extends BaseAction {
                     $answer = $v;
                 }
             }
-            if(!$answer){
-                foreach($answers as $k=>$v){
-                    if($num == $k){
-                        $answer = $v;
-                    }
-                }
-            }
+//            if(!$answer){
+//                foreach($answers as $k=>$v){
+//                    if($num == $k){
+//                        $answer = $v;
+//                    }
+//                }
+//            }
         }
         if($answer){
             $this->ajaxReturn($answer,'操作成功',1);

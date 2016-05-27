@@ -22,6 +22,10 @@ class IndexAction extends BaseAction {
                 $schedule = json_decode($info['schedule'],true);
                 $info['end_key'] = end(array_keys($schedule));
             }
+            if($type == 'again'){
+                $re = D("Listening_test")->where("`name`='{$obj->name}' and mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save(array('schedule'=>''));
+                $info['end_key'] = 0;
+            }
         }else{
             $info['end_key'] = 0;
         }
