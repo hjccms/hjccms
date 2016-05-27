@@ -1,6 +1,8 @@
 $(function(){
     if(typeof(end_key) != "undefined"){
-        change(end_key,end_value,'next');
+        if(end_key>0){
+            change(end_key,'next');
+        }
     }
     var media = $('#media')[0]; 
     var timer = null; 
@@ -36,12 +38,15 @@ $(function(){
         $(".answer").val(num);
     })
     $(".changetext").click(function(){
-        $(".picslist").removeClass("testpics2");
         var num = $(".num").html();
         var ch = $(this).attr("ch");
         var answer = $("input[name=answer]").val();
         var all_answer = $("input[name=all_answer]").val();
-        if(answer!=0){
+        if(ch=='next' && (answer==0 || answer=='' || answer=='underfind')){
+            alert('请先选择一个答案！');
+            return false;
+        }
+        if(answer){
             $.ajax({
                 type: "POST",
                 url: "/LevelTest/addAnswer",
@@ -55,24 +60,27 @@ $(function(){
                 }
             });
         }
-        change(num,answer,ch)
+        change(num,ch);
     })
     
     
-    function change(num,answer,ch){
-        if(ch=='pre')
-        {
-            num = parseInt(num)-1;
-        }
-        else
-        {
-            num = parseInt(num)+1;
-            if(answer==0 || answer=='' || answer=='underfind')
-            {
-                alert('请先选择一个答案！');
-                return false;
-            }
-        }
+    function change(num,ch){
+        num = ch=='pre'?parseInt(num)-1:parseInt(num)+1;
+        var answer = null;
+        if(num>0){
+            $.ajax({
+                type: "POST",
+                url: "/LevelTest/getAnswer",
+                data: 'num='+num,
+                async: false,
+                dataType: "json",
+                success: function(e){
+                    if(e.status == '1'){
+                        answer = e.data;
+                    }
+                }
+            });
+        } 
         if(num<1)
         {
             alert('这是第一道题~_~！');
@@ -80,7 +88,7 @@ $(function(){
         }
         if(num>25)
         {
-            localtion.href = '/Index/testResult';
+            location.href = '/Index/testResult';
             return false;
         }
         
@@ -119,7 +127,13 @@ $(function(){
             });
         }
         $(".num").html(num);
-        $(".answer").val('0');
+        $(".picslist").removeClass("testpics2");
+        if(answer){
+            $(".picslist").eq(answer-1).addClass("testpics2");
+            $(".answer").val(answer);
+        }else{
+            $(".answer").val('');
+        }
         $('.stop').hide(); 
         $('.bofang').show();
         $("#media").attr("src","/Public/Style/Home/audio/level_test/"+num+".m4a");
