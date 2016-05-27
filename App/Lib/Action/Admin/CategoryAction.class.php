@@ -12,11 +12,11 @@ class CategoryAction  extends BaseAction
             $ids .= $v['id'].',';
         }
         $ids = trim($ids,',');
-        $parents = M(ucfirst($tableName))->where("id in (".$ids.")")->getField('id,content_type,parent_id');
+        $parents = M(ucfirst($tableName))->where("id in (".$ids.")")->getField('id,mid,parent_id');
         foreach($dataList as $k=>$v)
         {
             $dataList[$k]['parent_id'] = $parents[$v['id']]['parent_id'];
-            $dataList[$k]['content_type'] = $parents[$v['id']]['content_type'];
+            $dataList[$k]['mid'] = $parents[$v['id']]['mid'];
         }
        
         $dataList = sortChilds($dataList, 0);
@@ -54,7 +54,7 @@ class CategoryAction  extends BaseAction
     {
         $id = $this->_get('id');
         $info = D('Category')->getInfo($id);
-        $modelId = $info['content_type'];
+        $modelId = $info['mid'];
         $result = $this->getModelTems($modelId);
         $ret = $result[$type];
         return $ret;
@@ -69,7 +69,7 @@ class CategoryAction  extends BaseAction
       
         $dir = './App/Tpl/'.$template.'/Index';
         $files = readFiles($dir);
-        
+       
         foreach($files as $k=>$v)
         {
             if(strpos($v, $tableName.'_index')===0)
@@ -87,5 +87,16 @@ class CategoryAction  extends BaseAction
         }
         
         return $tem;
+    }
+    //增加单页内容 获取栏目
+    function getCateName($cateId)
+    {
+        if(!$cateId) $cateId = $this->_get('category_id');
+        $info = D('Category')->getInfo($cateId);
+        $ret[0]['id'] = $info['id'];
+        $ret[0]['name'] = $info['name'];
+        $ret[0]['selected'] = 1;
+        $ret['noStartStr'] = 1;
+        return $ret;
     }
 }
