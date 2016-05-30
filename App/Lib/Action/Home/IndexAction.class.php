@@ -23,9 +23,9 @@ class IndexAction extends BaseAction {
         
         $this->assign("childsCate",$childsCate);
         $this->assign("topId",$topId);
+        $this->assign("cateid",$cateId);
         
         if(method_exists($this,$modelInfo['table_name'])) $this->$modelInfo['table_name']($cateInfo,$childsCate);
-        
         $cateInfo['template_index'] = rtrim($cateInfo['template_index'],'.html');
         $this->display($cateInfo['template_index']);
     }
@@ -45,7 +45,7 @@ class IndexAction extends BaseAction {
         {
             $childsCateInfo = D('Page')->getAll($ids);
         }
-       
+        
         $this->assign('childsCateInfo',$childsCateInfo);
     }
     function checkLevel()

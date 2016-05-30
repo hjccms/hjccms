@@ -20,9 +20,9 @@ $(function() {
         <div class="au_li">
             <ul>
                 <volist name='childsCateInfo' id='val' >
-                    <if condition="$val[id] eq $id">
+                    <if condition="$val[category_id] eq $cateid">
                         <li tid="{$val.id}" class="au_sel">{$val.title}</li>
-                    <elseif condition="!$id && ($key eq 0)"/>
+                    <elseif condition="!$cateid && ($key eq 0)"/>
                         <li tid="{$val.id}" class="au_sel">{$val.title}</li>
                     <else/>
                         <li tid="{$val.id}">{$val.title}</li>
@@ -32,9 +32,9 @@ $(function() {
         </div>
         <div class="au_con">
             <volist name='childsCateInfo' id='val' >
-                <if condition="$val[id] eq $id">
+                <if condition="$val[category_id] eq $cateid">
                     <div class="au_con_{$val.id}">{$val.content}</div>
-                <elseif condition="!$id && ($key eq 0)"/>
+                <elseif condition="!$cateid && ($key eq 0)"/>
                     <div class="au_con_{$val.id}">{$val.content}</div>
                 <else/>
                     <div class="au_con_{$val.id}" style="display:none">{$val.content}</div>

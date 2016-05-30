@@ -1,10 +1,8 @@
 <div class="footer">
     <div class="footermenu">
-        <a href="/Index/article/id/1">关于我们</a>
-        <a href="/Index/article/id/2">招贤纳士</a>
-        <a href="/Index/article/id/3">Teacher Recruitment</a>
-        <a href="/Index/article/id/4">商务合作</a>
-        <a href="/Index/article/id/5">服务协议</a>
+        <volist name='footer_nav' id='val'>
+            <a target="_blank" href="{$val.linkurl}">{$val.name}</a>
+        </volist>
     </div>
     <div class="call">
         <img src="/Public/Style/Home/images/erweima.jpg"></img>

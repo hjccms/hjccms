@@ -25,22 +25,33 @@ class BaseAction  extends Action
     }
     function getNav()
     {
-        $result = D('Category')->getAllCate('2',$this->siteInfo->id);
+        $result = D('Category')->getAllCate('',$this->siteInfo->id);
         foreach($result as $k=>$v)
         {
             $navs[$k]['name'] = $v['name'];
             $navs[$k]['id'] = $v['id'];
             $navs[$k]['parent_id'] = $v['parent_id'];
+            $navs[$k]['cate_type'] = $v['cate_type'];
             if($v['outlink']==1) 
             {
-                $navs[$k]['linkurl'] = $v['linkurl'];                continue;
+                $navs[$k]['linkurl'] = $v['linkurl'];continue;
             }
             $navs[$k]['linkurl'] = U('/Index/index/category/'.$v['id']);
         }
         load("@.form");
         $navs = sortChilds($navs, 0);
-       
-        $this->assign('navs',$navs);
+        $menu_nav = null;
+        $footer_nav = null;
+        foreach ($navs as $k=>$v){
+            if($v['cate_type'] == '2'){
+                $menu_nav[$k] = $v;
+            }
+            if($v['cate_type'] == '3'){
+                $footer_nav = $v['childs'];
+            }
+        }
+        $this->assign('menu_nav',$menu_nav);
+        $this->assign('footer_nav',$footer_nav);
        
     }
     function display($templateFile='',$charset='',$contentType='',$content='',$prefix='')
