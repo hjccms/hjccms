@@ -12,5 +12,12 @@ class PageModel extends Model
         $result = $this->where($data)->find();
         return $result;
     }
+    //根据ID 获取多个栏目信息
+    function getAll($ids)
+    {
+        if(empty($ids)) return '';
+        $result = $this->where("category_id in (".$ids.")")->select();
+        return $result;
+    }
     
 }

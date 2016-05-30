@@ -7,17 +7,47 @@ class IndexAction extends BaseAction {
         if(!$cateId)
         {
             $this->display('index');
+            die();
         }
         $cateInfo = D('Category')->getInfo($cateId);
       
         if($cateInfo['site_id']!=$this->siteInfo->id)     $this->error('出错啦！');
+        $this->assign('cateInfo',$cateInfo);
+        $modelInfo = D('Model')->getModel($cateInfo['mid']);
         
         //如果是外部链接 直接跳转走
         if($cateInfo['outlink']==1) redirect($cateInfo['linkurl']);
+        //获取当前栏目最顶级栏目ID
+        $topId = D('Category')->getTopId($cateId);
+        $childsCate  = D('Category')->getAllCate('2',$this->siteInfo->id,$topId);
+        
+        $this->assign("childsCate",$childsCate);
+        $this->assign("topId",$topId);
+        
+        if(method_exists($this,$modelInfo['table_name'])) $this->$modelInfo['table_name']($cateInfo,$childsCate);
+        
         $cateInfo['template_index'] = rtrim($cateInfo['template_index'],'.html');
         $this->display($cateInfo['template_index']);
     }
-    
+    //单页处理
+    function page($cateInfo,$childsCate)
+    {
+        //获取单页的所有信息
+        $info = D('Page')->getInfo($cateInfo['id']);
+        $this->assign('info',$info);
+        //获取所有子栏目信息
+        foreach($childsCate as $k=>$v)
+        {
+            $ids .= ','.$v['id'];
+        }
+        $ids = substr($ids, 1);
+        if(!empty($ids))
+        {
+            $childsCateInfo = D('Page')->getAll($ids);
+        }
+       
+        $this->assign('childsCateInfo',$childsCateInfo);
+    }
     function checkLevel()
     {
         if(!session('hashLevelTest') || !(session('hashLevelTest')==md5(encrypt(session('levelTest').cookie('PHPSESSID'),'E',C('APP_KEY'))))){

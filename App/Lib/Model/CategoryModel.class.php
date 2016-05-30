@@ -13,12 +13,21 @@ class CategoryModel extends Model
         return $result;
     }
     //获取当前可用的所有菜单
-    function getAllCate($cateType='',$siteId='')
+    function getAllCate($cateType='',$siteId='',$parentId='')
     {
         $condition = " del is null ";
         if($cateType) $condition .= " and cate_type = ".$cateType;
         if($siteId) $condition .= " and site_id = ".$siteId;
+        if($parentId) $condition .= " and parent_id = ".$parentId;
         $result = $this->where($condition)->order("sort asc,id desc")->select();
         return $result;
+    }
+    //获取当前栏目最顶级栏目ID
+    function getTopId($cateId)
+    {
+        $parentId = $this->where("id=".$cateId)->getField('parent_id');
+        if($parentId!="0"&&$parentId) $retId = $this->getTopId($parentId);
+        else $retId = $cateId;
+        return $retId;
     }
 }
