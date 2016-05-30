@@ -6,13 +6,16 @@ class IndexAction extends BaseAction {
         $cateId = $this->_get('category');
         if(!$cateId)
         {
-            $this->display();
+            $this->display('index');
         }
         $cateInfo = D('Category')->getInfo($cateId);
       
-        //if($cateInfo['site_id']!=$this->siteInfo->id)     $this->error('出错啦！');
-        //print_r($cateInfo);
-        $this->display('page_index_teacher');
+        if($cateInfo['site_id']!=$this->siteInfo->id)     $this->error('出错啦！');
+        
+        //如果是外部链接 直接跳转走
+        if($cateInfo['outlink']==1) redirect($cateInfo['linkurl']);
+        $cateInfo['template_index'] = rtrim($cateInfo['template_index'],'.html');
+        $this->display($cateInfo['template_index']);
     }
     
     function checkLevel()

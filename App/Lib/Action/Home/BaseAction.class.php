@@ -51,8 +51,8 @@ class BaseAction  extends Action
             parent::display($templateFile,$charset,$contentType,$content,$prefix);
             die();
         }
-        echo $Xp.':'.MODULE_NAME.':'.ACTION_NAME;
-        parent::display($templateFile);
+        if($templateFile=='') $templateFile = ACTION_NAME;
+        parent::display($Xp.':'.MODULE_NAME.':'.$templateFile);
     }
     //获取站点信息
     function getSiteInfo($url)
