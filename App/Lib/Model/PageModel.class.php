@@ -16,7 +16,7 @@ class PageModel extends Model
     function getAll($ids)
     {
         if(empty($ids)) return '';
-        $result = $this->where("category_id in (".$ids.")")->select();
+        $result = $this->where("category_id in (".$ids.")")->order('sort asc')->select();
         return $result;
     }
     
