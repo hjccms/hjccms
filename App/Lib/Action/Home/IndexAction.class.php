@@ -10,7 +10,13 @@ class IndexAction extends BaseAction {
             die();
         }
         $cateInfo = D('Category')->getInfo($cateId);
-      
+        //如果导航和脚步导航一个的话直接指向脚步导航
+        foreach($this->footer_nav as $k=>$v){
+            if($cateInfo['name'] == $v['name']){
+                $cateId = $v['id'];
+                $cateInfo = D('Category')->getInfo($v['id']);
+            }
+        }
         if($cateInfo['site_id']!=$this->siteInfo->id)     $this->error('出错啦！');
         $this->assign('cateInfo',$cateInfo);
         $modelInfo = D('Model')->getModel($cateInfo['mid']);
@@ -25,8 +31,8 @@ class IndexAction extends BaseAction {
         $this->assign("topId",$topId);
         $this->assign("cateid",$cateId);
         
-        if(method_exists($this,$modelInfo['table_name'])) $this->$modelInfo['table_name']($cateInfo,$childsCate);
-        $cateInfo['template_index'] = rtrim($cateInfo['template_index'],'.html');
+        if(method_exists($this,$modelInfo['table_name'])) $this->$modelInfo['table_name']($cateInfo,$childsCate);        
+        $cateInfo['template_index'] = str_replace(".html",'',$cateInfo['template_index']);
         $this->display($cateInfo['template_index']);
     }
     //单页处理

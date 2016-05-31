@@ -5,6 +5,7 @@
 class BaseAction  extends Action 
 {
     var $siteInfo;
+    var $footer_nav;
     function __construct() 
     {
         parent::__construct();
@@ -50,6 +51,7 @@ class BaseAction  extends Action
                 $footer_nav = $v['childs'];
             }
         }
+        $this->footer_nav = $footer_nav;
         $this->assign('menu_nav',$menu_nav);
         $this->assign('footer_nav',$footer_nav);
        
