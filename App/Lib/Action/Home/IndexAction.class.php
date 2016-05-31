@@ -25,7 +25,7 @@ class IndexAction extends BaseAction {
         if($cateInfo['outlink']==1) redirect($cateInfo['linkurl']);
         //获取当前栏目最顶级栏目ID
         $topId = D('Category')->getTopId($cateId);
-        $childsCate  = D('Category')->getAllCate('2',$this->siteInfo->id,$topId);
+        $childsCate  = D('Category')->getAllCate('',$this->siteInfo->id,$topId);
         
         $this->assign("childsCate",$childsCate);
         $this->assign("topId",$topId);
