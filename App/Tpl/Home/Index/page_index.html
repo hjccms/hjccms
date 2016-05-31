@@ -1,7 +1,7 @@
 <include file="Public:header" />
 <script type="text/javascript">
 $(function() {
-    $(".aboutus .au_li li").mouseover(function(){
+    $(".aboutus .au_li li").click(function(){
         var tid = $(this).attr('tid');
         $(this).addClass("au_sel");
         $(this).siblings("li").removeClass("au_sel");
