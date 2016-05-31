@@ -35,6 +35,7 @@ class IndexAction extends BaseAction {
         $cateInfo['template_index'] = str_replace(".html",'',$cateInfo['template_index']);
         $this->display($cateInfo['template_index']);
     }
+    
     //单页处理
     function page($cateInfo,$childsCate)
     {
