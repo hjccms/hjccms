@@ -33,5 +33,9 @@ return array(
         '2' => '内容模型',
         '3' => '联动模型',
     ),
+    
+    //链接参数
+    'MENUPARAM' =>array('id','pid','modelId','importAction','importFun','fromUrl'),
+    
 );
 ?>
