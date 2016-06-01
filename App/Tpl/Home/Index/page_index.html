@@ -1,12 +1,14 @@
 <include file="Public:header" />
 <script type="text/javascript">
 $(function() {
-    $(".aboutus .au_li li").click(function(){
+    $(".article .ar_main  .ar_main2 .ar_menu li").click(function(){
         var tid = $(this).attr('tid');
-        $(this).addClass("au_sel");
-        $(this).siblings("li").removeClass("au_sel");
-        $("div[class^=au_con_]").hide();
-        $(".au_con_"+tid).show();
+        $(this).addClass("ar_sel");
+        $(this).siblings("li").removeClass("ar_sel");
+        $(".ac_title").hide();
+        $(".ac_content").hide();
+        $(".tit_"+tid).show();
+        $(".con_"+tid).show();
     });
 });	
 </script>
@@ -15,33 +17,38 @@ $(function() {
         <li style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;" ></li>
     </ul>
 </div>
-<div class="aboutus">
-    <div class="center">
-        <div class="au_li">
-            <ul>
+<div class="article">
+    <div class="center ar_main">
+        <div class="ar_main2">
+            <div class="ar_menu">
+                <ul>
+                    <volist name='childsCateInfo' id='val' >
+                        <if condition="$val[category_id] eq $cateid">
+                            <li tid="{$val.id}" class="ar_sel">{$val.title}</li>
+                        <elseif condition="!$cateid && ($key eq 0)"/>
+                            <li tid="{$val.id}" class="ar_sel">{$val.title}</li>
+                        <else/>
+                            <li tid="{$val.id}">{$val.title}</li>
+                        </if>
+                    </volist>
+                </ul>
+            </div>
+            <div class="ar_content">
                 <volist name='childsCateInfo' id='val' >
                     <if condition="$val[category_id] eq $cateid">
-                        <li tid="{$val.id}" class="au_sel">{$val.title}</li>
+                        <div class="ac_title tit_{$val.id}">{$val.title}</div>
+                        <div class="ac_content con_{$val.id}">{$val.content}</div>
                     <elseif condition="!$cateid && ($key eq 0)"/>
-                        <li tid="{$val.id}" class="au_sel">{$val.title}</li>
+                        <div class="ac_title tit_{$val.id}">{$val.title}</div>
+                        <div class="ac_content con_{$val.id}">{$val.content}</div>
                     <else/>
-                        <li tid="{$val.id}">{$val.title}</li>
+                        <div class="ac_title tit_{$val.id}" style="display:none">{$val.title}</div>
+                        <div class="ac_content con_{$val.id}" style="display:none">{$val.content}</div>
                     </if>
                 </volist>
-            </ul>
+            </div>
+            <div style="clear:both"></div>
         </div>
-        <div class="au_con">
-            <volist name='childsCateInfo' id='val' >
-                <if condition="$val[category_id] eq $cateid">
-                    <div class="au_con_{$val.id}">{$val.content}</div>
-                <elseif condition="!$cateid && ($key eq 0)"/>
-                    <div class="au_con_{$val.id}">{$val.content}</div>
-                <else/>
-                    <div class="au_con_{$val.id}" style="display:none">{$val.content}</div>
-                </if>
-            </volist>
-        </div>
-        <div style="clear:both"></div>
     </div>
 </div>
 <include file="Public:footer" />
