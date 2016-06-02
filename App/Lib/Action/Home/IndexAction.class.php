@@ -52,7 +52,9 @@ class IndexAction extends BaseAction {
         {
             $childsCateInfo = D('Page')->getAll($ids);
         }
-        
+        foreach($childsCateInfo as $k=>$v){
+            $childsCateInfo[$k]['content2'] = str_replace("'","--dh--",$v['content']);
+        }
         $this->assign('childsCateInfo',$childsCateInfo);
     }
     function checkLevel()

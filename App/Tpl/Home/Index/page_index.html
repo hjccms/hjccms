@@ -25,19 +25,19 @@
             <div class="ar_content">
                 <volist name='childsCateInfo' id='val' >
                     <if condition="$val[category_id] eq $cateid">
-                        <input type="hidden" class="content_{$val.id}" value='{$val[content]}'>
+                        <input type="hidden" class="content_{$val.id}" value='{$val[content2]}'>
                         <input type="hidden" class="p_{$val.id}" value='1'>
                         <div class="ac_title tit_{$val.id}">{$val.title}</div>
                         <div class="ac_content con_{$val.id}">{$val.content}</div>
                         <div class="ar_page ar_page_{$val.id}"></div>
                     <elseif condition="!$cateid && ($key eq 0)"/>
-                        <input type="hidden" class="content_{$val.id}" value='{$val[content]}'>
+                        <input type="hidden" class="content_{$val.id}" value='{$val[content2]}'>
                         <input type="hidden" class="p_{$val.id}" value='1'>
                         <div class="ac_title tit_{$val.id}">{$val.title}</div>
                         <div class="ac_content con_{$val.id}">{$val.content}</div>
                         <div class="ar_page ar_page_{$val.id}"></div>
                     <else/>
-                        <input type="hidden" class="content_{$val.id}" value='{$val[content]}'>
+                        <input type="hidden" class="content_{$val.id}" value='{$val[content2]}'>
                         <input type="hidden" class="p_{$val.id}" value='1'>
                         <div class="ac_title tit_{$val.id}" style="display:none">{$val.title}</div>
                         <div class="ac_content con_{$val.id}" style="display:none">{$val.content}</div>
@@ -114,8 +114,9 @@ $(function() {
     function getContent(p,tid){
         p = parseInt(p);
         var content = $(".content_"+tid).val();
+        content = content.replace(/--dh--/g, "'");
         var content_arr = null;
-        content = content.replace(/<hr(.*)\/>/g, "<hr>");
+        content = content.replace(/<hr(.*)ke-pagebreak(.*)\/>/g, "<hr>");
         content_arr=content.split("<hr>");
         $(".con_"+tid).html(content_arr[p-1]);
         return content_arr;
