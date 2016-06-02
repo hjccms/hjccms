@@ -1,17 +1,4 @@
 <include file="Public:header" />
-<script type="text/javascript">
-$(function() {
-    $(".article .ar_main  .ar_main2 .ar_menu li").click(function(){
-        var tid = $(this).attr('tid');
-        $(this).addClass("ar_sel");
-        $(this).siblings("li").removeClass("ar_sel");
-        $(".ac_title").hide();
-        $(".ac_content").hide();
-        $(".tit_"+tid).show();
-        $(".con_"+tid).show();
-    });
-});	
-</script>
 <div class="banner">
     <ul class="slides">
         <li style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;" ></li>
@@ -24,8 +11,10 @@ $(function() {
                 <ul>
                     <volist name='childsCateInfo' id='val' >
                         <if condition="$val[category_id] eq $cateid">
+                            <input type="hidden" class="tid" value='{$val.id}'>
                             <li tid="{$val.id}" class="ar_sel">{$val.title}</li>
                         <elseif condition="!$cateid && ($key eq 0)"/>
+                            <input type="hidden" class="tid" value='{$val.id}'>
                             <li tid="{$val.id}" class="ar_sel">{$val.title}</li>
                         <else/>
                             <li tid="{$val.id}">{$val.title}</li>
@@ -36,14 +25,23 @@ $(function() {
             <div class="ar_content">
                 <volist name='childsCateInfo' id='val' >
                     <if condition="$val[category_id] eq $cateid">
+                        <input type="hidden" class="content_{$val.id}" value='{$val[content]}'>
+                        <input type="hidden" class="p_{$val.id}" value='1'>
                         <div class="ac_title tit_{$val.id}">{$val.title}</div>
                         <div class="ac_content con_{$val.id}">{$val.content}</div>
+                        <div class="ar_page ar_page_{$val.id}"></div>
                     <elseif condition="!$cateid && ($key eq 0)"/>
+                        <input type="hidden" class="content_{$val.id}" value='{$val[content]}'>
+                        <input type="hidden" class="p_{$val.id}" value='1'>
                         <div class="ac_title tit_{$val.id}">{$val.title}</div>
                         <div class="ac_content con_{$val.id}">{$val.content}</div>
+                        <div class="ar_page ar_page_{$val.id}"></div>
                     <else/>
+                        <input type="hidden" class="content_{$val.id}" value='{$val[content]}'>
+                        <input type="hidden" class="p_{$val.id}" value='1'>
                         <div class="ac_title tit_{$val.id}" style="display:none">{$val.title}</div>
                         <div class="ac_content con_{$val.id}" style="display:none">{$val.content}</div>
+                        <div class="ar_page ar_page_{$val.id}" style="display:none"></div>
                     </if>
                 </volist>
             </div>
@@ -51,4 +49,77 @@ $(function() {
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$(function() {
+    $(".article .ar_main  .ar_main2 .ar_menu li").click(function(){
+        var tid = $(this).attr('tid');
+        $(this).addClass("ar_sel");
+        $(this).siblings("li").removeClass("ar_sel");
+        $(".ac_title").hide();
+        $(".ac_content").hide();
+        $(".ar_page").hide();
+        $(".tit_"+tid).show();
+        $(".con_"+tid).show();
+        $(".ar_page_"+tid).show();
+        $(".tid").val(tid);
+    });
+    
+    $("li").each(function(){
+        if($(this).attr("tid")){
+            init(1,$(this).attr("tid"));
+        }
+    });
+    
+    $(".page_frist").click(function(){
+        change(1,$(".tid").val());
+    });
+    
+    $(".page_next").click(function(){
+        var p = parseInt($(".p_"+$(".tid").val()).val());
+        change(p+1,$(".tid").val());
+    });
+    
+    $(".page_con").click(function(){
+        var p = $(this).text();
+        change(p,$(".tid").val());
+    });
+    
+    //初始化数据
+    function init(p,tid){
+        p = parseInt(p);
+        content_arr=getContent(p,tid);
+        var length = content_arr.length;
+        if(length>1){
+            var page = '<a class="page_frist">第一页</a>';
+            for(var i=1;i<=length;i++){
+                page += i == p ? '<a class="page_con page_sel page_'+i+'">'+i+'</a>' : '<a class="page_con page_'+i+'">'+i+'</a>';
+            }
+            page +='<a class="page_next">下一页</a>';
+            page ='<div class="ar_page2"><div class="page">'+page+'</div></div>';
+            $(".ar_page_"+tid).html(page);
+        }else{
+            $(".ar_page_"+tid).hide();
+        }
+    }
+    
+    //用于翻页
+    function change(p,tid){
+        getContent(p,tid);
+        $("a[class^=page_]").removeClass("page_sel");
+        $(".page_"+p).addClass("page_sel");
+        $(".p_"+tid).val(p);
+    }
+    
+    //获取内容
+    function getContent(p,tid){
+        p = parseInt(p);
+        var content = $(".content_"+tid).val();
+        var content_arr = null;
+        content = content.replace(/<hr(.*)\/>/g, "<hr>");
+        content_arr=content.split("<hr>");
+        $(".con_"+tid).html(content_arr[p-1]);
+        return content_arr;
+    }
+});	
+</script>
 <include file="Public:footer" />
