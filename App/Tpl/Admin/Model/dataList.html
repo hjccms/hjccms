@@ -58,7 +58,7 @@
                             <select class="select1" name="site_id"    dataType="*"  >
                                 <option value=""  >请选择</option>
                                 <volist name='allSites' id='val'>
-                                <option value="{$val.id}" <if condition="$Think.get.site_id eq $val['id']">selected="selected"</if>  >{$val.name}</option>
+                                    <option value="{$val.id}" <if condition="$Think.get.site_id eq $val['id']">selected="selected"<elseif condition="$val['id'] eq 1"/> selected="selected"</if>  >{$val.name}</option>
                                 </volist>
                                
                             </select>

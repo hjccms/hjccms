@@ -10,6 +10,11 @@ class MenuAction extends BaseAction {
     }
     
     function add(){
+        if($parent_id = $this->_get('parent_id'))
+        {
+            $info['parent_id'] = $parent_id;
+        }
+        $this->assign('info',$info);
         $this->assign('menus',$this->getMenu());
         load('@.form');
         $this->display();

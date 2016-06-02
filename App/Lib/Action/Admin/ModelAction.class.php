@@ -113,8 +113,14 @@ class ModelAction  extends BaseAction
                 $searchCon[$v['field_name']] = array('like','%'.$get.'%');
             }
         }
-        if($this->_get('site_id')) $searchCon['site_id'] = $this->_get('site_id');
-     
+        if($this->_get('site_id'))
+        {
+            $searchCon['site_id'] = $this->_get('site_id');
+        }
+        else 
+        {
+            $searchCon['site_id'] = $this->adminInfo->site_id;
+        }
         $formInput = formField($searchFiled,$this->_get());
         $this->assign('formInput',$formInput);
         //特殊字段需要加在特殊的插件或者js
