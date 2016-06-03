@@ -306,8 +306,11 @@ class ModelAction  extends BaseAction
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
         $post['create_time'] = time();
-        if(($post['id']<=0||!$post['id'])&&!$post['admin_id']) $post['admin_id'] = $this->adminInfo->id;
-        $post['site_id'] = $this->adminInfo->site_id;
+        if(($post['id']<=0||!$post['id'])&&!$post['admin_id'])
+        {
+            $post['admin_id'] = $this->adminInfo->id;
+            $post['site_id'] = $this->adminInfo->site_id;
+        }
         $fromUrl = urldecode(encrypt($post['fromUrl'],'D'));
         unset($post['fromUrl']);
         //导入外部处理机制
