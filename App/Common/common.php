@@ -391,7 +391,37 @@ function get_listening_level_text($flag = null) {
 	}
 }
 
+function curlPost($url, $postdata) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata, "", "&"));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_USERAGENT, "wx curl post");
+	$data = curl_exec($ch);
+	curl_close($ch);
+	return $data;
+}
 
+function curlGet($url) {
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_BINARYTRANSFER, true); 
+	$output = curl_exec($ch);
+	curl_close($ch);
+	return $output;
+}
+
+
+function get_rand_char($length){
+    $str = null;
+    $strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+    $max = strlen($strPol)-1;
+    for($i=0;$i<$length;$i++){
+     $str.=$strPol[rand(0,$max)];
+    }
+    return $str;
+}
+    
 
 
 ?>
