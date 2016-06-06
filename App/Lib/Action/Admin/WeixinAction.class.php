@@ -9,7 +9,9 @@
 
 class WeixinAction extends Action{
     
-    function index(){
+    
+    //验证
+    function valid(){
         $token = $this->_get("token");
         $echoStr = $_GET["echostr"];
         if($this->checkSignature($token)){
@@ -18,7 +20,6 @@ class WeixinAction extends Action{
         }
     }
         
-    
     private function checkSignature($token){
         if(!$token){
             throw new Exception('TOKEN is not defined!');
