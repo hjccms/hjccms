@@ -24,8 +24,7 @@ class WeixinConfigAction extends WeixinBaseAction{
     }
     
     
-    //编辑菜单操作
-    function ajaxPost(){
+    function configAjaxPost(){
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
         if(!$post['id']){
