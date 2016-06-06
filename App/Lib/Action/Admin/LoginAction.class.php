@@ -59,6 +59,7 @@ class LoginAction  extends Action
     {
         session(null);
         cookie('adminInfo',null);
+        cookie('adminSiteInfo',null);
         redirect(U('/Admin/Login'));
     }
     /**
