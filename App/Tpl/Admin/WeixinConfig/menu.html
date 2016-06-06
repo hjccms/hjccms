@@ -2,66 +2,102 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>无标题文档</title>
-
+        <title>菜单管理</title>
         <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
-
         <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/jquery.idTabs.min.js"></script>
-        <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/select-ui.min.js"></script>
-        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
-        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
-        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/setting.js"></script>
+        <script type="text/javascript">
+            function menuDel(id){
+                layer.confirm('您确定要删除么？',function(index){
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Menu/del",
+                        data: "id="+id,
+                        dataType: "json",
+                        beforeSend:function()
+                        {
+                            layer.load('正在请求...', 3);
+                        },
+                        success: function(msg)
+                        {
+                            if(msg.status==1)
+                            {
+                                location.reload() ;
+                            }
+                            else
+                            {
+                                layer.alert(msg.info, 8);
+                            }
+                        }
+                     });
+                });
+            }
+        </script>
+            
+            
     </head>
 
+
     <body>
+
         <include file="Index:position"/>
-        <div class="formbody">
-            <div id="usual1" class="usual"> 
-                <div class="itab">
-                    <ul> 
-                        <li><a href="#tab1" class="selected">基础设置</a></li> 
-                    </ul>
-                </div> 
-                <div id="tab1" class="tabson">
-                    <form class="registerform" action="{:U('/Admin/WeixinConfig/ajaxPost')}">
-                        <ul class="forminfo">
-                            <li class="" style=""><label>URL</label><label style="width:50%">{$info.url}</label></li>
-                            <li class="" style=""><label>TOKEN</label><label>{$info.token}</label></li>
-                            {:input(array('title'=>'微信名称','inputName'=>'name','isMust'=>'1','value'=>$info['name']))}
-                            {:input(array('title'=>'微信号','inputName'=>'account','isMust'=>'1','value'=>$info['account']))}
-                            {:input(array('title'=>'原始ID','inputName'=>'ghid','isMust'=>'1','value'=>$info['ghid']))}
-                            {:input(array('title'=>'APPID','inputName'=>'appid','isMust'=>'1','value'=>$info['appid']))}
-                            {:input(array('title'=>'APPSECRET','inputName'=>'appsecret','isMust'=>'1','value'=>$info['appsecret']))}
-                            {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
-                            <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确定"/></li>
-                        </ul>
-                    </form>
-                </div> 
-            </div> 
+        <div class="rightinfo">
+            <div class="tools">
+                <ul class="toolbar">
+                    {:get_content_button($contentButton)}
+                </ul>
+            </div>
+            <table class="tablelist">
+                <thead>
+                    <tr>
+                        <th>编号<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
+                        <th>名称</th>
+                        <th>类型</th>
+                        <th>URL</th>
+                        <th>FUNC</th>
+                        <th>是否有效</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {$menuTree}
+                </tbody>
+            </table>
+            <div class="mid" style=" display:none;width:100%;  height:100%;  background:#000;  position:absolute;top:0;  left:0;  z-index:10;  opacity:0.4;  filter:alpha(opacity =40);  "></div>
+            <div class="tip">
+                <div class="tiptop"><span>提示信息</span><a></a></div>
+
+                <div class="tipinfo">
+                    <span><img src="__PUBLIC__/Style/Admin/images/ticon.png" /></span>
+                    <div class="tipright">
+                        <p>是否确认对信息的修改 ？</p>
+                        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+                    </div>
+                </div>
+                <div class="tipbtn">
+                    <input name="" type="button"  class="sure" value="确定" />&nbsp;
+                    <input name="" type="button"  class="cancel" value="取消" />
+                </div>
+            </div>
         </div>
-<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
-<script type="text/javascript">
-$(function(){
-	$(".registerform").Validform({
-		tiptype:function(msg,o,cssctl){
-			if(!o.obj.is("form")){
-				var objtip=o.obj.siblings(".Validform_checktip");
-				cssctl(objtip,o.type);
-				objtip.text(msg);
-			}
-		},
-        ajaxPost:true,
-        callback:function(data){
-            if(data.status==1){
-                alert(data.info);
-                location.href="{:U('Admin/WeixinConfig/index')}";
-            }else{
-                alert(data.info);
-            }
-		}
-	});
-})
-</script>
+        <script type="text/javascript">
+            $('.tablelist tbody tr:odd').addClass('odd');
+            $(".change").click(function(){
+                var obj = $(this).parent();
+                if(obj.attr('level') == '2'){
+                    if(obj.attr('flag') == 'none'){
+                        $("."+obj.attr('id')).show();
+                        obj.attr('flag','block');
+                    }else{
+                        $("."+obj.attr('id')).hide();
+                        obj.attr('flag','none');
+                    }
+                }
+            })
+        </script>
+
     </body>
+
 </html>
+

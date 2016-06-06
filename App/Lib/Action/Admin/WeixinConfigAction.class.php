@@ -35,4 +35,26 @@ class WeixinConfigAction extends WeixinBaseAction{
         else $this->ajaxReturn ('','操作失败',0);
     }
     
+    function menu(){
+        $this->getContentButton();
+        $this->getListButton();
+        load('@.form');
+        
+        $site_id = $this->adminInfo->site_id;
+        $info = D("Weixin_config")->getInfo("site_id={$site_id}");
+        if(!$info){
+            $data['site_id'] = $site_id;
+            $data['admin_id'] = $this->adminInfo->id;
+            $data['create_time'] = time();
+            $data['token'] = get_rand_char(8);
+            D("Weixin_config")->add($data);
+            $info = D("Weixin_config")->getInfo("site_id={$site_id}");
+        }
+        if($info){
+            $info['url'] = str_replace('{token}', $info['token'], C("WEIXIN_URL"));
+        }
+        $this->assign("info",$info);
+        $this->display();
+    }
+    
 }
