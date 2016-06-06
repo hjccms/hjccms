@@ -60,6 +60,7 @@ class LoginAction  extends Action
         session(null);
         cookie('adminInfo',null);
         cookie('adminSiteInfo',null);
+        cookie('adminSiteAccessToken',null);
         redirect(U('/Admin/Login'));
     }
     /**

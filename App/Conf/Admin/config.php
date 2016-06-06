@@ -40,8 +40,6 @@ return array(
     
     
     //微信的配置
-    'WEIXIN_URL'             => 'http://www.omnibrain.com.cn/Admin/Weixin/index/token/{token}',    //服务器地址
-    'WEIXIN_ACCESS_TOKEN'             => '/Runtime/Logs/weixin/access_token_{site_id}.json',    //微信存储access_token地址    
-    
+    'WEIXIN_URL'             => 'http://www.omnibrain.com.cn/Admin/Weixin/index/token/{token}',    //服务器地址    
 );
 ?>

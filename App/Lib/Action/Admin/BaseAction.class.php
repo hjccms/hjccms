@@ -36,7 +36,9 @@ class BaseAction  extends Action
             else
             {
                 $adminSiteInfo = D('Site')->getInfo($this->adminInfo->site_id);
-                
+                $weixinConfig = D("Weixin_config")->getInfo("site_id={$this->adminInfo->site_id}");
+                $adminSiteInfo['appid'] = encrypt($weixinConfig['appid'],'E',C('APP_KEY'));
+                $adminSiteInfo['appsecret'] = encrypt($weixinConfig['appsecret'],'E',C('APP_KEY'));
                 cookie('adminSiteInfo',$adminSiteInfo,3600*24*7);//保存时间足够一次不间断的操作
                 $this->adminSiteInfo = cookie('adminSiteInfo');
             }
