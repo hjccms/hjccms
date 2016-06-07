@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>菜单管理</title>
+        <link href="__PUBLIC__/Style/Admin/css/style.css" rel="stylesheet" type="text/css" />
+     
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+     
+        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
+        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
+        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+    </head>
+
+    <body>
+
+        <include file="Index:position"/>
+
+        <div class="formbody">
+
+            <div class="formtitle"><span>添加菜单</span></div>
+            <form class="registerform" action="{:U('/Admin/WeixinMenu/ajaxPost')}">
+            <ul class="forminfo">
+                {:select(array('title'=>'回复类型','inputName'=>'type','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_weixin_reply_type()))}
+                {:select(array('title'=>'消息类型','inputName'=>'msg_type','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_weixin_msg_type()))}
+                {:input(array('title'=>'关键词','inputName'=>'keyword','value'=>$info['keyword']))}
+                {:radio(array('title'=>'关键词类型','inputName'=>'keyword_type','value'=>isset($info['keyword_type'])?$info['keyword_type']:1,'paramArr'=>get_weixin_keyword_type()))}
+                {:input(array('title'=>'内容','inputName'=>'text','value'=>$info['text']))}
+                {:upload(array('title'=>'上传文件','inputName'=>'file','addId'=>'url','value'=>$info['icon'],'uploadId'=>'image1'))}
+                {:input(array('title'=>'链接','inputName'=>'url','value'=>$info['url']))}
+                {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
+                {:input(array('title'=>'排序','inputName'=>'sort','value'=>$info['sort'],'addHtml'=>'datatype="n" ignore="ignore" errormsg="只能输入整数"'))}
+                {:hideInput(array('inputName'=>'id','value'=>$info['id']))}               
+                <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确定"/></li>
+            </ul>
+
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+KindEditor.ready(function(K) {
+    var editor = K.editor({
+        allowFileManager : true,
+        uploadJson : '/index.php?g=Admin&m=Upload&a=uploadFile',
+    });
+    K('#filebut').click(function() {
+        editor.loadPlugin('insertfile', function() {
+            editor.plugin.fileDialog({
+                fileUrl : K('#url').val(),
+                clickFn : function(url, title) {
+                    K('#url').val(url);
+                    editor.hideDialog();
+                }
+            });
+        });
+    });
+});
+$(function(){
+	$(".registerform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+			}
+		},
+        ajaxPost:true,
+        callback:function(data){
+            if(data.status==1){
+                alert(data.info);
+                location.href="{:U('Admin/WeixinMenu/index')}";
+            }else{
+                alert(data.info);
+            }
+		}
+	});
+})
+</script>
+</html>
+
