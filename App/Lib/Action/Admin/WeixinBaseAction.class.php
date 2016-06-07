@@ -29,6 +29,7 @@ class WeixinBaseAction extends BaseAction{
                 $data['site_id'] = $site_id;
                 $data['access_token'] = $res->access_token;
                 cookie('adminSiteAccessToken', encrypt(json_encode($data),'E',C('APP_KEY')), $res->expires_in);
+                $access_token = $res->access_token;
             }
         }else{
             $access_token = $access_token->access_token;

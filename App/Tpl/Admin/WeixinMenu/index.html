@@ -8,11 +8,11 @@
         <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/setting.js"></script>
         <script type="text/javascript">
-            function menuDel(id){
+            function del(id){
                 layer.confirm('您确定要删除么？',function(index){
                     $.ajax({
                         type: "POST",
-                        url: "/Admin/Menu/del",
+                        url: "/Admin/WeixinMenu/del",
                         data: "id="+id,
                         dataType: "json",
                         beforeSend:function()
@@ -24,6 +24,30 @@
                             if(msg.status==1)
                             {
                                 location.reload() ;
+                            }
+                            else
+                            {
+                                layer.alert(msg.info, 8);
+                            }
+                        }
+                     });
+                });
+            }
+            function createMenu(){
+                layer.confirm('您确定要生成微信菜单？',function(index){
+                    $.ajax({
+                        type: "get",
+                        url: "/Admin/WeixinMenu/createMenu",
+                        dataType: "json",
+                        beforeSend:function()
+                        {
+                            layer.load('正在请求...', 3);
+                        },
+                        success: function(msg)
+                        {
+                            if(msg.status==1)
+                            {
+                                layer.alert(msg.info);
                             }
                             else
                             {
@@ -53,9 +77,8 @@
                     <tr>
                         <th>编号<i class="sort"><img src="__PUBLIC__/Style/Admin/images/px.gif" /></i></th>
                         <th>名称</th>
-                        <th>类型</th>
+                        <th>关键词</th>
                         <th>URL</th>
-                        <th>FUNC</th>
                         <th>是否有效</th>
                         <th>操作</th>
                     </tr>
@@ -83,18 +106,6 @@
         </div>
         <script type="text/javascript">
             $('.tablelist tbody tr:odd').addClass('odd');
-            $(".change").click(function(){
-                var obj = $(this).parent();
-                if(obj.attr('level') == '2'){
-                    if(obj.attr('flag') == 'none'){
-                        $("."+obj.attr('id')).show();
-                        obj.attr('flag','block');
-                    }else{
-                        $("."+obj.attr('id')).hide();
-                        obj.attr('flag','none');
-                    }
-                }
-            })
         </script>
 
     </body>
