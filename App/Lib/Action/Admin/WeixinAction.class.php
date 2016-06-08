@@ -12,10 +12,11 @@ class WeixinAction extends Action{
     
     //验证
     function valid(){
-        $token = $this->_get("token");
-        if(!$token){
+        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        if($postStr){
             $this->responseMsg();exit;
         }
+        $token = $this->_get("token");
         $echoStr = $_GET["echostr"];
         if($this->checkSignature($token)){
         	echo $echoStr;
