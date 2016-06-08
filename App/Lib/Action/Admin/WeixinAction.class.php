@@ -14,7 +14,7 @@ class WeixinAction extends Action{
     function valid(){
         $token = $this->_get("token");
         if(!$token){
-            $this->responseMsg();
+            $this->responseMsg();exit;
         }
         $echoStr = $_GET["echostr"];
         if($this->checkSignature($token)){
@@ -72,7 +72,7 @@ class WeixinAction extends Action{
 				if(!empty( $keyword ))
                 {
               		$msgType = "text";
-                	$contentStr = "Welcome to wechat world!";
+                	$contentStr = "Welcome to wechat world!!!!";
                 	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                 	echo $resultStr;
                 }else{
