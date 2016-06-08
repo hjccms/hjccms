@@ -47,42 +47,100 @@ class WeixinAction extends Action{
 		}
 	}
     
-    public function responseMsg()
-    {
-		//get post data, May be due to the different environments
+    public function responseMsg(){
 		$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
-
-      	//extract post data
 		if (!empty($postStr)){
-                /* libxml_disable_entity_loader is to prevent XML eXternal Entity Injection,
-                   the best way is to check the validity of xml by yourself */
-                libxml_disable_entity_loader(true);
-              	$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-                $fromUsername = $postObj->FromUserName;
-                $toUsername = $postObj->ToUserName;
-                $keyword = trim($postObj->Content);
-                $time = time();
-                $textTpl = "<xml>
-							<ToUserName><![CDATA[%s]]></ToUserName>
-							<FromUserName><![CDATA[%s]]></FromUserName>
-							<CreateTime>%s</CreateTime>
-							<MsgType><![CDATA[%s]]></MsgType>
-							<Content><![CDATA[%s]]></Content>
-							<FuncFlag>0</FuncFlag>
-							</xml>";             
-				if(!empty( $keyword ))
-                {
-              		$msgType = "text";
-                	$contentStr = "Welcome to wechat world!!!!";
-                	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-                	echo $resultStr;
-                }else{
-                	echo "Input something...";
-                }
+            libxml_disable_entity_loader(true);
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $fromUsername = $postObj->FromUserName;
+            $toUsername = $postObj->ToUserName;
+            $keyword = trim($postObj->Content);
+            $time = time();
 
-        }else {
-        	echo "委屈委屈委屈";
-        	exit;
+            $siteInfo = D("Weixin_config")->getInfo("ghid={$postObj->ToUserName}");
+            $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['id']} and keyword like '%".$keyword."%' and vaild=1 and del is null");
+            if($msg){
+                if($msg['keyword_type'] == 1){
+                    if($keyword == $msg['keyword']){
+                        $data['to_user_name'] = $fromUsername;
+                        $data['from_user_name'] = $toUsername;
+                        $data['msg_type'] = $msg['msg_type'];
+                        $data['content'] = $msg['content'];
+                        echo $this->sendMsg($data);
+                    }
+                }
+            }         
         }
     }
+    
+    //发送被动响应消息
+	function sendMsg($data) {
+		$textTpl = "<xml>
+            <ToUserName><![CDATA[{$data['to_user_name']}]]></ToUserName>
+            <FromUserName><![CDATA[{$data['from_user_name']}]]></FromUserName>
+            <CreateTime>%s</CreateTime>
+            <MsgType><![CDATA[{$data['msg_type']}]]></MsgType>";
+
+		switch ($data['msg_type']) {
+			case 'text':
+				$textTpl .=
+					"<Content><![CDATA[{$data['content']}]]></Content>";
+				break;
+			case 'image':
+				$textTpl .=
+					"<Image>
+                    <MediaId><![CDATA[{$data['media_id']}]]></MediaId>
+                    </Image>";
+				break;
+			case 'voice':
+				$textTpl .=
+					"<Voice>
+                    <MediaId><![CDATA[{$data['media_id']}]]></MediaId>
+                    </Voice>";
+				break;
+			case 'video':
+				$textTpl .=
+					"<Video>
+                    <MediaId><![CDATA[{$data['media_id']}]]></MediaId>
+                    <Title><![CDATA[{$data['title']}]]></Title>
+                    <Description><![CDATA[{$data['content']}]]></Description>
+                    </Video> ";
+				break;
+			case 'music':
+				$textTpl .=
+					"<Music>
+                    <Title><![CDATA[{$data['title']}]]></Title>
+                    <Description><![CDATA[{$data['content']}]]></Description>
+                    <MusicUrl><![CDATA[{$data['url']}]]></MusicUrl>
+                    <HQMusicUrl><![CDATA[{$data['url2']}]]></HQMusicUrl>
+                    <ThumbMediaId><![CDATA[{$data['thumb_media_id']}]]></ThumbMediaId>
+                    </Music>";
+				break;
+			case 'news':
+				$titles = explode(',', $data['title']);
+				$count = count($titles);
+				$contents = explode(',', $data['content']);
+				$urls = explode(',', $data['url']);
+				$url2s = explode(',', $data['url2']);
+				$textTpl .=
+					"<ArticleCount>{$count}</ArticleCount>
+                    <Articles>";
+				foreach ($titles as $key => $title) {
+					$textTpl .=
+					"<item>
+                        <Title><![CDATA[{$title}]]></Title> 
+                        <Description><![CDATA[{$contents[$key]}]]></Description>
+                        <PicUrl><![CDATA[{$urls[$key]}]]></PicUrl>
+                        <Url><![CDATA[{$url2s[$key]}]]></Url>
+                    </item>";
+				}
+				$textTpl .=
+					"</Articles>";
+				break;
+			default:
+				break;
+		}
+		$textTpl .= "</xml>";
+		return sprintf($textTpl, time());
+	}
 }
