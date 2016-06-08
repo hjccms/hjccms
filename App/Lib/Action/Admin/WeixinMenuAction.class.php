@@ -46,10 +46,15 @@ class WeixinMenuAction extends WeixinBaseAction{
     function ajaxPost(){
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
-        $post['site_id'] = $this->adminInfo->site_id;
-        $post['key'] = get_rand_char(6);
+        if(!$post['id']){
+            $post['site_id'] = $this->adminInfo->site_id;
+            $post['admin_id'] = $this->adminInfo->id;
+            $post['create_time'] = time();
+        }
+        if(!$post['url']){
+            $post['key'] = get_rand_char(6);
+        }
         $post['level'] = D('Weixin_menu')->getLevel($post['parent_id']);
-        $post['admin_id'] = $this->adminInfo->id;
         $ret = D('Weixin_menu')->addMenu($post);
         if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
         else $this->ajaxReturn ('',$ret,0);
