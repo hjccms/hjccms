@@ -12,13 +12,15 @@ class WeixinAction extends Action{
     
     //验证
     function valid(){
-//        $token = $this->_get("token");
-//        $echoStr = $_GET["echostr"];
-//        if($this->checkSignature($token)){
-//        	echo $echoStr;
-//        	exit;
-//        }
-        $this->responseMsg();
+        $token = $this->_get("token");
+        if(!$token){
+            $this->responseMsg();
+        }
+        $echoStr = $_GET["echostr"];
+        if($this->checkSignature($token)){
+        	echo $echoStr;
+        	exit;
+        } 
     }
         
     private function checkSignature($token){
