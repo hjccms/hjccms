@@ -81,7 +81,7 @@ class WeixinAction extends Action{
                 }
 
         }else {
-        	echo "";
+        	echo "委屈委屈委屈";
         	exit;
         }
     }
