@@ -52,22 +52,23 @@ class WeixinAction extends Action{
 		if (!empty($postStr)){
             libxml_disable_entity_loader(true);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-            $fromUsername = $postObj->FromUserName;
-            $toUsername = $postObj->ToUserName;
-            $keyword = trim($postObj->Content);
-            $time = time();
-
             $siteInfo = D("Weixin_config")->getInfo("ghid={$postObj->ToUserName}");
-            $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['id']} and keyword like '%".$keyword."%' and vaild=1 and del is null");
+            $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['id']} and keyword like '%".$postObj->Content."%' and vaild=1 and del is null");
             if($msg){
-                if($msg['keyword_type'] == 1){
-                    if($keyword == $msg['keyword']){
-                        $data['to_user_name'] = $fromUsername;
-                        $data['from_user_name'] = $toUsername;
+                if($msg['keyword_type'] == 1){//完全匹配
+                    if($postObj->Content == $msg['keyword']){
+                        $data['to_user_name'] = $postObj->FromUserName;
+                        $data['from_user_name'] = $postObj->ToUserName;
                         $data['msg_type'] = $msg['msg_type'];
                         $data['content'] = $msg['content'];
                         echo $this->sendMsg($data);
                     }
+                }else{//模糊匹配
+                    $data['to_user_name'] = $postObj->FromUserName;
+                    $data['from_user_name'] = $postObj->ToUserName;
+                    $data['msg_type'] = $msg['msg_type'];
+                    $data['content'] = $msg['content'];
+                    echo $this->sendMsg($data);
                 }
             }         
         }
