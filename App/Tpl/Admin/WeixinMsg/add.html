@@ -19,17 +19,14 @@
         <div class="formbody">
 
             <div class="formtitle"><span>添加菜单</span></div>
-            <form class="registerform" action="{:U('/Admin/WeixinMenu/ajaxPost')}">
+            <form class="registerform" action="{:U('/Admin/WeixinMsg/ajaxPost')}">
             <ul class="forminfo">
                 {:select(array('title'=>'回复类型','inputName'=>'type','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_weixin_reply_type()))}
-                {:select(array('title'=>'消息类型','inputName'=>'msg_type','value'=>$info['type'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_weixin_msg_type()))}
+                {:select(array('title'=>'消息类型','inputName'=>'msg_type','value'=>$info['msg_type'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_weixin_msg_type()))}
                 {:input(array('title'=>'关键词','inputName'=>'keyword','value'=>$info['keyword']))}
                 {:radio(array('title'=>'关键词类型','inputName'=>'keyword_type','value'=>isset($info['keyword_type'])?$info['keyword_type']:1,'paramArr'=>get_weixin_keyword_type()))}
-                {:input(array('title'=>'内容','inputName'=>'text','value'=>$info['text']))}
-                {:upload(array('title'=>'上传文件','inputName'=>'file','addId'=>'url','value'=>$info['icon'],'uploadId'=>'image1'))}
-                {:input(array('title'=>'链接','inputName'=>'url','value'=>$info['url']))}
+                {:textarea(array('title'=>'内容','inputName'=>'text','value'=>$info['text'],'width'=>345,'height'=>100))}                <!--{:upload(array('title'=>'上传文件','inputName'=>'file','addId'=>'url','value'=>$info['icon'],'uploadId'=>'image1'))}-->
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
-                {:input(array('title'=>'排序','inputName'=>'sort','value'=>$info['sort'],'addHtml'=>'datatype="n" ignore="ignore" errormsg="只能输入整数"'))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}               
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确定"/></li>
             </ul>
@@ -69,7 +66,7 @@ $(function(){
         callback:function(data){
             if(data.status==1){
                 alert(data.info);
-                location.href="{:U('Admin/WeixinMenu/index')}";
+                location.href="{:U('Admin/WeixinMsg/index')}";
             }else{
                 alert(data.info);
             }
