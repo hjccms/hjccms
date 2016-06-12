@@ -74,7 +74,7 @@ class IndexAction extends BaseAction {
                 $info['end_key'] = end(array_keys($schedule));
             }
             if($type == 'again'){
-                $re = D("Listening_test")->where("`name`='{$obj->name}' and mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save(array('schedule'=>''));
+                $re = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save(array('schedule'=>''));
                 $info['end_key'] = 0;
             }
         }else{
@@ -85,6 +85,10 @@ class IndexAction extends BaseAction {
     }
     function testLogin()
     {
+        if($this->studentInfo->id){
+            session('levelTest',  json_encode(array('name'=>$this->studentInfo->username,'mobile'=>$this->studentInfo->mobile?$this->studentInfo->mobile:$this->studentInfo->username)));
+            session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$this->studentInfo->username,'mobile'=>$this->studentInfo->mobile?$this->studentInfo->mobile:$this->studentInfo->username)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
+        }
         if(session('hashLevelTest') && (session('hashLevelTest')==md5(encrypt(session('levelTest').cookie('PHPSESSID'),'E',C('APP_KEY'))))){
             redirect(U('/Index/checkLevel'));
         }
@@ -92,7 +96,7 @@ class IndexAction extends BaseAction {
     }
     function testResult()
     {
-        $obj = json_decode(session('levelTest'));
+        $obj = json_decode(session('levelTest'));        
         $info = D("Listening_test")->getInfoBySession($this->siteInfo->id);
         if($info['level'] == 0){
             redirect(U('/Index/checkLevel'));

@@ -8,8 +8,21 @@ class LevelTestAction extends BaseAction {
         if(!$name || !$mobile){
             $this->ajaxReturn('','操作失败',0);
         }
+        //纪录英文名
+        D("Listening_test")->where("mobile='{$mobile}' and site_id={$this->siteInfo->id}")->save(array("name"=>$name));
+        
+        //设置session
         session('levelTest',  json_encode(array('name'=>$name,'mobile'=>$mobile)));
         session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$name,'mobile'=>$mobile)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
+        
+        //数据同步
+        $info = D("Listening_test")->where("mobile='{$mobile}' and site_id={$this->siteInfo->id}")->find();
+        if($info['level'] !=0 && $info['schedule'] == ''){
+            $sdata['mobile'] = $mobile;
+            $sdata['level'] = $info['level'];
+            curlPost(C("WX_URL")."/Api/aoniListeningTestData", $sdata);
+        }
+        
         $this->ajaxReturn('','操作成功',1);
     }
     
@@ -58,14 +71,26 @@ class LevelTestAction extends BaseAction {
                 $data['schedule'] = $all_answer;
             }
             if($info){
-                $re = D("Listening_test")->where("`name`='{$obj->name}' and mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save($data);
+                $re = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save($data);
             }else{
                 $data['site_id'] = $this->siteInfo->id;
+                $data['student_id'] = $this->studentInfo->id;
                 $data['name'] = $obj->name;
                 $data['mobile'] = $obj->mobile;
                 $data['create_time'] = time();
                 $re = D("Listening_test")->add($data);
             }
+            
+            //数据同步
+            $info = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->find();
+            if($num == '25'){
+                $sdata['student_id'] = $info['student_id'];
+                $sdata['mobile'] = $info['mobile'];
+                $sdata['level'] = $info['level'];
+                $sdata['is_test'] = 1;
+                curlPost(C("WX_URL")."/Api/aoniListeningTestData", $sdata);
+            }
+            
             $this->ajaxReturn('','操作成功',1);
         }else{
             $this->ajaxReturn('','操作失败',0);

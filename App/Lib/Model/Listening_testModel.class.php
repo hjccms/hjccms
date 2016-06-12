@@ -6,7 +6,7 @@ class Listening_testModel extends Model {
     //获取该学生测评信息
     function getInfoBySession($site_id){
         $obj = json_decode(session('levelTest')); 
-        $info = D("Listening_test")->where("`name`='{$obj->name}' and mobile='{$obj->mobile}' and site_id={$site_id}")->find();
+        $info = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$site_id}")->find();
         return $info;
     }
    

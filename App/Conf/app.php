@@ -4,6 +4,9 @@ return array(
     'APP_KEY' => 'dj_wia$84k&lp',  //项目加密key值
     
     'SITEURL' => 'http://an.haowj.com',
+    
+    'WX_URL' => 'http://wx.haowj.com',
+    
     //表单hash验证开启
     'TOKEN_ON'=>true,  // 是否开启令牌验证
     'TOKEN_NAME'=>'__hash__',    // 令牌验证的表单隐藏字段名称
