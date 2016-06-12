@@ -53,7 +53,7 @@ class WeixinAction extends Action{
             libxml_disable_entity_loader(true);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $siteInfo = D("Weixin_config")->getInfo("ghid='{$postObj->ToUserName}'");
-            $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['id']} and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
+            $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['site_id']} and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
             if($msg){
                 if($msg['keyword_type'] == 1){//完全匹配
                     if($postObj->Content == $msg['keyword']){
