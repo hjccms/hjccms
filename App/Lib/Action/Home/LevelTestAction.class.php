@@ -66,11 +66,7 @@ class LevelTestAction extends BaseAction {
                 $data['create_time'] = time();
                 $re = D("Listening_test")->add($data);
             }
-            if($re){
-                $this->ajaxReturn('','操作成功',1);
-            }else{
-                $this->ajaxReturn('','操作失败',0);
-            }
+            $this->ajaxReturn('','操作成功',1);
         }else{
             $this->ajaxReturn('','操作失败',0);
         }

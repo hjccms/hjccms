@@ -90,7 +90,7 @@ $(function(){
             alert('请先选择一个答案！');
             return false;
         }
-        if(answer){
+        if(answer && ch=='next'){
             $.ajax({
                 type: "POST",
                 url: "/LevelTest/addAnswer",
