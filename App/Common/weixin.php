@@ -2,9 +2,8 @@
 //获取微信回复类型
 function get_weixin_reply_type($flag = null) {
 	$arr = array(
-		'1' => '被添加自动回复',
-		'2' => '消息自动回复',
-        '3' => '关键词自动回复',
+		'1' => '关注自动回复',
+		'2' => '关键词自动回复',
 	);
 	if (isset($flag)) {
 		return $arr[$flag];

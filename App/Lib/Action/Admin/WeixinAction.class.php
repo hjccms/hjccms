@@ -69,7 +69,7 @@ class WeixinAction extends Action{
             
             //关键词自动回复
             if($postObj->Content){
-                $msg = D("Weixin_msg")->getMsg("site_id={$siteInfo['site_id']} and type=3  and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
+                $msg = D("Weixin_msg")->getMsg("site_id={$siteInfo['site_id']} and type=2  and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
                 if($msg){
                     
                     //完全匹配
