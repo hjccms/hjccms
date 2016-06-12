@@ -443,6 +443,14 @@ function get_rand_char($length){
     return $str;
 }
     
-
+//记录日志
+function writeLog($txt,$content)
+{
+    $fp = fopen($txt,"a");
+    flock($fp, LOCK_EX) ;
+    fwrite($fp,"执行日期：".strftime("%Y%m%d%H%M%S",time())." 记录反馈：".$content."\r\n");
+    flock($fp, LOCK_UN);
+    fclose($fp);
+}
 
 ?>
