@@ -53,24 +53,43 @@ class WeixinAction extends Action{
             libxml_disable_entity_loader(true);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $siteInfo = D("Weixin_config")->getInfo("ghid='{$postObj->ToUserName}'");
-            $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['site_id']} and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
-            if($msg){
-                if($msg['keyword_type'] == 1){//完全匹配
-                    if($postObj->Content == $msg['keyword']){
-                        $data['to_user_name'] = $postObj->FromUserName;
-                        $data['from_user_name'] = $postObj->ToUserName;
-                        $data['msg_type'] = $msg['msg_type'];
-                        $data['content'] = $msg['text'];
-                        echo $this->sendMsg($data);
-                    }
-                }else{//模糊匹配
-                    $data['to_user_name'] = $postObj->FromUserName;
-                    $data['from_user_name'] = $postObj->ToUserName;
+            
+            $data['to_user_name'] = $postObj->FromUserName;
+            $data['from_user_name'] = $postObj->ToUserName;
+            
+            //关注自动回复
+            if($postObj->MsgType == 'event' && $postObj->Event == 'subscribe'){
+                $msg = D("Weixin_msg")->getInfo("site_id={$siteInfo['site_id']} and type=1 and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
+                if($msg){
                     $data['msg_type'] = $msg['msg_type'];
                     $data['content'] = $msg['text'];
-                    echo $this->sendMsg($data);
+                    echo $this->sendMsg($data);die;
                 }
-            }         
+            }
+            
+            //关键词自动回复
+            if($postObj->Content){
+                $msg = D("Weixin_msg")->getMsg("site_id={$siteInfo['site_id']} and type=3  and keyword like '%".$postObj->Content."%' and valid=1 and del is null");
+                if($msg){
+                    
+                    //完全匹配
+                    foreach($msg as $k=>$v){
+                        $data['msg_type'] = $v['msg_type'];
+                        $data['content'] = $v['text'];
+                        if($v['keyword_type'] == 1){
+                            if($postObj->Content == $v['keyword']){
+                                echo $this->sendMsg($data);die;
+                            }
+                        }
+                    }
+                    
+                    //模糊匹配
+                    $data['msg_type'] = $msg[0]['msg_type'];
+                    $data['content'] = $msg[0]['text'];
+                    echo $this->sendMsg($data);
+                }  
+            }
+                   
         }
     }
     
