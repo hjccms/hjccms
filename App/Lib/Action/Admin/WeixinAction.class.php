@@ -60,14 +60,14 @@ class WeixinAction extends Action{
                         $data['to_user_name'] = $postObj->FromUserName;
                         $data['from_user_name'] = $postObj->ToUserName;
                         $data['msg_type'] = $msg['msg_type'];
-                        $data['content'] = $msg['content'];
+                        $data['content'] = $msg['text'];
                         echo $this->sendMsg($data);
                     }
                 }else{//模糊匹配
                     $data['to_user_name'] = $postObj->FromUserName;
                     $data['from_user_name'] = $postObj->ToUserName;
                     $data['msg_type'] = $msg['msg_type'];
-                    $data['content'] = $msg['content'];
+                    $data['content'] = $msg['text'];
                     echo $this->sendMsg($data);
                 }
             }         
