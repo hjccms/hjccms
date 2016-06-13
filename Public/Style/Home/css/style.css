@@ -42,7 +42,7 @@ h2{font-weight:normal;}
 
 
 .banner {height:426px; width: 100%; margin: 0 auto; position: relative; }
-.index_register{width:532px;height: 428px; background: url("/Public/Style/Home/images/icon.png") no-repeat scroll -1388px -36px;position: absolute; top:1px;right:0px;z-index:100}
+.index_register{width:532px;height: 428px; background: url("/Public/Style/Home/images/icon.png") no-repeat scroll -1388px -36px;position: absolute; top:2px;right:0px;z-index:100}
 .index_register .ire_text{width: 175px;height: 35px;font-size: 12px;color: #333333;padding-left: 16px;border-radius: 5px;margin-top: 8px;margin-left: 80px;}
 .biaodan {width: 1000px; z-index: 202; margin: 0 auto; height: 100%;left:50%; margin-left: -500px; margin-top: -428px; position: absolute; }
 .floatcode{width:144px;height: 388px; background: url("/Public/Style/Home/images/icon.png") no-repeat scroll -1160px 0px;position: fixed;top:40%;right:0%;z-index: 101;}
