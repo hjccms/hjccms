@@ -264,3 +264,36 @@ h2{font-weight:normal;}
 .page .page_sel{ border: 1px solid #eaecee;background-color: #ffffff;}
 .page .page_next{float: left;color: #ef8f56}
 /*page end*/
+
+
+
+/*师资力量 start*/
+.teacher_banner{height:437px; width: 100%; margin: 0 auto;}
+
+.teacher_intro{height: 629px;color: #999999;}
+.ti_top{height: 140px;border-bottom:  1px #dedede solid}
+.tit_left{float: left;margin-top: 60px;margin-left: 260px;cursor: pointer;}
+.titl_p1{font-size: 26px;line-height: 45px;}
+.titl_p2{font-size: 15px;padding-bottom: 15px;}
+.titl_se{color: #333333;}
+.titl_sep{border-bottom:  3px #333333 solid}
+.tit_center{float:left;margin-top: 70px;margin-left: 73px;width: 1px;height: 25px;border-left: 1px #dedede solid}
+.tit_right{float:left;margin-top: 60px;margin-left: 73px;cursor: pointer;}
+.ti_bottom{margin-top: 100px;height: 389px;background-color: #f6f5f5;color: #666666;font-size: 18px;}
+.tib_left{float: left;}
+.tib_right{float: left;margin-top: 85px;margin-left: 62px;}
+.tib_right p{line-height: 42px;}
+
+.teacher_lists{height: 664px;}
+.tl_title{font-size: 26px; color: #333333; margin: 0 auto; width: 100%; text-align: center; padding-top: 60px;}
+.tl_title2{display: inline;color:#f36b00}
+.tl_titleen { width: 490px; height:25px; line-height: 25px;  }
+.tl_titleen .tl_xian { width: 150px; height: 1px; background-color: #d3d4d5; margin-top: 11px;}
+.tl_titleen .tl_texten { width: 190px; text-align: center; height: 25px; line-height: 25px; font-size: 16px; color: #b4b3b3; }
+.teacher_lists ul{margin-top: 25px;color: #999999;font-size: 12px;}
+.teacher_lists ul li{float: left;width: 205px;height: 441px;border: 1px #dedede solid;border-radius: 5px;margin-right:17px;padding-left: 15px;padding-right: 15px;}
+.teacher_lists ul li img{margin-left: 21px;margin-top: 23px;margin-bottom: 29px;}
+.teacher_lists ul li p{line-height:22px;}
+.teacher_lists .tl_p1{color: #333333;font-size: 26px;}
+.teacher_lists .tl_p2{margin-bottom: 10px;}
+/*师资力量 end*/

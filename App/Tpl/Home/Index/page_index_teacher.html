@@ -1,1 +1,170 @@
 <include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.jquery.min.js"></script>
+<link href="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.min.css" rel="stylesheet" type="text/css" />
+<style>
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+</style>
+<script type="text/javascript">
+$(function() {
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: 4000,
+        autoplayDisableOnInteraction: false
+    });   
+});	
+</script>
+<script type="text/javascript">
+$(function() {
+      $(".tit_left").click(function(){
+          $(".titl_left_1").addClass("titl_se");
+          $(".titl_left_2").addClass("titl_sep");
+          $(".titl_right_1").removeClass("titl_se");
+          $(".titl_right_2").removeClass("titl_sep");
+          $(".teacher_en").show();
+          $(".teacher_ch").hide();
+      });
+      $(".tit_right").click(function(){
+          $(".titl_right_1").addClass("titl_se");
+          $(".titl_right_2").addClass("titl_sep");
+          $(".titl_left_1").removeClass("titl_se");
+          $(".titl_left_2").removeClass("titl_sep");
+          $(".teacher_ch").show();
+          $(".teacher_en").hide();
+      });
+});	
+</script>
+<div class="teacher_banner">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="/Public/Style/Home/images/teacher_banner1.jpg" /></div>
+        </div>
+    <!--<div class="swiper-pagination"></div>-->
+    </div>
+</div>
+<div class="teacher_intro">
+    <div class="center">
+        <div class="ti_top">
+            <div class="tit_left">
+                <p class="titl_p1 titl_left_1  titl_se">欧美教师团队</p>
+                <p class="titl_p2 titl_left_2 titl_sep">Foreign teachers</p>
+            </div>
+            <div class="tit_center"></div>
+            <div class="tit_right">
+                <p class="titl_p1 titl_right_1">中文教师团队</p>
+                <p class="titl_p2 titl_right_2">Chinese teachers</p>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="ti_bottom teacher_en">
+            <div class="tib_left"><img src="/Public/Style/Home/images/teacher_1.jpg" /></div>
+            <div class="tib_right">
+                <p>外教的国籍均为美国或加拿大</p>
+                <p>拥有<font style="color: #ed6d00;font-size: 24px">超过1000名规模</font>的北美外教资源 </p>
+                <p>经过严格的师资甄选、培训考核、淘汰机制</p>
+                <p>老师<font style="color: #ed6d00;font-size: 24px">录取率3%</font></p>
+                <p>所有外教拥有儿童esl教学经验，寓教于乐，擅长互动</p>
+            </div>
+        </div>
+        <div  class="ti_bottom teacher_ch" style="display:none">
+            <div class="tib_left"><img src="/Public/Style/Home/images/teacher_2.jpg" /></div>
+            <div class="tib_right" style="margin-top:130px;">
+                <p>5道关卡，严格选拔关心少儿成长的教师</p>
+                <p>严格标准英语发音，给孩子提供地道的语言环境</p>
+                <p>全部教师经过北外少儿英语教师资格认证培训 持证任教</p>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="teacher_lists">
+    <div class="center">
+        <div class="tl_title">明星<span class="tl_title2">老师</span></div>
+        <div class="center tl_titleen">
+            <div class="tl_xian fl"></div>
+            <div class="tl_texten fl"> STAR TEACHER </div>
+            <div class=" tl_xian rl"></div>
+            <div class="clear"></div>
+        </div>
+        <ul class="teacher_en">
+            <li>
+                <img src="/Public/Style/Home/images/teacher_ashley.png" />
+                <p class="tl_p1">Ashley Doucette</p>
+                <p class="tl_p2">3年教学经验</p>
+                <p>来自加拿大爱德华王子岛，现居中国台湾</p>
+                <p>多语言背景，精通英语、法语、汉语普通话</p>
+                <p>酷爱中国文化，爱好广泛，擅长钢琴、吉他、绘画、摄影</p>
+            </li>
+            <li>
+                <img src="/Public/Style/Home/images/teacher_jeremy.png" />
+                <p class="tl_p1">Jeremy Fryc</p>
+                <p class="tl_p2">5年教学经验</p>
+                <p>来自美国密歇根州，高级学者</p>
+                <p>上课生动活泼，风趣幽默，讲解细致，重点突出</p>
+                <p>陶醉式英语教学，擅长引导深入探讨热门话题，课堂文化氛围浓厚</p>
+            </li>
+            <li>
+                <img src="/Public/Style/Home/images/teacher_sabrina.png" />
+                <p class="tl_p1">Sabrina Bacon</p>
+                <p class="tl_p2">4年教学经验</p>
+                <p>来自美国洛杉矶，加州州立大学长滩分校高材生，汉语流利</p>
+                <p>课堂气氛活跃，高效互动</p>
+                <p>擅于纠错，快速实现流利英语</p>
+            </li>
+            <li style="margin-right: 0px;">
+                <img src="/Public/Style/Home/images/teacher_corinna.png" />
+                <p class="tl_p1">Corinna Abreu</p>
+                <p class="tl_p2">3年教学经验</p>
+                <p>来自美国北卡罗来纳州，聪慧美丽，自信优雅</p>
+                <p>工作态度严谨认真，到课率接近100%</p>
+                <p>护士背景出身，爱心姐姐，对孩子耐心十足</p>
+            </li>
+        </ul>
+        <ul class="teacher_ch" style="display:none">
+            <li>
+                <img src="/Public/Style/Home/images/teacher_lvy.png" />
+                <p class="tl_p1">张薇 Ivy</p>
+                <p style="margin-top:10px">英语专业八级，多年幼少儿英语教学教研经验。用爱心、耐心、责任心关注孩子英语学习和身心成长，在授课实践中不断改进提升教学方式，力求用最科学、最简易、最趣味的方法带领孩子进入英语学习大环境，让孩子敢说英语、会说英语，爱说英语。</p>
+            </li>
+            <li>
+                <img src="/Public/Style/Home/images/teacher_vicky.png" />
+                <p class="tl_p1">高君 Vicky</p>
+                <p style="margin-top:10px">毕业于天津师范大学,本科学士学位，英语专业八级，持教师资格证，曾多次参加英语演讲比赛获奖。热情开朗,极富亲和力,愿意与孩子做朋友,责任心强,善于发现孩子的优缺点,因材施教。善于总结发音规律，激发孩子听说的能力，跟着Vicky老师学英语，语音语调so easy。</p>
+            </li>
+            <li>
+                <img src="/Public/Style/Home/images/teacher_emily.png" />
+                <p class="tl_p1">刘慧敏 Emily</p>
+                <p style="margin-top:10px">幼儿优秀英语教师，本科学历，英语专业八级，高级教师资格证。在校期间，曾多次获得国家励志奖学金。擅长绘画，音乐。热爱幼教工作，教育经验丰富，责任心强，有亲和力，有耐心。教育格言：爱是教育的灵魂，只有融入了爱的教育才是真正的教育。</p>
+            </li>
+            <li style="margin-right: 0px;">
+                <img src="/Public/Style/Home/images/teacher_michael.png" />
+                <p class="tl_p1">刘琳琳 Michael</p>
+                <p style="margin-top:10px">本科学历，英语专业毕业，兼修心理学，大学期间开始从事培训学校兼职英语教学工作，毕业后在北京担任多年小学英语教学和班主任工作，之后在奥尼少儿英语教授中高级别英语课程。教学经验丰富，责任心强，在职期间秉承用心教学，每时每刻都能用耐心和爱心去发现孩子，欣赏孩子，培养孩子。</p>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<include file="Public:footer" />
