@@ -1,14 +1,43 @@
 <include file="Public:header" />
-<script type="text/javascript" src="__PUBLIC__/Plugins/Flexslider/jquery.flexslider-min.js"></script>
-<link href="__PUBLIC__/Plugins/Flexslider/flexslider.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.jquery.min.js"></script>
+<link href="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.min.css" rel="stylesheet" type="text/css" />
+<style>
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+</style>
 <script type="text/javascript">
 $(function() {
-    $(".banner").flexslider({
-		slideshowSpeed: 4000, //展示时间间隔ms
-		animationSpeed: 400, //滚动时间ms
-		//touch: true //是否支持触屏滑动
-                directionNav:false,
-	});
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: 4000,
+        autoplayDisableOnInteraction: false
+    });   
+});	
+</script>
+<script type="text/javascript">
+$(function() { 
     $(".youshi .imgs .img").mouseover(function(){
         var tid = $(this).attr('tid');
         $(this).children("img").attr("src","/Public/Style/Home/images/ys_"+tid+".jpg");
@@ -24,12 +53,13 @@ $(function() {
 });	
 </script>
 <div class="banner">
-    <ul class="slides">
-        <li style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;" ></li>
-        <li style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px;  height: 426px; width: 100%;"></li>
-
-    </ul>
-    
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="img1" src="/Public/Style/Home/images/banner1.jpg" /></div>
+            <div class="swiper-slide"><img class="img1" src="/Public/Style/Home/images/banner1.jpg" /></div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
     <ul class="index_register" >
         <li><input type="text" name="kid_name" value="孩子姓名" onfocus="if(value == '孩子姓名'){value=''}" onblur="if(value == ''){value='孩子姓名'}"  class="ire_text" style="margin-top: 175px;"></li>
         <li><input type="text" name="kid_age" value="孩子年龄" onfocus="if(value == '孩子年龄'){value=''}" onblur="if(value == ''){value='孩子年龄'}" class="ire_text"></li>
