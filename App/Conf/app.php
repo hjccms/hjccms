@@ -5,11 +5,13 @@ return array(
     
     'SITEURL' => 'http://an.haowj.com',
     
-    //会员中心域名
-    'STUDENT_URL' => 'http://student.haowj.com',
+    //用户数据同步url
+    'DS_URL' => 'http://student.haowj.com/Home/OmniApi',
+    
     //登录注册接口地址
     'LOGINAPIURL' => 'http://student.haowj.com/Home/Api/ajaxCheckUser',
     'REGISTERAPIURL' => 'http://student.haowj.com/Home/Api/ajaxRegUser',
+    
     //表单hash验证开启
     'TOKEN_ON'=>true,  // 是否开启令牌验证
     'TOKEN_NAME'=>'__hash__',    // 令牌验证的表单隐藏字段名称

@@ -18,7 +18,7 @@ class Listening_testModel extends Model {
             $sdata['mobile'] = $mobile;
             $sdata['level'] = $info['level'];
             $sdata['is_test'] = $is_test;
-            curlPost(C("STUDENT_URL")."/Api/aoniListeningTestData", $sdata);
+            curlPost(C("DS_URL")."/listeningTestData", $sdata);
         }
     }
    
