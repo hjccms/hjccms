@@ -12,6 +12,7 @@ class RegisterAction extends BaseAction {
         $this->assign('appid',$appid);
         $this->assign('time',$time);
         $this->assign('sign',$sign);
+        $this->assign('loginapiurl',C('LOGINAPIURL'));
         $this->display();
     }
     function reg()
@@ -29,7 +30,7 @@ class RegisterAction extends BaseAction {
         
         $data['time'] = time();
         $data['sign'] = md5($data['appid'].$data['appkey'].$data['username'].$data['time']);
-        $result = actionPost('http://hjc.student.haowj.com/Home/Api/ajaxRegUser', $data);
+        $result = actionPost(C('REGISTERAPIURL'), $data);
         $ret = json_decode($result);
         if($ret->data=='error')
         {
