@@ -5,7 +5,8 @@ return array(
     
     'SITEURL' => 'http://an.haowj.com',
     
-    'WX_URL' => 'http://wx.haowj.com',
+    //会员中心域名
+    'STUDENT_URL' => 'http://student.haowj.com',
     //登录注册接口地址
     'LOGINAPIURL' => 'http://student.haowj.com/Home/Api/ajaxCheckUser',
     'REGISTERAPIURL' => 'http://student.haowj.com/Home/Api/ajaxRegUser',
