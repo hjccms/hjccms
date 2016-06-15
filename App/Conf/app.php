@@ -6,7 +6,9 @@ return array(
     'SITEURL' => 'http://an.haowj.com',
     
     'WX_URL' => 'http://wx.haowj.com',
-    
+    //登录注册接口地址
+    'LOGINAPIURL' => 'http://student.haowj.com/Home/Api/ajaxCheckUser',
+    'REGISTERAPIURL' => 'http://student.haowj.com/Home/Api/ajaxRegUser',
     //表单hash验证开启
     'TOKEN_ON'=>true,  // 是否开启令牌验证
     'TOKEN_NAME'=>'__hash__',    // 令牌验证的表单隐藏字段名称
@@ -30,6 +32,7 @@ return array(
                 'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
                 'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
         ),   //系统所允许上传文件的类型
+    
 )
 ?>
 
