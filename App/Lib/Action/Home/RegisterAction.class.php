@@ -66,6 +66,14 @@ class RegisterAction extends BaseAction {
         }
         if($ret->data=='success')
         {
+            $arr = explode('?sign=', $ret->info);
+            $baseSign = decrypt($arr['1'], 'OUTSCHOOLAPI');
+            $info = explode('&',$baseSign);
+            
+            $userInfo['id'] = $info['1'];
+            $userInfo['username'] = $data['username'];
+            $userInfo['centerUrl']= $ret->info;
+            cookie('userInfo',$userInfo,3600*5);
             $this->ajaxReturn('',$ret->info,'1');
         }
         
