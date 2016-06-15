@@ -25,7 +25,8 @@
                 {:select(array('title'=>'消息类型','inputName'=>'msg_type','value'=>$info['msg_type'],'tipMsg'=>'','addHtml'=>'datatype="*" nullmsg="请选择" errormsg="请选择"','paramArr'=>get_weixin_msg_type()))}
                 {:input(array('title'=>'关键词','inputName'=>'keyword','value'=>$info['keyword']))}
                 {:radio(array('title'=>'关键词类型','inputName'=>'keyword_type','value'=>isset($info['keyword_type'])?$info['keyword_type']:1,'paramArr'=>get_weixin_keyword_type()))}
-                {:textarea(array('title'=>'内容','inputName'=>'text','value'=>$info['text'],'width'=>345,'height'=>100))}                <!--{:upload(array('title'=>'上传文件','inputName'=>'file','addId'=>'url','value'=>$info['icon'],'uploadId'=>'image1'))}-->
+                {:textarea(array('title'=>'内容','inputName'=>'text','value'=>$info['text'],'width'=>345,'height'=>100))}                
+                {:upload(array('title'=>'文件','inputName'=>'file','addId'=>'url','value'=>$info['file']))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>isset($info['valid'])?$info['valid']:1,'paramArr'=>get_valid()))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}               
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确定"/></li>

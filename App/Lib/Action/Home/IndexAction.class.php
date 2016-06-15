@@ -85,9 +85,9 @@ class IndexAction extends BaseAction {
     }
     function testLogin()
     {
-        if($this->studentInfo->id){
-            session('levelTest',  json_encode(array('name'=>$this->studentInfo->username,'mobile'=>$this->studentInfo->mobile?$this->studentInfo->mobile:$this->studentInfo->username)));
-            session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$this->studentInfo->username,'mobile'=>$this->studentInfo->mobile?$this->studentInfo->mobile:$this->studentInfo->username)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
+        if($this->userInfo->id){ 
+            session('levelTest',  json_encode(array('name'=>$this->userInfo->username,'mobile'=>$this->userInfo->username)));
+            session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$this->userInfo->username,'mobile'=>$this->userInfo->username)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
         }
         if(session('hashLevelTest') && (session('hashLevelTest')==md5(encrypt(session('levelTest').cookie('PHPSESSID'),'E',C('APP_KEY'))))){
             redirect(U('/Index/checkLevel'));
@@ -102,6 +102,10 @@ class IndexAction extends BaseAction {
             redirect(U('/Index/checkLevel'));
         }
         $info['level_text'] = get_listening_level_text($info['level']);
+        
+        //数据同步
+        D("Listening_test")->aoniListeningTestData($obj->mobile,$this->siteInfo->id);
+        
         $this->assign('info',$info);
         $this->display();
     }

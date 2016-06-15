@@ -16,12 +16,7 @@ class LevelTestAction extends BaseAction {
         session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$name,'mobile'=>$mobile)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
         
         //数据同步
-        $info = D("Listening_test")->where("mobile='{$mobile}' and site_id={$this->siteInfo->id}")->find();
-        if($info['level'] !=0 && $info['schedule'] == ''){
-            $sdata['mobile'] = $mobile;
-            $sdata['level'] = $info['level'];
-            curlPost(C("WX_URL")."/Api/aoniListeningTestData", $sdata);
-        }
+        D("Listening_test")->aoniListeningTestData($mobile,$this->siteInfo->id);
         
         $this->ajaxReturn('','操作成功',1);
     }
@@ -74,7 +69,7 @@ class LevelTestAction extends BaseAction {
                 $re = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save($data);
             }else{
                 $data['site_id'] = $this->siteInfo->id;
-                $data['student_id'] = $this->studentInfo->id;
+                $data['student_id'] = $this->userInfo->id;
                 $data['name'] = $obj->name;
                 $data['mobile'] = $obj->mobile;
                 $data['create_time'] = time();
@@ -82,13 +77,8 @@ class LevelTestAction extends BaseAction {
             }
             
             //数据同步
-            $info = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->find();
             if($num == '25'){
-                $sdata['student_id'] = $info['student_id'];
-                $sdata['mobile'] = $info['mobile'];
-                $sdata['level'] = $info['level'];
-                $sdata['is_test'] = 1;
-                curlPost(C("WX_URL")."/Api/aoniListeningTestData", $sdata);
+                D("Listening_test")->aoniListeningTestData($obj->mobile,$this->siteInfo->id,1);
             }
             
             $this->ajaxReturn('','操作成功',1);
@@ -111,13 +101,13 @@ class LevelTestAction extends BaseAction {
                     $answer = $v;
                 }
             }
-//            if(!$answer){
-//                foreach($answers as $k=>$v){
-//                    if($num == $k){
-//                        $answer = $v;
-//                    }
-//                }
-//            }
+            if(!$answer){
+                foreach($answers as $k=>$v){
+                    if($num == $k){
+                        $answer = $v;
+                    }
+                }
+            }
         }
         if($answer){
             $this->ajaxReturn($answer,'操作成功',1);
