@@ -50,6 +50,34 @@ function encrypt($string, $operation, $key = '')
     }
     
 }
+//api解密方法
+function decrypt($data, $key) {
+	$key = md5($key);
+	$x = 0;
+    $data = str_replace(' ', '+', $data);
+    if($data != base64_encode(base64_decode($data))){
+        return $data; //无法解密 返回原字符串
+    }
+	$data = base64_decode($data);
+	$len = strlen($data);
+	$l = strlen($key);
+	for ($i = 0; $i < $len; $i++) {
+		if ($x == $l) {
+			$x = 0;
+		}
+		$char .= substr($key, $x, 1);
+		$x++;
+	}
+	for ($i = 0; $i < $len; $i++) {
+		if (ord(substr($data, $i, 1)) < ord(substr($char, $i, 1))) {
+			$str .= chr((ord(substr($data, $i, 1)) + 256) - ord(substr($char, $i, 1)));
+		} else {
+			$str .= chr(ord(substr($data, $i, 1)) - ord(substr($char, $i, 1)));
+		}
+	}
+	return $str;
+}
+
 /**
  * 获取当前页面完整URL地址
  */

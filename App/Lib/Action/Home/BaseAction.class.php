@@ -6,6 +6,7 @@ class BaseAction  extends Action
 {
     var $siteInfo;
     var $footer_nav;
+    var $userInfo;
     function __construct() 
     {
         parent::__construct();
@@ -19,6 +20,11 @@ class BaseAction  extends Action
             if(!is_dir(APP_PATH.'Tpl/'.$siteInfo['template'])||!$siteInfo['template'])     $this->error('您的站点正在开发中...');
             cookie('siteInfo',$siteInfo,3600*4);
             $this->siteInfo = (object)$siteInfo; 
+        }
+        //处理用户登录信息
+        if($this->userInfo = cookie('userInfo'))
+        {
+            $this->assign('userInfo',  get_object_vars($this->userInfo));
         }
         //处理导航菜单链接
         $this->getNav();
@@ -79,6 +85,12 @@ class BaseAction  extends Action
         if($info['valid']!=1) return false;
         
         return $info;
+    }
+    //退出
+    function loginOut()
+    {
+        cookie('userInfo',null);
+        redirect('/Home/Index');
     }
 }
 
