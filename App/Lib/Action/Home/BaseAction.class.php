@@ -90,6 +90,8 @@ class BaseAction  extends Action
     function loginOut()
     {
         cookie('userInfo',null);
+        session('levelTest',null);
+        session('hashLevelTest',null);
         redirect('/Home/Index');
     }
 }

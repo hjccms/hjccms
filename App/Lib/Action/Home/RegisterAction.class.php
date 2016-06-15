@@ -44,6 +44,8 @@ class RegisterAction extends BaseAction {
             $userInfo['username'] = $data['username'];
             $userInfo['centerUrl']= $ret->info;
             cookie('userInfo',$userInfo,3600*5);
+            session('levelTest',null);
+            session('hashLevelTest',null);
             $this->ajaxReturn('',$ret->info,'1');
         }
         
@@ -74,6 +76,8 @@ class RegisterAction extends BaseAction {
             $userInfo['username'] = $data['username'];
             $userInfo['centerUrl']= $ret->info;
             cookie('userInfo',$userInfo,3600*5);
+            session('levelTest',null);
+            session('hashLevelTest',null);
             $this->ajaxReturn('',$ret->info,'1');
         }
         

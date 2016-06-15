@@ -76,6 +76,16 @@ $(function(){
         }
     })
     
+    $(".classbutton").click(function(){
+        var user_id = $("#user_id").val();
+        var user_url = $("#user_url").val();
+        if(user_id){
+            location.href = user_url;
+        }else{
+            login();
+        }
+    })
+    
     $(".picslist").click(function(){
         var num = $(this).attr('num');
         $(".picslist").removeClass("testpics2");

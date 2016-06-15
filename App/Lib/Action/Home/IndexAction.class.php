@@ -59,6 +59,10 @@ class IndexAction extends BaseAction {
     }
     function checkLevel()
     {
+        if($this->userInfo->id){ 
+            session('levelTest',  json_encode(array('name'=>$this->userInfo->username,'mobile'=>$this->userInfo->username)));
+            session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$this->userInfo->username,'mobile'=>$this->userInfo->username)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
+        }
         if(!session('hashLevelTest') || !(session('hashLevelTest')==md5(encrypt(session('levelTest').cookie('PHPSESSID'),'E',C('APP_KEY'))))){
             redirect(U('/Index/testLogin'));
         }
