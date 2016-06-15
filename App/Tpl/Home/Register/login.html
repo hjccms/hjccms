@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .allbody { margin: 0 auto; width: 80%; padding-top: 30px; font-family: "fzxyjt";}
+        </style>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layerframe/layer.js"></script> 
+        <script type="text/javascript" src="__PUBLIC__/Style/Home/js/common.js"></script> 
+        <link href="http://cdn.amazeui.org/amazeui/2.7.0/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="allbody ">
+            <form class="am-form loginform" action="http://hjc.student.haowj.com/Home/Api/ajaxCheckUser" method="post">
+                <fieldset>
+                    <div class="am-form-group"   >
+                      <label for="doc-ipt-email-1">账户</label>
+                      <input type="text" class="" id="doc-ipt-email-1" name='username' datatype="m|e" sucmsg=""  placeholder="手机号或邮箱">
+                    </div>
+
+                    <div class="am-form-group">
+                      <label for="doc-ipt-pwd-1">密码</label>
+                      <input type="password" class="" id="doc-ipt-pwd-1" name='password' datatype="*" placeholder="账户密码">
+                    </div>
+                    <input type='hidden' name='appid' value="{$appid}" />
+                    <input type='hidden' name='time' value="{$time}" />
+                    <input type='hidden' name='sign' value="{$sign}" />
+                     <input type='hidden' name='nomd5' value="1" />
+                    <p style="margin-top: 30px;"><button type="submit" class="am-btn am-btn-primary am-btn-block am-btn-warning">登录</button></p>
+                    <p class="am-fr"><a href="javascript:register();" >立即注册>></a></p>
+                </fieldset>
+            </form>
+        </div>
+    </body>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+
+$(function(){
+    var showmsg = function(msg,id){
+        layer.tips(msg, '#'+id, {
+            tips: 3
+          });
+    };
+var validform =	$(".loginform").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+                                console.log(o.obj.attr("id"));
+                                showmsg(msg,o.obj.attr("id"));
+			}
+		},
+                
+                ajaxPost:{crossDomain:true},
+                callback:function(data){
+                        console.log(data);
+                        if(data.status==1)
+                        {
+                            
+                            parent.location.href= data.info;
+                        }
+                        else
+                        {
+                            alert(data.info);
+                        }
+		}
+	});
+       
+})
+</script>
+    
+    
+</html>
