@@ -1,13 +1,18 @@
 <div class="co_order">
     <div class="center or_brg">
         <div class="or_img">
+            <form>
             <ul>
-                <li><input type="text" name="kid_name" value="孩子姓名" onfocus="if(value == '孩子姓名'){value=''}" onblur="if(value == ''){value='孩子姓名'}"  class="or_text"></li>
-                <li style="margin-right: 13px;"><input type="text" name="kid_age" value="孩子年龄" onfocus="if(value == '孩子年龄'){value=''}" onblur="if(value == ''){value='孩子年龄'}" class="or_text"></li>
+                <li><input type="text" name="name" value="孩子姓名" onfocus="if(value == '孩子姓名'){value=''}" onblur="if(value == ''){value='孩子姓名'}"  class="or_text"></li>
+                <li style="margin-right: 13px;"><input type="text" name="age" value="孩子年龄" onfocus="if(value == '孩子年龄'){value=''}" onblur="if(value == ''){value='孩子年龄'}" class="or_text"></li>
                 <li style="margin-right: 9px;"><input type="text" name="mobile" value="联系电话" onfocus="if(value == '联系电话'){value=''}" onblur="if(value == ''){value='联系电话'}" class="or_text"></li>
                 <li style="margin-right: 9px;"><input type="text" name="area" value="所在地区" onfocus="if(value == '所在地区'){value=''}" onblur="if(value == ''){value='所在地区'}" class="or_text"></li>
-                <li style="margin-right: 0px;margin-top: -2px"><input type="button" value="免费领取" class="or_button"></li>
+                <li style="margin-right: 0px;margin-top: -2px">
+                    <input type="hidden" value="{$cateInfo['name']}" name="origin">
+                    <input type="button" value="免费领取" class="or_button addUser">
+                </li>
             </ul>
+            </form>
         </div>
         <div class="or_close"><div>
     </div>

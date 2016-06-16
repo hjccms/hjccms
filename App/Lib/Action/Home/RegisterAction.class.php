@@ -82,4 +82,38 @@ class RegisterAction extends BaseAction {
         }
         
     }
+    
+    function ajaxAddUser(){
+        
+        $data['name'] = $this->_post('name');
+        $data['age'] = $this->_post('age');
+        $data['mobile'] = $this->_post('mobile');
+        $data['area'] = $this->_post('area');
+        $data['site_id'] = $this->siteInfo->id;
+        $data['channel'] = '官网';
+        $data['origin'] = $this->_post('origin');
+        $data['create_time'] = time();
+        $info = D("Student_temp")->getInfo("site_id={$this->siteInfo->id} and  mobile='{$data['mobile']}' and origin='{$data['origin']}'");
+        if($info){
+            $re = D('Student_temp')->where("id={$info['id']}")->save($data);
+        }else{
+            $re = D('Student_temp')->add($data);
+        }
+        if($re){
+            $data2['mobile'] = $this->_post('mobile');
+            $data2['name'] = $this->_post('name');
+            $data2['channel'] = '官网';
+            $data2['origin'] = $this->_post('origin');
+            $data2['other']  = json_encode(array('age'=>$this->_post('age'),'area'=>$this->_post('area')));
+            $data2['appid']    = 'OMNI';
+            $data2['appkey']   = 'OMNILOGIN';
+            $data2['time'] = time();
+            $data2['sign'] = md5($data2['appid'].$data2['appkey'].$data2['mobile'].$data2['time']);
+            $result = actionPost(C('DS_URL').'/addUser', $data2);
+            $ret = json_decode($result);
+            $this->ajaxReturn('',$ret->info,1);
+        }else{
+            $this->ajaxReturn('','操作失败',0);
+        }
+    }
 }

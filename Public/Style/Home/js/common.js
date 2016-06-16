@@ -49,3 +49,43 @@ function register()
     });
      parent.layer.close(index); //再执行关闭    
 }
+$(function() {
+    $(".addUser").click(function(){
+        var name = $.trim($("input[name=name]").val());
+        var age = $.trim($("input[name=age]").val());
+        var mobile = $.trim($("input[name=mobile]").val());
+        var area = $.trim($("input[name=area]").val());
+        var origin = $.trim($("input[name=origin]").val());
+        if(!name || name=='孩子姓名'){
+            alert('孩子姓名不能为空哦！');
+            return false;
+        }
+        if(!age || age=='孩子年龄'){
+            alert('孩子年龄不能为空哦！');
+            return false;
+        }
+        if(!mobile || mobile=='联系电话'){
+            alert('联系电话不能为空哦！');
+            return false;
+        }
+        if(!area || area=='所在地区'){
+            alert('所在地址不能为空哦！');
+            return false;
+        }
+        if(!checkMobile(mobile)){
+            alert('手机格式不正确哦！');
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            url:'/Register/ajaxAddUser',
+            data:'name='+name+'&age='+age+'&mobile='+mobile+'&area='+area+'&origin='+origin,
+            async:false,
+            dataType:'json',
+            success:function(){
+                
+            }
+        });
+        
+    });
+});

@@ -18,7 +18,11 @@ class Listening_testModel extends Model {
             $sdata['mobile'] = $mobile;
             $sdata['level'] = $info['level'];
             $sdata['is_test'] = $is_test;
-            curlPost(C("DS_URL")."/listeningTestData", $sdata);
+            $sdata['appid']    = 'OMNI';
+            $sdata['appkey']   = 'OMNILOGIN';
+            $sdata['time'] = time();
+            $sdata['sign'] = md5($sdata['appid'].$sdata['appkey'].$sdata['mobile'].$sdata['time']);
+            $result = curlPost(C("DS_URL")."/listeningTestData", $sdata);
         }
     }
    
