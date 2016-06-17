@@ -111,7 +111,7 @@ class RegisterAction extends BaseAction {
             $data2['sign'] = md5($data2['appid'].$data2['appkey'].$data2['mobile'].$data2['time']);
             $result = actionPost(C('DS_URL').'/addUser', $data2);
             $ret = json_decode($result);
-            $this->ajaxReturn('',$ret->info,1);
+            $this->ajaxReturn(base64_encode(json_encode(array('name'=>$this->_post('name'),'mobile'=>$this->_post('mobile')))),base64_encode(json_encode(array('name'=>$this->_post('name'),'mobile'=>$this->_post('mobile')))),1);
         }else{
             $this->ajaxReturn('','操作失败',0);
         }

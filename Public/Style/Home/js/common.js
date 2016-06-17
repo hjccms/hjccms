@@ -82,8 +82,10 @@ $(function() {
             data:'name='+name+'&age='+age+'&mobile='+mobile+'&area='+area+'&origin='+origin,
             async:false,
             dataType:'json',
-            success:function(){
-                
+            success:function(e){
+                if(e.status == 1){
+                    location.href = '/Index/testLogin/f/1/d/'+e.data;
+                }
             }
         });
         

@@ -60,13 +60,18 @@ $(function() {
         </div>
         <div class="swiper-pagination"></div>
     </div>
+    <form>
     <ul class="index_register" >
-        <li><input type="text" name="kid_name" value="孩子姓名" onfocus="if(value == '孩子姓名'){value=''}" onblur="if(value == ''){value='孩子姓名'}"  class="ire_text" style="margin-top: 175px;"></li>
-        <li><input type="text" name="kid_age" value="孩子年龄" onfocus="if(value == '孩子年龄'){value=''}" onblur="if(value == ''){value='孩子年龄'}" class="ire_text"></li>
-        <li><input type="text" name="mobile" value="联系电话" onfocus="if(value == '联系电话'){value=''}" onblur="if(value == ''){value='联系电话'}" class="ire_text"></li>
-        <li><input type="text" name="area" value="所在地区" onfocus="if(value == '所在地区'){value=''}" onblur="if(value == ''){value='所在地区'}" class="ire_text"></li>
+        <li><input type="text" name="name" value="孩子姓名" onfocus="if(value == '孩子姓名'){value=''}" onblur="if(value == ''){value='孩子姓名'}"  class="ire_text" style="margin-top: 175px;" maxlength="20"></li>
+        <li><input type="text" name="age" value="孩子年龄" onfocus="if(value == '孩子年龄'){value=''}" onblur="if(value == ''){value='孩子年龄'}" class="ire_text" maxlength="2"></li>
+        <li><input type="text" name="mobile" value="联系电话" onfocus="if(value == '联系电话'){value=''}" onblur="if(value == ''){value='联系电话'}" class="ire_text" maxlength="11"></li>
+        <li><input type="text" name="area" value="所在地区" onfocus="if(value == '所在地区'){value=''}" onblur="if(value == ''){value='所在地区'}" class="ire_text" maxlength="100"></li>
+        <li>
+            <input type="hidden" value="首页banner" name="origin">
+            <input type="button" value="免费领取" class="ir_button addUser">
+        </li>
     </ul>
-    
+    </form>
    
 </div>
 <div class="youshi">

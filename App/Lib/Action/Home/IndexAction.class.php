@@ -89,7 +89,14 @@ class IndexAction extends BaseAction {
     }
     function testLogin()
     {
-        if($this->userInfo->id){ 
+        if($this->_get('f') == '1'){//注册跳转测评
+            $data = json_decode(base64_decode($this->_get('d')));
+            if($data->name && $data->mobile){
+                session('levelTest',  json_encode(array('name'=>$data->name,'mobile'=>$data->mobile)));
+                session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$data->name,'mobile'=>$data->mobile)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
+            }
+        }
+        if($this->userInfo->id){//正常登录
             session('levelTest',  json_encode(array('name'=>$this->userInfo->username,'mobile'=>$this->userInfo->username)));
             session('hashLevelTest',md5(encrypt(json_encode(array('name'=>$this->userInfo->username,'mobile'=>$this->userInfo->username)).cookie('PHPSESSID'),'E',C('APP_KEY'))));
         }

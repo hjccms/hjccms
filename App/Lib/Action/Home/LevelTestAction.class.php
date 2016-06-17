@@ -65,11 +65,11 @@ class LevelTestAction extends BaseAction {
             }else{
                 $data['schedule'] = $all_answer;
             }
+            $data['student_id'] = $this->userInfo->id?$this->userInfo->id:0;
             if($info){
                 $re = D("Listening_test")->where("mobile='{$obj->mobile}' and site_id={$this->siteInfo->id}")->save($data);
             }else{
                 $data['site_id'] = $this->siteInfo->id;
-                $data['student_id'] = $this->userInfo->id;
                 $data['name'] = $obj->name;
                 $data['mobile'] = $obj->mobile;
                 $data['create_time'] = time();
