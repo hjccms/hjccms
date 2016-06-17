@@ -93,7 +93,7 @@ class RegisterAction extends BaseAction {
         $data['channel'] = '官网';
         $data['origin'] = $this->_post('origin');
         $data['create_time'] = time();
-        $info = D("Student_temp")->getInfo("site_id={$this->siteInfo->id} and  mobile='{$data['mobile']}' and origin='{$data['origin']}'");
+        $info = D("Student_temp")->getInfo("site_id={$this->siteInfo->id} and  mobile='{$data['mobile']}' and origin='{$data['origin']} and valid=1 and del is null'");
         if($info){
             $re = D('Student_temp')->where("id={$info['id']}")->save($data);
         }else{
