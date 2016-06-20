@@ -35,7 +35,7 @@ h2{font-weight:normal;}
 
 .menu { height:100px; line-height: 100px; }
 .menu .logo { float: left; margin-top: 2px; width: 260px; height: 95px; background-image: url("../images/logo.png"); }
-.menu .menus { float:  right; line-height: 99.5px; }
+.menu .menus { float:  right; line-height: 99px; }
 .menu .menus .childs { width: 100px; text-align: right; float: left; }
 .menu .menus .childs a { font-size: 14px; color: #333; font-family: "fzxyjt";}
 .menu .menus .childs a:hover { color: #ed6d00;  text-decoration-line: underline;   }
