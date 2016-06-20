@@ -1,9 +1,18 @@
 <include file="Public:header" />
 <script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper.animate1.0.2.min.js"></script>
 <link href="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Plugins/Swiper/animate.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 $(function() {
     var swiper = new Swiper('.swiper-container', {
+        onInit: function(swipers){ //Swiper2.x的初始化是onFirstInit
+            swiperAnimateCache(swipers); //隐藏动画元素 
+            swiperAnimate(swipers); //初始化完成开始动画
+        }, 
+        onSlideChangeEnd: function(swipers){ 
+            swiperAnimate(swipers); //每个slide切换结束时也运行当前slide动画
+        }, 
         pagination: '.swiper-pagination',
         paginationClickable: true,
         spaceBetween: 30,
@@ -29,11 +38,26 @@ $(function() {
     });
 });	
 </script>
+<style>
+.swiper-wrapper .first .center { height: 100%; position: relative;}
+.swiper-wrapper .first .one { position: absolute; left: 0; font-size: 34px; top: 150px; font-weight: 100;  color: #ed6d00; font-family: "微软雅黑";}  
+.swiper-wrapper .first .two { position: absolute; left: 0; font-size: 40px; top: 210px; font-weight: bolder; color: #ed6d00; font-family: "fzxyjt";} 
+.swiper-wrapper .first .thr { position: absolute; left: 0; font-size: 28px; font-weight: 100; top: 270px; color: #576e2e; font-family: "微软雅黑";} 
+</style>
 <div class="banner">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;"></div>
-            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner3.jpg) no-repeat 50% 0px; height: 426px; width: 100%;"></div>
+            <div class="swiper-slide first" style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;">
+                <div class="center">
+                    <p class="one ani"  swiper-animate-effect="fadeInDown" swiper-animate-duration="1s" swiper-animate-delay="0.1s">奥尼少儿英语</p>
+                    <p class="two ani"  swiper-animate-effect="fadeInLeft" swiper-animate-duration="1s" swiper-animate-delay="0.1s">领先的少儿英语教育专家</p>
+                    <p class="thr ani"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1.s" swiper-animate-delay="0.1s">10年历史 40万孩子的见证</p>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner3.jpg) no-repeat 50% 0px; height: 426px; width: 100%;">
+                
+                
+            </div>
         </div>
         <div class="swiper-pagination"></div>
     </div>
