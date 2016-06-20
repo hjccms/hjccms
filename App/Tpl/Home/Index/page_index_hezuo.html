@@ -1,0 +1,88 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/Plugins/Layerframe/layer.js"></script> 
+
+<div class="banner">
+    <ul class="slides">
+        <li style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;" ></li>
+    </ul>
+</div>
+<link href="/Public/Style/Home/css/amazeui.css" rel="stylesheet" type="text/css" />
+<div class="aboutus">
+    <div class="center ab_con">
+        <div class="ab_con_title">{$info.title}</div>
+        <div class="ab_con_content">
+            <form class="am-form form" action="/Home/Model/dataAjaxPost/modelId/19" method="post"  >
+                <fieldset>
+                  <legend>基本信息</legend>
+                  
+                    <div class="am-form-group">
+                        <label for="doc-ipt-email-1">您的姓名</label>
+                        <input type="text" class="" dataType='*' name='username' id="doc-ipt-name-1" placeholder="您的姓名">
+                    </div>
+                    <div class="am-form-group">
+                        <label for="doc-ipt-email-1">您的手机号</label>
+                        <input type="text" class="" dataType='m' name='mobile' id="doc-ipt-mobile-1" placeholder="您的手机号">
+                    </div>
+                    <div class="am-form-group">
+                        <label for="doc-ipt-email-1">您的邮箱</label>
+                        <input type="text" class="" dataType='e' name='email' id="doc-ipt-email-1" placeholder="您的邮箱">
+                    </div>
+                    
+
+                    <div class="am-form-group">
+                      <label for="doc-ta-1">您的留言</label>
+                      <textarea class="" rows="5" id="doc-ta-1"></textarea>
+                    </div>
+                
+                  <p><button type="submit" class="am-btn am-btn-default   am-btn-warning" style="width:100px;">提交</button></p>
+                </fieldset>
+              </form>
+        </div>
+    </div>
+</div>
+<include file="Public:footer" />
+    
+    
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript">
+
+$(function(){
+    var showmsg = function(msg,id){
+        layer.tips(msg, '#'+id, {
+            tips: 3
+          });
+    };
+var validform =	$(".form").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){
+				var objtip=o.obj.siblings(".Validform_checktip");
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+                                console.log(o.obj.attr("id"));
+                                showmsg(msg,o.obj.attr("id"));
+			}
+		},
+                
+                ajaxPost:{crossDomain:true},
+                callback:function(data){
+                        console.log(data);
+                        if(data.status==1)
+                        {
+                           layer.alert('提交成功!',function(index){
+                               layer.closeAll();
+                               location.href='{:U("/Home/Index/")}';
+                           }, {icon: 6});
+                           //location.href='{:U("/Home/Index/")}';
+                        }
+                        else
+                        {
+                            alert(data.info);
+                        }
+		}
+	});
+       
+})
+</script>
+    
+    
+    
