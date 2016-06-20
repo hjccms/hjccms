@@ -298,3 +298,8 @@ h2{font-weight:normal;}
 .teacher_lists .tl_p1{color: #333333;font-size: 26px;}
 .teacher_lists .tl_p2{margin-bottom: 10px;}
 /*师资力量 end*/
+
+/*swiper start*/
+.swiper-container {width: 100%;height: 100%;}
+.swiper-slide {text-align: center;font-size: 18px;background: #fff;display: -webkit-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-box-pack: center;-ms-flex-pack: center;-webkit-justify-content: center;justify-content: center;-webkit-box-align: center;-ms-flex-align: center;-webkit-align-items: center;align-items: center;}
+/*swiper end*/

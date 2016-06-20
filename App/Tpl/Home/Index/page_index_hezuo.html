@@ -1,10 +1,27 @@
 <include file="Public:header" />
 <script type="text/javascript" src="__PUBLIC__/Plugins/Layerframe/layer.js"></script> 
-
+<script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.jquery.min.js"></script>
+<link href="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+$(function() {
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: 4000,
+        autoplayDisableOnInteraction: false
+    }); 
+});
+</script>
 <div class="banner">
-    <ul class="slides">
-        <li style="background:url(/Public/Style/Home/images/banner1.jpg) no-repeat 50% 0px; height: 426px; width: 100%;" ></li>
-    </ul>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner4.jpg) no-repeat 50% 0px; height: 426px; width: 100%;"></div>
+            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner5.jpg) no-repeat 50% 0px; height: 426px; width: 100%;"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
 </div>
 <link href="/Public/Style/Home/css/amazeui.css" rel="stylesheet" type="text/css" />
 <div class="aboutus">
