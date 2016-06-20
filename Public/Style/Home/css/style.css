@@ -45,7 +45,7 @@ h2{font-weight:normal;}
 .index_register{width:27%;height: 426px; background: url("/Public/Style/Home/images/icon.png") no-repeat scroll -1388px -36px;position: absolute; top:0px;right:0px;z-index:100}
 .index_register .ire_text{width: 175px;height: 35px;font-size: 12px;color: #333333;padding-left: 16px;border-radius: 5px;margin-top: 8px;margin-left: 70px;}
 .biaodan {width: 1000px; z-index: 202; margin: 0 auto; height: 100%;left:50%; margin-left: -500px; margin-top: -428px; position: absolute; }
-.floatcode{width:144px;height: 388px; background: url("/Public/Style/Home/images/icon.png") no-repeat scroll -1160px 0px;position: fixed;top:0;right:13%;z-index: 101;}
+.floatcode{width:144px;height: 388px; background: url("/Public/Style/Home/images/icon.png") no-repeat scroll -1160px 0px;position: fixed;top:15%;right:0;z-index: 101;}
 .floatcode ul li a{font-size: 16px;color:#ffffff;}
 .floatcode ul li{font-size: 16px;color:#ffffff;margin-left: 38px;line-height: 40px;}
 .ir_button{height: 45px;width: 192px;font-size: 16px;color: #ffffff;background: url("/Public/Style/Home/images/icon.png") no-repeat scroll 0px 0px;margin-top: 8px;margin-left: 70px;}
