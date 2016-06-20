@@ -1,4 +1,23 @@
-<div class="floatcode">
+<script type="text/javascript" src="__PUBLIC__/Plugins/jquery.floatDiv.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $(".floatcode").floatdiv({left: "0", top: "0"});//先将浮动层隐藏，设置位置
+    $(".floatcode").parent("div").css("width","100%");//保证ie6中浮动顶部也是通栏的
+    var float_top=$(".youshi").offset().top;//页面滚动到样式为pos的位置就开始出现浮动层
+    $(window).scroll(function (){
+        var offsetTop = $(window).scrollTop();
+        if(offsetTop>float_top)
+        {
+            $(".floatcode").fadeIn(1);
+        }
+        else
+        {
+            $(".floatcode").fadeOut(1);
+        }
+    });
+});	
+</script>
+<div class="floatcode" style="display:none">
     <ul>
         <li style="padding-top: 135px;">在线咨询</li>
         <li><a target="_blank" href="/Index/checkLevel">在线测评</a></li>
