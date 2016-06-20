@@ -218,7 +218,7 @@ class ModelAction  extends BaseAction
         $post['create_time'] = time();
         if(($post['id']<=0||!$post['id'])&&!$post['admin_id'])
         {
-            $post['admin_id'] = 0;
+            $post['admin_id'] = D('Admin')->where("site_id=".$this->siteInfo->id." and role_type=3 ")->getField('id');
             $post['user_id'] = $this->userInfo->id;
             $post['site_id'] = $this->siteInfo->id;
         }
