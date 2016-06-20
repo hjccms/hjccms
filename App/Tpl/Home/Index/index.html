@@ -43,6 +43,12 @@ $(function() {
 .swiper-wrapper .first .one { position: absolute; left: 0; font-size: 34px; top: 150px; font-weight: 100;  color: #ed6d00; font-family: "微软雅黑";}  
 .swiper-wrapper .first .two { position: absolute; left: 0; font-size: 40px; top: 210px; font-weight: bolder; color: #ed6d00; font-family: "fzxyjt";} 
 .swiper-wrapper .first .thr { position: absolute; left: 0; font-size: 28px; font-weight: 100; top: 270px; color: #576e2e; font-family: "微软雅黑";} 
+
+
+.swiper-wrapper .two .center { height: 100%; position: relative;}
+.swiper-wrapper .two .one { position: absolute; left: 0; font-size: 40px; top: 150px; font-weight: bolder;  color: #ed6d00; font-family: "微软雅黑";}  
+.swiper-wrapper .two .two { position: absolute; left: 0; font-size: 34px; top: 210px; font-weight: 100; color: #ed6d00; font-family: "fzxyjt";} 
+
 </style>
 <div class="banner">
     <div class="swiper-container">
@@ -54,8 +60,11 @@ $(function() {
                     <p class="thr ani"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1.s" swiper-animate-delay="0.1s">10年历史 40万孩子的见证</p>
                 </div>
             </div>
-            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner3.jpg) no-repeat 50% 0px; height: 426px; width: 100%;">
-                
+            <div class="swiper-slide two" style="background:url(/Public/Style/Home/images/banner3.jpg) no-repeat 50% 0px; height: 426px; width: 100%;">
+                <div class="center">
+                    <p class="one ani"  swiper-animate-effect="fadeInDown" swiper-animate-duration="1s" swiper-animate-delay="0.1s">完整的教学系统</p>
+                    <p class="two ani"  swiper-animate-effect="fadeInLeft" swiper-animate-duration="1s" swiper-animate-delay="0.1s">多元化、活泼的教学模式</p>
+                </div>
                 
             </div>
         </div>

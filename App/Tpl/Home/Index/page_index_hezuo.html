@@ -1,10 +1,19 @@
 <include file="Public:header" />
-<script type="text/javascript" src="__PUBLIC__/Plugins/Layerframe/layer.js"></script> 
 <script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Swiper/swiper.animate1.0.2.min.js"></script>
 <link href="__PUBLIC__/Plugins/Swiper/swiper-3.3.1.min.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Plugins/Swiper/animate.min.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript">
 $(function() {
     var swiper = new Swiper('.swiper-container', {
+        onInit: function(swipers){ //Swiper2.x的初始化是onFirstInit
+            swiperAnimateCache(swipers); //隐藏动画元素 
+            swiperAnimate(swipers); //初始化完成开始动画
+        }, 
+        onSlideChangeEnd: function(swipers){ 
+            swiperAnimate(swipers); //每个slide切换结束时也运行当前slide动画
+        }, 
         pagination: '.swiper-pagination',
         paginationClickable: true,
         spaceBetween: 30,
@@ -12,12 +21,23 @@ $(function() {
         autoplay: 4000,
         autoplayDisableOnInteraction: false
     }); 
-});
+});	
 </script>
+<style>
+.swiper-wrapper .first .center { height: 100%; position: relative;}
+.swiper-wrapper .first .one { position: absolute; left: 0; font-size: 34px; top: 150px; font-weight: bolder;  color: #fd6b06; font-family: "微软雅黑";}  
+.swiper-wrapper .first .two { position: absolute; left: 0; font-size: 34px; top: 220px; font-weight: bolder; color: #fd6b06; font-family: "微软雅黑";} 
+</style>
 <div class="banner">
     <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background:url(/Public/Style/Home/images/banner7.jpg) no-repeat 50% 0px; height: 426px; width: 100%;"></div>
+        <div class="swiper-wrapper ">
+            <div class="swiper-slide first" style="background:url(/Public/Style/Home/images/banner7.jpg) no-repeat 50% 0px; height: 426px; width: 100%;">
+                <div class="center">
+                    <p class="one ani"  swiper-animate-effect="fadeInDown" swiper-animate-duration="1s" swiper-animate-delay="0.1s">名门盛誉 智者云集 </p>
+                    <p class="two ani"  swiper-animate-effect="fadeInLeft" swiper-animate-duration="1s" swiper-animate-delay="0.1s">把握时机 大器乃成 </p>
+                </div>
+                
+            </div>
         </div>
 <!--        <div class="swiper-pagination"></div>-->
     </div>
