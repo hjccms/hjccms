@@ -36,6 +36,17 @@ $(function() {
         $(this).children(".tit").attr("style","color:#666666");
         $(this).children(".bjfont").hide();
     });
+    $(".select").each(function(){
+            var s=$(this);
+            var z=parseInt(s.css("z-index"));
+            var dt=$(this).children("dt");
+            var dd=$(this).children("dd");
+            var _show=function(){dd.slideDown(200);dt.addClass("cur");s.css("z-index",z+1);};   //展开效果
+            var _hide=function(){dd.slideUp(200);dt.removeClass("cur");s.css("z-index",z);};    //关闭效果
+            dt.click(function(){dd.is(":hidden")?_show():_hide();});
+            dd.find("a").click(function(){dt.html($(this).html());_hide();$("input[name="+dt.parent().attr('putname')+"]").val($(this).html());});     //选择效果（如需要传值，可自定义参数，在此处返回对应的“value”值 ）
+            $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hide():"";});
+    })
 });	
 </script>
 <style>
@@ -48,7 +59,15 @@ $(function() {
 .swiper-wrapper .two .center { height: 100%; position: relative;}
 .swiper-wrapper .two .one { position: absolute; left: 0; font-size: 40px; top: 150px; font-weight: bolder;  color: #ed6d00; font-family: "微软雅黑";}  
 .swiper-wrapper .two .two { position: absolute; left: 0; font-size: 34px; top: 210px; font-weight: 100; color: #ed6d00; font-family: "fzxyjt";} 
+/* select */
 
+.select{position:relative;float:left;margin:0 10px;}
+.select dt{height:35px; margin-top: 8px;border-radius: 5px; margin-left: 60px;font-size: 12px; display:inline-block;border:1px solid #fff;background:#fff url(/Public/Style/Home/images/ico.gif) no-repeat 170px center;line-height:35px;padding-left:16px;cursor:pointer;width:175px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;position:relative;z-index:99;}
+.select dt:hover,.select dt.cur{border:1px solid #409DFE;box-shadow:0 0 3px #409DFE;}
+.select dd{position:absolute;left:60px;top:45px;border:1px solid #fff;background:#fff;display:none; width: 192px;}
+.select dd ul{padding:4px;width:192px;max-height:250px;overflow:auto; padding-left: 0px; padding-right: 0px;}
+.select dd ul li a{line-height:28px;display:block;padding:0 8px;}
+.select dd ul li a:hover{background:#f5f5f5;}
 </style>
 <div class="banner">
     <div class="swiper-container">
@@ -73,9 +92,53 @@ $(function() {
     <form>
     <ul class="index_register" >
         <li><input type="text" name="name" value="孩子姓名" onfocus="if(value == '孩子姓名'){value=''}" onblur="if(value == ''){value='孩子姓名'}"  class="ire_text" style="margin-top: 175px;" maxlength="20"></li>
-        <li><input type="text" name="age" value="孩子年龄" onfocus="if(value == '孩子年龄'){value=''}" onblur="if(value == ''){value='孩子年龄'}" class="ire_text" maxlength="2"></li>
+        <li>
+            <dl class="select" putname="age">
+		<dt>孩子年龄</dt>
+		<dd style="z-index:200;">
+			<ul>
+				<li><a href="#">3-5岁</a></li>
+				<li><a href="#">5-7岁</a></li>
+				<li><a href="#">7-9岁</a></li>
+				<li><a href="#">9-12岁</a></li>
+				<li><a href="#">12岁以上</a></li>
+				
+			</ul>
+		</dd>
+            </dl>
+            <input type="hidden" name="age" value="" />
+        </li>
         <li><input type="text" name="mobile" value="联系电话" onfocus="if(value == '联系电话'){value=''}" onblur="if(value == ''){value='联系电话'}" class="ire_text" maxlength="11"></li>
-        <li><input type="text" name="area" value="所在地区" onfocus="if(value == '所在地区'){value=''}" onblur="if(value == ''){value='所在地区'}" class="ire_text" maxlength="100"></li>
+        <li>
+            <dl class="select" putname="area">
+		<dt>所在地区</dt>
+		<dd>
+			<ul>
+				<li><a href="#">和平区</a></li>
+				<li><a href="#">河东区</a></li>
+				<li><a href="#">河西区</a></li>
+				<li><a href="#">南开区</a></li>
+				<li><a href="#">河北区</a></li>
+                                
+                                <li><a href="#">红桥区</a></li>
+				<li><a href="#">东丽区</a></li>
+				<li><a href="#">西青区</a></li>
+				<li><a href="#">津南区</a></li>
+				<li><a href="#">北辰区</a></li>
+                                
+                                <li><a href="#">武清区</a></li>
+				<li><a href="#">宝坻区</a></li>
+				<li><a href="#">滨海新区</a></li>
+				<li><a href="#">宁河区</a></li>
+                                
+                                <li><a href="#">静海区</a></li>
+				<li><a href="#">蓟县</a></li>
+				
+			</ul>
+		</dd>
+            </dl>
+            <input type="hidden" name="area" value="" />
+        </li>
         <li>
             <input type="hidden" value="首页banner" name="origin">
             <input type="button" value="免费领取" class="ir_button addUser">
