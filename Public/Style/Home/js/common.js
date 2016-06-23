@@ -84,7 +84,15 @@ $(function() {
             dataType:'json',
             success:function(e){
                 if(e.status == 1){
-                    location.href = '/Index/testLogin/f/1/d/'+e.data;
+                    
+                    //询问框
+                    layer.confirm('恭喜! 您已经提交成功,稍后我们会与您联系!<br/>马上去测试英语等级？', {
+                      btn: ['留在这里','去测试'],title:'提交成功' //按钮
+                    }, function(){
+                      layer.closeAll();
+                    }, function(){
+                      location.href = '/Index/testLogin/f/1/d/'+e.data;
+                    });
                 }
             }
         });
