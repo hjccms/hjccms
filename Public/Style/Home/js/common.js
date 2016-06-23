@@ -90,6 +90,7 @@ $(function() {
                       btn: ['留在这里','去测试'],title:'提交成功' //按钮
                     }, function(){
                       layer.closeAll();
+                       location.href = location.href;
                     }, function(){
                       location.href = '/Index/testLogin/f/1/d/'+e.data;
                     });
