@@ -65,8 +65,9 @@ class FieldinfoAction  extends BaseAction
        
         //去模型处理其它参数
         $ret = D('Fieldinfo')->addField($post);
-        if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
-        else $this->ajaxReturn ('',$ret,0);
+        $retData['url'] = U('/Admin/Fieldinfo/index/modelId/'.$post['model_id']);
+        if(intval($ret)>0) $this->ajaxReturn ($retData,'Success！',1);
+        else $this->ajaxReturn ('','Error!',0);
     }
     function checkName()
     {

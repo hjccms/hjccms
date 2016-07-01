@@ -26,6 +26,7 @@ return array(
         array('id'=>'m','name'=>'手机号码格式'),
         array('id'=>'e','name'=>'EMAIL格式'),
         array('id'=>'url','name'=>'网址格式'),
+        array('id'=>'other','name'=>'自定义规则'),
     ),
     //模型类型
     'MODELFUNTYPE' => array(

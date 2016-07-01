@@ -18,7 +18,8 @@ $(function() {
                 dataType: "json",
                 beforeSend:function()
                 {
-                    layer.load('正在请求...', 3);
+                    layclose();
+                    layload();
                 },
                 success: function(msg)
                 {
@@ -29,7 +30,7 @@ $(function() {
                     }
                     else
                     {
-                        layer.alert(msg.info, 8); //风格一
+                        lalert(msg.info, 1); //风格一
                     }
                 }
              });
@@ -50,7 +51,8 @@ function dataDel(modelId,id,del,table_name)
                 dataType: "json",
                 beforeSend:function()
                 {
-                    layer.load('正在请求...', 3);
+                    layclose();
+                    layload();
                 },
                 success: function(msg)
                 {
@@ -61,7 +63,7 @@ function dataDel(modelId,id,del,table_name)
                     }
                     else
                     {
-                        layer.alert(msg.info, 8); //风格一
+                        lalert(msg.info, 1); //风格一
                     }
                 }
              });
@@ -85,22 +87,35 @@ function dataSort(modelId,table_name)
         dataType: "json",
         beforeSend:function()
         {
-            layer.load('正在请求...', 3);
+            layload();
         },
         success: function(msg)
         {
             if(msg.status==1)
             {
-                //layer.alert('删除成功！', 1); //风格一
                 location.reload() ;
             }
             else
             {
-                layer.alert(msg.info, 8); //风格一
+                lalert(msg.info, 1); 
             }
         }
     });
             
           
       
+}
+//显示自定义规则输入框
+function changeGuize(obj)
+{
+    var val = obj.val();
+    if(val=='other')
+    {
+        $('.guize').show();
+    }
+    else
+    {
+        $('.guize').hide();
+        $('.guize').children("input").val('');
+    }
 }

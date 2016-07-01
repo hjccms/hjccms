@@ -20,7 +20,7 @@ function selTems(con)
         dataType: "json",
         beforeSend:function()
         {
-            layer.load('正在请求...', 3);
+            layload();
         },
         success: function(msg)
         {

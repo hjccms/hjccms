@@ -99,7 +99,7 @@ function select($data)
 {
     if($data['isMust']!=false) $data['isMustStr'] = '<b>*</b>'; else $data['isMustStr']='';
     if($data['paramArr']['noStartStr']==1) $startOption = ''; else $startOption = '<option value=""  >请选择</option>';  
-    unset($data['paramArr']['noStartStr']);
+    if(isset($data['paramArr']['noStartStr'])) unset($data['paramArr']['noStartStr']);
     foreach($data['paramArr'] as $k=>$v){
         if(count($v) == 1){
             $param[$k]['id']=$k;

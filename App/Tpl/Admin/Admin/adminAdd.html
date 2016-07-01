@@ -7,9 +7,8 @@
      
         <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
      
-        <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
-        <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
-        <script src="__PUBLIC__/Plugins/kindeditor/lang/zh_CN.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.common.js"></script>
     </head>
 
     <body>
@@ -19,7 +18,7 @@
         <div class="formbody">
 
             <div class="formtitle"><span>添加管理员</span></div>
-            <form class="registerform" action="{:U('/Admin/Model/dataAjaxPost/table_name/admin')}">
+            <form class="registerform validform" action="{:U('/Admin/Model/dataAjaxPost/table_name/admin')}">
             <ul class="forminfo">
 
                 {:input(array('title'=>'姓名','inputName'=>'name','isMust'=>'1','tipMsg'=>'不能超过30个字符','addHtml'=>'datatype="s1-30" errormsg="标题不能超过30个字符" ajaxurl="/Admin/Model/checkFieldOnly/table_name/admin" sucmsg="验证通过！"','value'=>$info['name']))}
@@ -34,7 +33,7 @@
                 {:input(array('title'=>'手机号码','inputName'=>'mobile','isMust'=>'1','tipMsg'=>'管理员手机号码','addHtml'=>'datatype="m"     errormsg="格式错误"','value'=>''))}
                 {:radio(array('title'=>'是否启用','inputName'=>'valid','value'=>0,'paramArr'=>get_valid()))}
                 
-               
+                {:hideInput(array('inputName'=>'fromUrl','value'=>encrypt(U('/Admin/Admin/index'),'E')))}
                  {:input(array('title'=>'Email','inputName'=>'email','tipMsg'=>'','addHtml'=>'datatype="e"   ignore="ignore"   errormsg="格式错误"','value'=>''))}
                 {:hideInput(array('inputName'=>'id','value'=>$info['id']))}
                 <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
@@ -44,36 +43,11 @@
         </div>
     </body>
 <script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform.js"></script>
 <script type="text/javascript">
 
 $(function(){
-	$(".registerform").Validform({
-		tiptype:function(msg,o,cssctl){
-			if(!o.obj.is("form")){
-				var objtip=o.obj.siblings(".Validform_checktip");
-				cssctl(objtip,o.type);
-				objtip.text(msg);
-			}
-		},
-                datatype:{
-                        "*6-20": /^[^\s]{6,20}$/,
-                        "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
-                        "y3-10": /\w{3,10}/i,
-                        "y1-20": /^[a-zA-Z\/ ]{1,20}$/,
-                },
-                ajaxPost:true,
-                callback:function(data){
-                        if(data.status==1)
-                        {
-                            alert(data.info);
-                            location.href="{:U('Admin/Admin/index')}";
-                        }
-                        else
-                        {
-                            alert(data.info);
-                        }
-		}
-	});
+	
         $(document).on("change", "#juese", function(e) {
             var role = $(this).val();
             

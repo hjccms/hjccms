@@ -7,8 +7,8 @@
         
         <script type="text/javascript" src="__PUBLIC__/Plugins/jquery-1.9.1.min.js"></script>
         <script src="__PUBLIC__/Style/Admin/js/dataAdd.js"></script>
-        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
-        
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.common.js"></script>
         <if condition="$editorPlugins OR $uploadPlugins">
         <link rel="stylesheet" href="__PUBLIC__/Plugins/kindeditor/themes/default/default.css" />
         <script src="__PUBLIC__/Plugins/kindeditor/kindeditor.js"></script>
@@ -24,7 +24,7 @@
         <div class="formbody">
 
             <div class="formtitle"><span>添加数据</span></div>
-            <form class="registerform" action="{:U('/Admin/Model/dataAjaxPost/modelId/'.$modelId)}">
+            <form class="registerform validform" action="{:U('/Admin/Model/dataAjaxPost/modelId/'.$modelId)}">
             <ul class="forminfo">
                 <volist name="formInput" id="val" >
                 {:$val['inputType']($val)}
@@ -38,7 +38,7 @@
         </div>
     </body>
     
-<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+
 <!--编辑器插件-->
 <if condition="$editorPlugins OR $uploadPlugins">
 <script type="text/javascript">
@@ -79,52 +79,9 @@ KindEditor.ready(function(K) {
 });
 </script>
 </if>
-<script type="text/javascript">
-$(function(){
-	$(".registerform").Validform({
-		tiptype:function(msg,o,cssctl){
-			if(!o.obj.is("form")){
-				var objtip=o.obj.siblings(".Validform_checktip");
-				cssctl(objtip,o.type);
-				objtip.text(msg);
-			}
-		},
-                datatype:{
-                        "*6-20": /^[^\s]{6,20}$/,
-                        "z2-4" : /^[\u4E00-\u9FA5\uf900-\ufa2d]{2,4}$/,
-                        "y3-10": /\w{3,10}/i,
-                        "y1-20": /^[a-zA-Z_\/]{1,20}$/,
-                },
-                
-                ajaxPost:true,
-                beforeSubmit:function(){
-                    layer.load('正在请求...', 3);
-                },
-                callback:function(data){
-                        layer.closeAll();
-                        if(data.status==1)
-                        {
-                            alert(data.info);
-                            
-                            location.href="{:U('/Admin/Model/dataList/modelId/'.$modelId)}";
-                            
-                        }
-                        else if(data.status==2)
-                        {
-                            alert(data.info);
-                            
-                            location.href=data.url;
-                            
-                            
-                        }
-                        else
-                        {
-                            alert(data.info);
-                        }
-		}
-	});
-})
-</script>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Plugins/Validform/Validform.js"></script>
+
 <!--日期插件-->
 <if condition="$dataPlugins" >
 <script type="text/javascript" src="__PUBLIC__/Plugins/Laydate/laydate.js"></script>

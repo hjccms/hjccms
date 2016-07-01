@@ -78,10 +78,10 @@ class ModelAction  extends BaseAction
     {
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
-        
         //去模型处理其它参数
         $ret = D('Model')->addModel($post);
-        if(intval($ret)>0) $this->ajaxReturn ('','Success！',1);
+        $returnData['url'] = U('/Admin/Model/index');
+        if(intval($ret)>0) $this->ajaxReturn ($returnData,'Success！',1);
         else $this->ajaxReturn ('',$ret,0);
     }
     function checkName()
@@ -113,13 +113,17 @@ class ModelAction  extends BaseAction
                 $searchCon[$v['field_name']] = array('like','%'.$get.'%');
             }
         }
-        if($this->_get('site_id'))
-        {
-            $searchCon['site_id'] = $this->_get('site_id');
-        }
-        else 
+        if($this->_get('site_id')===null)
         {
             $searchCon['site_id'] = $this->adminInfo->site_id;
+        }
+        elseif($this->_get('site_id')==='' && $this->adminInfo->site_id=='1')
+        {
+            unset($searchCon['site_id']);
+        }
+        elseif($this->_get('site_id')!='' && $this->adminInfo->site_id=='1') 
+        { 
+            $searchCon['site_id'] = $this->_get('site_id');
         }
         $formInput = formField($searchFiled,$this->_get());
         $this->assign('formInput',$formInput);
@@ -295,6 +299,10 @@ class ModelAction  extends BaseAction
         if(!IS_POST) $this->ajaxReturn ('','非法请求！',0);
         $post = $this->_post();
         $modelId = $this->_get('modelId');
+        if(!$modelId)
+        {
+            $modelId = $this->_post('model_id');
+        }
         if(intval($modelId)>0)
         {
             $modelInfo = D('Model')->getModel($modelId);
@@ -305,6 +313,7 @@ class ModelAction  extends BaseAction
         {
             $tableModel = M(ucfirst($this->_get('table_name')));
         }
+  
         $post['create_time'] = time();
         if(($post['id']<=0||!$post['id'])&&!$post['admin_id'])
         {
@@ -341,28 +350,30 @@ class ModelAction  extends BaseAction
             }
             else
             {
-                $ret['status'] = 1;
-                $ret['info'] = '修改成功！';
+                $data['url'] = U('/Admin/Model/dataList/modelId/'.$modelId);
+              
                 if(!empty($fromUrl))
                 {
-                    $ret['url'] = $fromUrl;
-                    $ret['status'] = 2;
+                    $data['url'] = $fromUrl;
+                   
                 }
-                $this->ajaxReturn ($ret,'JSON');
+                $this->ajaxReturn ($data,'Success！',1);
             }
         }
         else
         {
             if($id = $tableModel->add())
             {
-                $ret['status'] = 1;
-                $ret['info'] = '添加成功！';
+               
+               
+                $data['url'] = U('/Admin/Model/dataList/modelId/'.$modelId);
+              
                 if(!empty($fromUrl))
                 {
-                    $ret['url'] = $fromUrl;
-                    $ret['status'] = 2;
+                    $data['url'] = $fromUrl;
+                   
                 }
-                $this->ajaxReturn ($ret,'JSON');
+                $this->ajaxReturn ($data,'Success！',1);
             }
             else
             {

@@ -8,31 +8,7 @@
         <script type="text/javascript" src="__PUBLIC__/Plugins/Layer/layer.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Plugins/Laypage/laypage.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Style/Admin/js/model.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".click").click(function () {
-                    $(".tip").fadeIn(200);
-                    $(".mid").fadeIn(200);
-                });
-                
-                $(".tiptop a").click(function () {
-                    $(".tip").fadeOut(200);
-                    $(".mid").fadeOut(200);
-                });
-
-                $(".sure").click(function () {
-                    $(".tip").fadeOut(100);
-                    $(".mid").fadeOut(200);
-                });
-
-                $(".cancel").click(function () {
-                    $(".tip").fadeOut(100);
-                    $(".mid").fadeOut(200);
-                });
-               
-                
-            });
-        </script>
+        
 
 
     </head>
@@ -57,7 +33,8 @@
                             <select class="select1" name="site_id"    dataType="*"  >
                                 <option value=""  >请选择</option>
                                 <volist name='allSites' id='val'>
-                                    <option value="{$val.id}" <if condition="$Think.get.site_id eq $val['id']">selected="selected"</if>  >{$val.name}</option>
+                                    <option value="{$val.id}" <if condition="$Think.get.site_id eq $val['id']">selected="selected"<elseif condition="($Think.get.site_id === null) and ($val['id'] eq 1)"/> selected="selected"</if>  >{$val.name}</option>
+
                                 </volist>
                                
                             </select>
