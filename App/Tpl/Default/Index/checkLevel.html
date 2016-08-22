@@ -1,0 +1,33 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/Style/Home/js/checkLevel.js"></script>              
+<div class="checklevel" >
+
+    <div class="center top">
+        <div class="title num">1</div>
+        <div class="title testname">听下面的声音,从图中选取相对应的图片</div>
+        <div class="icon children" >
+            <div class="icon bofang"></div>
+            <div class="icon stop"></div>
+            <audio id='media' src="__PUBLIC__/Style/Home/audio/level_test/1.m4a"></audio>
+        </div>
+        <div class="center daan">
+            <input type="hidden" name="answer" class="answer" value="" />
+            <div class="picslist  testpics" num="1" style="background-position:0px 0px; "></div>
+            <div class="picslist zj  testpics " num="2"  style="background-position:-200px 0px; "></div>
+            <div class="picslist  testpics" num="3"  style="background-position:-400px 0px; "></div>
+            <div class="testpics2"></div>
+        </div>
+    </div>
+    <div class="center bottom">
+        <div class="prenext">
+            <div class="icon changetext pre " ch="pre">上一题</div>
+            <div class="icon changetext next" ch="next">下一题</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    <?php if($info['end_key']){ ?>
+        var end_key = {$info.end_key};
+    <?php } ?>
+</script>   
+<include file="Public:footer" />

@@ -1,0 +1,22 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PUBLIC__/Style/Home/js/checkLevel.js"></script>        
+        
+<div class="checklevel" >
+
+    <div class="center top testresult">
+        <div class="resultshuoming"><font>{$info.name}</font>小朋友，{$info.level_text.title}</div>
+        <div class="defen">得分：<font class="fenshu">{$info.score}分</font> <font class="js"> (满分50分)</font></div>
+        <div class="defen dengji">等级：<font class="fenshu">{$info.level_text.rank}</font> <font class="js"> ({$info.level_text.level})</font></div>
+        
+        <div class="zongjie" >{$info.level_text.text}</div>
+        <div class="jianyi">{$info.level_text.advise}</div>
+        <div class="icon againbutton" >重新测试</div>
+        <div class="icon button classbutton">预约免费试听课</div>
+        <input type="hidden" id="user_id" value="{$userInfo.id}">
+        <input type="hidden" id="user_url" value="{$userInfo.centerUrl}">
+    </div>
+    <div class="center bottom testbot">
+        
+    </div>
+</div>      
+<include file="Public:footer" />
