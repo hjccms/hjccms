@@ -29,6 +29,11 @@ function selTems(con)
                 $(".template_index").html(msg.data.index);
                 $(".template_list").html(msg.data.list);
                 $(".template_show").html(msg.data.show);
+                layclose();
+            }
+            else
+            {
+                lalert('请求失败!',1);
             }
             
         }
