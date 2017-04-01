@@ -26,7 +26,7 @@ a { text-decoration:none;}
 .nav a { color: #666; font-size: 16px;height: 77px; display: block; float: left; margin-left: 50px; }
 .nav a:hover { border-bottom: #d3282b 3px solid;color:#dc353b}
 .nav .seleted {border-bottom: #d3282b 3px solid;color:#dc353b}
-.nav img { margin-top: 7px;}
+.nav img { margin-top: 10px;}
 
 
 .swiper-container { width: 100%; min-width: 1000px; height: 600px;}
